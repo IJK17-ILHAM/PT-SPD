@@ -139,10 +139,8 @@
                 </linearGradient>
             </defs>
 
-            <!-- Layer Dasar -->
             <rect width="1440" height="900" fill="url(#gradBaseSlate)" />
 
-            <!-- Pola Organik Fluid -->
             <path filter="url(#shadowDeep)" fill="#4B788F" opacity="0.85" 
                   d="M-80,-60 L780,-60 C640,190 410,130 330,290 C250,450 460,490 390,630 C320,770 110,690 -80,820 Z" />
 
@@ -158,7 +156,6 @@
             <path filter="url(#shadowSubtle)" fill="#E4DE66" opacity="0.92"
                   d="M720,960 C750,770 890,680 1070,760 C1220,830 1310,740 1500,810 L1500,960 Z" />
 
-            <!-- Lingkaran Aksen Abstrak -->
             <ellipse cx="430" cy="460" rx="65" ry="58" fill="url(#gradGoldSoft)" filter="url(#shadowMedium)" />
             <ellipse cx="960" cy="330" rx="95" ry="85" fill="#E4DE66" opacity="0.9" filter="url(#shadowMedium)" />
             <circle cx="280" cy="810" r="42" fill="#4B788F" filter="url(#shadowSubtle)" />
@@ -770,7 +767,6 @@
             const lemburNominal = vol * tarif;
             const alphaDays = Number(item.alpha || item.spsAlpha) || 0;
             
-            // Potongan alpha (asumsi standar 25 hari kerja)
             const potAlpha = (gapok / 25) * alphaDays;
             const bpjs = Number(item.bpjs) || 0;
             const pph = Number(item.pph) || 0;
@@ -790,7 +786,6 @@
             const statusFilter = document.getElementById('filter-status').value;
             const searchVal = document.getElementById('filter-search').value.toLowerCase();
 
-            // KPI calculation
             const kpiItems = payrollData.filter(d => (d.tipe || 'bulanan') === skemaKPI);
             let totThp = 0, totLembur = 0, totPot = 0, totAlpha = 0;
             kpiItems.forEach(d => {
@@ -807,7 +802,6 @@
             document.getElementById('kpi-karyawan-count').innerText = `${kpiItems.length} Orang`;
             document.getElementById('kpi-status-ratio').innerText = `Terfilter (${skemaKPI})`;
 
-            // Table filtration
             const filtered = payrollData.filter(d => {
                 const matchSkema = (d.tipe || 'bulanan') === skemaFilter;
                 const matchDivisi = (divisiFilter === 'ALL' || d.divisi === divisiFilter);
@@ -869,7 +863,7 @@
         }
 
         // =========================================================================
-        // PENGIRIMAN DATA KE GOOGLE APPS SCRIPT (SPS) VIA POST
+        // FORM SUBMIT DENGAN METODE URLSearchParams (ANTI BLOKIR CORS BROWSER)
         // =========================================================================
         async function handleFormSubmit(e) {
             e.preventDefault();
@@ -877,7 +871,6 @@
             const submitBtn = document.getElementById('btn-submit-payroll');
             const originalBtnText = submitBtn.innerHTML;
 
-            // 1. Ambil & parse data dari form
             const nama = document.getElementById('input-nama').value.trim();
             const nik = document.getElementById('input-nik').value.trim();
             const tipe = document.getElementById('input-tipe').value;
@@ -896,57 +889,69 @@
             const pph = parseRawNumber(document.getElementById('input-pph').value);
             const statusBayar = document.getElementById('input-status').value;
 
-            // Perhitungan Finansial
             const potAlpha = (gapok / 25) * spsAlpha;
             const totalPotongan = potAlpha + bpjs + pph;
             const thp = (gapok + tunjangan + lemburNominal) - totalPotongan;
 
-            // 2. Siapkan Payload yang PERSIS diminta doPost Google Apps Script
-            const payload = {
-                periodeWaktu: periodeBulan,
-                nik: nik,
-                nama: nama,
-                divisi: divisi,
-                tipe: tipe,
-                spsHadir: spsHadir,
-                spsAlpha: spsAlpha,
-                lemburJenis: lemburJenis,
-                lemburVolume: lemburVolume,
-                lemburTarif: lemburTarif,
-                lemburNominal: lemburNominal,
-                gapok: gapok,
-                tunjangan: tunjangan,
-                potAbsen: potAlpha,
-                bpjs: bpjs,
-                pph: pph,
-                totalPotongan: totalPotongan,
-                thp: thp,
-                statusBayar: statusBayar
-            };
-
-            const localItem = {
-                ...payload,
-                periodeBulan: periodeBulan,
-                hadir: spsHadir,
-                alpha: spsAlpha,
-                status: statusBayar
-            };
+            // Membangun FormData melalui URLSearchParams
+            const params = new URLSearchParams();
+            params.append('periodeWaktu', periodeBulan);
+            params.append('nik', nik);
+            params.append('nama', nama);
+            params.append('divisi', divisi);
+            params.append('tipe', tipe);
+            params.append('spsHadir', spsHadir);
+            params.append('spsAlpha', spsAlpha);
+            params.append('lemburJenis', lemburJenis);
+            params.append('lemburVolume', lemburVolume);
+            params.append('lemburTarif', lemburTarif);
+            params.append('lemburNominal', lemburNominal);
+            params.append('gapok', gapok);
+            params.append('tunjangan', tunjangan);
+            params.append('potAbsen', potAlpha);
+            params.append('bpjs', bpjs);
+            params.append('pph', pph);
+            params.append('totalPotongan', totalPotongan);
+            params.append('thp', thp);
+            params.append('statusBayar', statusBayar);
 
             submitBtn.disabled = true;
             submitBtn.innerHTML = `<span class="animate-spin inline-block mr-2">&#9696;</span>Menyimpan ke Google SPS...`;
 
             try {
-                // 3. Post ke Google Apps Script (menggunakan text/plain agar bebas dari CORS preflight block)
+                // Eksekusi POST ke Web App Google Script
                 await fetch(GOOGLE_SPS_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: {
-                        'Content-Type': 'text/plain;charset=utf-8'
+                        'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    body: JSON.stringify(payload)
+                    body: params.toString()
                 });
 
-                // 4. Update data lokal
+                // Update data lokal portal
+                const localItem = {
+                    periodeBulan: periodeBulan,
+                    nik: nik,
+                    nama: nama,
+                    divisi: divisi,
+                    tipe: tipe,
+                    hadir: spsHadir,
+                    alpha: spsAlpha,
+                    lemburJenis: lemburJenis,
+                    lemburVolume: lemburVolume,
+                    lemburTarif: lemburTarif,
+                    lemburNominal: lemburNominal,
+                    gapok: gapok,
+                    tunjangan: tunjangan,
+                    potAbsen: potAlpha,
+                    bpjs: bpjs,
+                    pph: pph,
+                    totalPotongan: totalPotongan,
+                    thp: thp,
+                    status: statusBayar
+                };
+
                 const idx = payrollData.findIndex(d => d.nik === localItem.nik && d.periodeBulan === localItem.periodeBulan);
                 if (idx >= 0) {
                     payrollData[idx] = localItem;
@@ -959,13 +964,13 @@
                 populateDivisiOptions();
                 applyFilters();
 
-                alert(`BERHASIL! Data payroll ${nama} (${nik}) sudah tersimpan di Google Sheet SPS!`);
+                alert(`BERHASIL! Data "${nama}" (${nik}) telah tersimpan ke Google Sheet SPS.`);
                 document.getElementById('payrollForm').reset();
                 calcLemburPreview('input');
 
             } catch (err) {
-                console.error("Gagal sinkron ke Google SPS:", err);
-                alert("Data tersimpan di cache lokal, namun gagal menghubungi Google SPS. Pastikan setelan deployment Web App disetel ke 'Anyone'.");
+                console.error("Gagal sinkron:", err);
+                alert("Gagal mengirim data. Pastikan koneksi internet aktif.");
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalBtnText;
@@ -1034,36 +1039,37 @@
                 btn.disabled = true;
                 btn.innerText = "Mengupdate Sheet...";
 
+                // Kirim update data ke Google Sheet SPS
+                const params = new URLSearchParams();
+                params.append('periodeWaktu', item.periodeBulan);
+                params.append('nik', item.nik);
+                params.append('nama', item.nama);
+                params.append('divisi', item.divisi);
+                params.append('tipe', item.tipe || 'bulanan');
+                params.append('spsHadir', item.spsHadir);
+                params.append('spsAlpha', item.spsAlpha);
+                params.append('lemburJenis', item.lemburJenis);
+                params.append('lemburVolume', item.lemburVolume);
+                params.append('lemburTarif', item.lemburTarif);
+                params.append('lemburNominal', item.lemburNominal);
+                params.append('gapok', item.gapok);
+                params.append('tunjangan', item.tunjangan);
+                params.append('potAbsen', item.potAbsen);
+                params.append('bpjs', item.bpjs || 0);
+                params.append('pph', item.pph || 0);
+                params.append('totalPotongan', item.totalPotongan);
+                params.append('thp', item.thp);
+                params.append('statusBayar', item.statusBayar);
+
                 try {
-                    // Update juga ke Google Sheet SPS
                     await fetch(GOOGLE_SPS_URL, {
                         method: 'POST',
                         mode: 'no-cors',
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                        body: JSON.stringify({
-                            periodeWaktu: item.periodeBulan,
-                            nik: item.nik,
-                            nama: item.nama,
-                            divisi: item.divisi,
-                            tipe: item.tipe || 'bulanan',
-                            spsHadir: item.spsHadir,
-                            spsAlpha: item.spsAlpha,
-                            lemburJenis: item.lemburJenis,
-                            lemburVolume: item.lemburVolume,
-                            lemburTarif: item.lemburTarif,
-                            lemburNominal: item.lemburNominal,
-                            gapok: item.gapok,
-                            tunjangan: item.tunjangan,
-                            potAbsen: item.potAbsen,
-                            bpjs: item.bpjs || 0,
-                            pph: item.pph || 0,
-                            totalPotongan: item.totalPotongan,
-                            thp: item.thp,
-                            statusBayar: item.statusBayar
-                        })
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: params.toString()
                     });
                 } catch(err) {
-                    console.error("Gagal sinkron saat edit:", err);
+                    console.error("Gagal update sheet:", err);
                 } finally {
                     btn.disabled = false;
                     btn.innerText = originalText;
@@ -1072,7 +1078,7 @@
                 saveLocalData();
                 applyFilters();
                 closeEditModal();
-                alert(`Data ${item.nama} berhasil diperbarui di Portal & Google SPS!`);
+                alert(`Data ${item.nama} berhasil diperbarui di Google SPS!`);
             }
         }
 
@@ -1250,7 +1256,6 @@
                 const res = await fetch(GOOGLE_SPS_URL);
                 const json = await res.json();
                 
-                // Mendukung response JSON: { status: "success", data: [...] } atau array langsung
                 const listKaryawan = Array.isArray(json) ? json : (json.data || []);
                 
                 if (listKaryawan.length > 0) {
@@ -1270,7 +1275,6 @@
                         dOpt.value = emp.nama;
                         datalist.appendChild(dOpt);
 
-                        // Masukkan ke local cache jika belum ada
                         const existingIdx = payrollData.findIndex(d => d.nik === emp.nik);
                         if(existingIdx === -1) {
                             payrollData.push({
@@ -1294,7 +1298,7 @@
                 }
             } catch (err) {
                 console.error("Error fetching SPS:", err);
-                alert("Gagal menarik data dari Google SPS. Pastikan script sudah di-Deploy sebagai Web App dengan akses 'Anyone'.");
+                alert("Gagal menarik data dari Google SPS. Pastikan deployment Apps Script disetel ke 'Anyone'.");
             } finally {
                 btn.innerHTML = `
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
