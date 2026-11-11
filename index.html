@@ -30,7 +30,6 @@
             min-height: 100vh;
         }
 
-        /* Container Background Abstrak Responsif PC & HP */
         .papercut-bg-container {
             position: fixed;
             top: 0;
@@ -52,54 +51,78 @@
         }
 
         .glass-panel-dark {
-            background: rgba(43, 67, 85, 0.88);
+            background: rgba(43, 67, 85, 0.90);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             border: 1px solid rgba(228, 222, 102, 0.3);
         }
         .glass-panel-light {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             border: 2px solid rgba(190, 176, 0, 0.45);
         }
 
-        /* ========================================================================= */
-        /* STIL CETAK PRESISI A4: 4 SLIP PER LEMBAR (GRID 2x2) & UKURAN 110x220mm    */
-        /* ========================================================================= */
-        .slip-compact-card {
+        /* FORMAT TABEL KOTAK SLIP GAJI */
+        .slip-table-container {
+            width: 216mm;
+            height: 108mm;
+            max-height: 108mm;
             box-sizing: border-box;
-            width: 100%;
-            height: 100%;
-            max-height: 138mm;
+            background: #ffffff;
+            border: 2px solid #1a202c;
             padding: 8px 12px;
             font-size: 10px;
-            line-height: 1.25;
-            background: #ffffff;
-            border: 1px dashed #718096;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #000000;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
 
-        .single-slip-envelope {
-            width: 220mm;
-            height: 110mm;
-            max-height: 110mm;
-            padding: 10px 16px;
+        .slip-table-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .slip-table-container th, 
+        .slip-table-container td {
+            border: 1px solid #1a202c;
+            padding: 2.5px 5px;
+        }
+
+        /* Compact Format 4 per A4 */
+        .slip-compact-container {
+            width: 100%;
+            height: 136mm;
+            max-height: 136mm;
             box-sizing: border-box;
             background: #ffffff;
-            border: 1.5px solid #39627F;
+            border: 1px solid #000000;
+            padding: 6px 8px;
+            font-size: 8.5px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #000000;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            font-size: 10.5px;
+        }
+
+        .slip-compact-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .slip-compact-container th, 
+        .slip-compact-container td {
+            border: 1px solid #000000;
+            padding: 2px 4px;
         }
 
         @media print {
             @page {
                 size: A4 portrait;
-                margin: 6mm 6mm;
+                margin: 5mm 5mm;
             }
             body, html {
                 background: #ffffff !important;
@@ -128,10 +151,10 @@
                 display: grid !important;
                 grid-template-columns: repeat(2, 1fr) !important;
                 grid-template-rows: repeat(2, 1fr) !important;
-                gap: 4mm !important;
-                width: 198mm !important;
-                height: 282mm !important;
-                max-height: 282mm !important;
+                gap: 5mm !important;
+                width: 200mm !important;
+                height: 285mm !important;
+                max-height: 285mm !important;
                 page-break-after: always !important;
                 break-after: page !important;
                 box-sizing: border-box !important;
@@ -187,8 +210,8 @@
             <div class="w-full max-w-5xl flex justify-between items-center text-xs text-slate-200 z-10 font-bold">
                 <span class="tracking-widest uppercase font-mono text-[#E4DE66] bg-[#39627F]/75 px-3 py-1 rounded-full border border-[#E4DE66]/40 backdrop-blur-md">SECURE ENTERPRISE PORTAL</span>
                 <div class="flex items-center gap-2 bg-[#39627F]/75 px-3.5 py-1 rounded-full border border-[#BEB000]/50 backdrop-blur-md">
-                    <span class="w-2.5 h-2.5 rounded-full bg-[#E4DE66] animate-ping"></span>
-                    <span class="text-white font-mono">GOOGLE SPS: REAL-TIME AKTIF</span>
+                    <span id="sync-indicator" class="w-2.5 h-2.5 rounded-full bg-[#E4DE66] animate-ping"></span>
+                    <span id="sync-status-text" class="text-white font-mono">GOOGLE SPS: TERHUBUNG</span>
                 </div>
             </div>
 
@@ -273,8 +296,9 @@
                         <div class="flex items-center gap-2">
                             <span class="text-xs text-slate-200 font-bold">Skema:</span>
                             <select id="kpi-filter-tipe" onchange="applyFilters()" class="text-xs p-2 rounded-lg bg-[#2b4c63] text-[#E4DE66] border border-[#4B788F] font-bold">
-                                <option value="bulanan">Bulanan (Monthly)</option>
-                                <option value="mingguan">Mingguan (Weekly)</option>
+                                <option value="ALL">Semua Skema</option>
+                                <option value="bulanan" selected>Bulanan</option>
+                                <option value="mingguan">Mingguan</option>
                             </select>
                         </div>
                     </div>
@@ -328,7 +352,7 @@
                             <div class="flex items-center gap-2">
                                 <button type="button" id="btn-tarik-sps" onclick="fetchFromGoogleSPS(true)" class="px-4 py-2 bg-[#39627F] text-[#E4DE66] border border-[#BEB000] rounded-xl text-xs font-black shadow transition hover:bg-[#2b4c63] flex items-center gap-1.5">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                                    <span>Tarik Data SPS Sekarang</span>
+                                    <span>Tarik / Refresh Data SPS</span>
                                 </button>
                             </div>
                         </div>
@@ -424,8 +448,8 @@
                                         <label class="block text-xs font-bold mb-1 text-slate-800">Status Bayar</label>
                                         <select id="input-status" class="w-full text-xs border border-slate-300 p-2 rounded-lg font-bold bg-white">
                                             <option value="Draft">Draft</option>
-                                            <option value="Approved">Approved HR</option>
-                                            <option value="Paid">Paid / Terbayar</option>
+                                            <option value="Approved">Approved</option>
+                                            <option value="Paid">Paid</option>
                                         </select>
                                     </div>
                                 </div>
@@ -471,8 +495,9 @@
                                 <div>
                                     <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Skema</label>
                                     <select id="filter-tipe" onchange="applyFilters()" class="w-full text-xs p-2.5 rounded-lg bg-[#2b4c63] text-white border border-[#4B788F] font-bold">
-                                        <option value="bulanan">Bulanan (Monthly)</option>
-                                        <option value="mingguan">Mingguan (Weekly)</option>
+                                        <option value="ALL">Semua Skema</option>
+                                        <option value="bulanan" selected>Bulanan</option>
+                                        <option value="mingguan">Mingguan</option>
                                     </select>
                                 </div>
                                 <div>
@@ -483,15 +508,17 @@
                                 </div>
                                 <div>
                                     <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Periode</label>
-                                    <select id="filter-periode-waktu" onchange="applyFilters()" class="w-full text-xs p-2.5 rounded-lg bg-[#2b4c63] text-white border border-[#4B788F] font-bold"></select>
+                                    <select id="filter-periode-waktu" onchange="applyFilters()" class="w-full text-xs p-2.5 rounded-lg bg-[#2b4c63] text-white border border-[#4B788F] font-bold">
+                                        <option value="ALL">Semua Periode</option>
+                                    </select>
                                 </div>
                                 <div>
                                     <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Status</label>
                                     <select id="filter-status" onchange="applyFilters()" class="w-full text-xs p-2.5 rounded-lg bg-[#2b4c63] text-white border border-[#4B788F]">
                                         <option value="ALL">Semua Status</option>
                                         <option value="Draft">Draft</option>
-                                        <option value="Approved">Approved HR</option>
-                                        <option value="Paid">Paid / Terbayar</option>
+                                        <option value="Approved">Approved</option>
+                                        <option value="Paid">Paid</option>
                                     </select>
                                 </div>
                                 <div>
@@ -543,13 +570,13 @@
 
     </div>
 
-    <!-- MODAL SLIP GAJI PRESISI UKURAN 110 x 220 mm -->
+    <!-- MODAL SLIP GAJI FORMAT TABEL RESMI PERUSAHAAN (110 x 220 mm) -->
     <div id="slipModal" class="fixed inset-0 bg-[#1e2f3d]/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full p-6 max-h-[96vh] overflow-y-auto border-4 border-[#4B788F]">
             
             <div class="flex justify-between items-center mb-3 pb-2 border-b">
-                <span class="text-xs font-bold text-slate-700">Format Pratinjau Slip Gaji Standar (110 × 220 mm)</span>
-                <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono">1 Lembar A4 Memuat 4 Slip</span>
+                <span class="text-xs font-bold text-slate-700">Format Tabel Slip Gaji Standar (110 × 220 mm)</span>
+                <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono">Presisi Amplop & Kertas A4</span>
             </div>
 
             <!-- Area Tampilan Slip Satuan -->
@@ -570,7 +597,7 @@
         </div>
     </div>
 
-    <!-- MOUNT CONTAINER KHUSUS CETAK PRINTER (DI LUAR DOM SLIDER) -->
+    <!-- MOUNT CONTAINER KHUSUS CETAK PRINTER -->
     <div id="print-portal-mount" class="hidden"></div>
 
     <script>
@@ -664,8 +691,8 @@
 
         function populatePeriodOptions() {
             const select = document.getElementById('filter-periode-waktu');
-            const periods = [...new Set(payrollData.map(d => d.periodeBulan))].filter(Boolean).sort().reverse();
-            select.innerHTML = '<option value="ALL">Semua Bulan</option>';
+            const periods = [...new Set(payrollData.map(d => (d.periodeBulan || d.periodeWaktu || '').toString().trim()))].filter(Boolean).sort().reverse();
+            select.innerHTML = '<option value="ALL">Semua Periode</option>';
             periods.forEach(p => {
                 const opt = document.createElement('option');
                 opt.value = p;
@@ -676,7 +703,7 @@
 
         function populateDivisiOptions() {
             const select = document.getElementById('filter-divisi');
-            const divs = [...new Set(payrollData.map(d => d.divisi))].filter(Boolean).sort();
+            const divs = [...new Set(payrollData.map(d => (d.divisi || '').toString().trim()))].filter(Boolean).sort();
             select.innerHTML = '<option value="ALL">Semua Divisi</option>';
             divs.forEach(d => {
                 const opt = document.createElement('option');
@@ -687,16 +714,16 @@
         }
 
         function calculateTHP(item) {
-            const gapok = Number(item.gapok) || 0;
-            const tunjangan = Number(item.tunjangan) || 0;
+            const gapok = parseRawNumber(item.gapok);
+            const tunjangan = parseRawNumber(item.tunjangan);
             const vol = Number(item.lemburVolume) || 0;
-            const tarif = Number(item.lemburTarif) || 0;
+            const tarif = parseRawNumber(item.lemburTarif);
             const lemburNominal = vol * tarif;
             const alphaDays = Number(item.alpha || item.spsAlpha) || 0;
             
             const potAlpha = (gapok / 25) * alphaDays;
-            const bpjs = Number(item.bpjs) || 0;
-            const pph = Number(item.pph) || 0;
+            const bpjs = parseRawNumber(item.bpjs);
+            const pph = parseRawNumber(item.pph);
             const totalPot = potAlpha + bpjs + pph;
             const thp = (gapok + tunjangan + lemburNominal) - totalPot;
 
@@ -704,14 +731,19 @@
         }
 
         function applyFilters() {
-            const skemaKPI = document.getElementById('kpi-filter-tipe').value;
-            const skemaFilter = document.getElementById('filter-tipe').value;
+            const skemaKPI = document.getElementById('kpi-filter-tipe').value.toLowerCase();
+            const skemaFilter = document.getElementById('filter-tipe').value.toLowerCase();
             const divisiFilter = document.getElementById('filter-divisi').value;
             const periodeFilter = document.getElementById('filter-periode-waktu').value;
             const statusFilter = document.getElementById('filter-status').value;
             const searchVal = document.getElementById('filter-search').value.toLowerCase();
 
-            const kpiItems = payrollData.filter(d => (d.tipe || 'bulanan') === skemaKPI);
+            // KPI Items (Filter Case-Insensitive)
+            const kpiItems = payrollData.filter(d => {
+                const itemSkema = (d.tipe || 'bulanan').toString().toLowerCase();
+                return skemaKPI === 'all' || itemSkema === skemaKPI;
+            });
+
             let totThp = 0, totLembur = 0, totPot = 0, totAlpha = 0;
             kpiItems.forEach(d => {
                 const c = calculateTHP(d);
@@ -726,12 +758,18 @@
             document.getElementById('kpi-total-alpha').innerText = totAlpha;
             document.getElementById('kpi-karyawan-count').innerText = `${kpiItems.length} Orang`;
 
+            // Table filtration (Fleksibel Case-Insensitive)
             const filtered = payrollData.filter(d => {
-                const matchSkema = (d.tipe || 'bulanan') === skemaFilter;
-                const matchDivisi = (divisiFilter === 'ALL' || d.divisi === divisiFilter);
-                const matchPeriode = (periodeFilter === 'ALL' || d.periodeBulan === periodeFilter);
-                const matchStatus = (statusFilter === 'ALL' || (d.status || d.statusBayar) === statusFilter);
-                const matchText = ((d.nama || '').toLowerCase().includes(searchVal) || (d.nik || '').toLowerCase().includes(searchVal) || (d.divisi || '').toLowerCase().includes(searchVal));
+                const itemSkema = (d.tipe || 'bulanan').toString().toLowerCase();
+                const itemPeriode = (d.periodeBulan || d.periodeWaktu || '').toString().trim();
+                const itemStatus = (d.status || d.statusBayar || 'Draft').toString();
+                const itemDivisi = (d.divisi || '').toString();
+
+                const matchSkema = (skemaFilter === 'all' || itemSkema === skemaFilter);
+                const matchDivisi = (divisiFilter === 'ALL' || itemDivisi === divisiFilter);
+                const matchPeriode = (periodeFilter === 'ALL' || itemPeriode === periodeFilter);
+                const matchStatus = (statusFilter === 'ALL' || itemStatus.toLowerCase() === statusFilter.toLowerCase());
+                const matchText = ((d.nama || '').toLowerCase().includes(searchVal) || (d.nik || '').toLowerCase().includes(searchVal));
                 return matchSkema && matchDivisi && matchPeriode && matchStatus && matchText;
             });
 
@@ -743,15 +781,15 @@
             const tbody = document.getElementById('payroll-body');
             tbody.innerHTML = '';
             if (items.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-500 italic">Tidak ada data karyawan ditemukan.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-500 italic">Tidak ada data karyawan ditemukan. Silakan klik tombol "Tarik / Refresh Data SPS" di atas.</td></tr>`;
                 return;
             }
 
             items.forEach((item) => {
                 const c = calculateTHP(item);
                 const currentStatus = item.status || item.statusBayar || 'Draft';
-                const statusColor = currentStatus === 'Paid' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' :
-                                    currentStatus === 'Approved' ? 'bg-blue-100 text-blue-800 border-blue-300' : 'bg-amber-100 text-amber-800 border-amber-300';
+                const statusColor = currentStatus.toLowerCase() === 'paid' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' :
+                                    currentStatus.toLowerCase() === 'approved' ? 'bg-blue-100 text-blue-800 border-blue-300' : 'bg-amber-100 text-amber-800 border-amber-300';
                 
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 border-b";
@@ -793,102 +831,185 @@
         }
 
         // =========================================================================
-        // GENERATOR TEMPLATE SLIP GAJI
+        // TEMPLATE SLIP GAJI MODEL KOTAK TABEL
         // =========================================================================
-        
-        // 1. Template Amplop 110 x 220 mm (Single Print)
         function generateSingleEnvelopeHTML(item) {
             const c = calculateTHP(item);
+            const periodeDisplay = item.periodeBulan || item.periodeWaktu || document.getElementById('input-periode-bulan').value || '2026-11';
+            
             return `
-                <div class="single-slip-envelope">
-                    <div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #39627F; padding-bottom: 3px; margin-bottom: 4px;">
-                            <div>
-                                <span style="font-size: 13px; font-weight: 900; color: #39627F; text-transform: uppercase;">PT. SARANA PUTRA DAERAH</span>
-                                <span style="font-size: 9px; color: #666; margin-left: 8px;">SLIP GAJI KARYAWAN &bull; PERIODE: ${item.periodeBulan}</span>
-                            </div>
-                            <span style="background: #39627F; color: #E4DE66; padding: 2px 6px; font-weight: bold; border-radius: 4px; font-size: 9px; text-transform: uppercase;">${item.tipe || 'Bulanan'}</span>
-                        </div>
+                <div class="slip-table-container">
+                    <table style="border:none; margin-bottom: 4px;">
+                        <tr style="border:none;">
+                            <td style="border:none; width: 65%; vertical-align: middle; padding: 0;">
+                                <div style="font-size: 13px; font-weight: 900; color: #1a202c; letter-spacing: 0.5px;">PT. SARANA PUTRA DAERAH</div>
+                                <div style="font-size: 8.5px; color: #4a5568;">SLIP GAJI RESMI KARYAWAN &bull; PERIODE: <b>${periodeDisplay}</b></div>
+                            </td>
+                            <td style="border:none; width: 35%; text-align: right; vertical-align: middle; padding: 0;">
+                                <span style="border: 1px solid #1a202c; background: #edf2f7; font-weight: bold; font-size: 8.5px; padding: 2px 6px; text-transform: uppercase;">
+                                    SKEMA: ${item.tipe || 'Bulanan'}
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: #f8fafc; padding: 4px 8px; border-radius: 4px; margin-bottom: 5px;">
-                            <div><b>Nama:</b> ${item.nama} | <b>NIK:</b> ${item.nik}</div>
-                            <div><b>Divisi:</b> ${item.divisi || '-'} | <b>Presensi:</b> ${item.hadir || item.spsHadir || 0} Hadir / ${item.alpha || item.spsAlpha || 0} Alpha</div>
-                        </div>
+                    <table style="margin-bottom: 5px;">
+                        <tr style="background: #f7fafc;">
+                            <td style="width: 15%; font-weight: bold;">Nama Karyawan</td>
+                            <td style="width: 35%; font-weight: bold;">: ${item.nama}</td>
+                            <td style="width: 15%; font-weight: bold;">Divisi</td>
+                            <td style="width: 35%;">: ${item.divisi || '-'}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">NIK</td>
+                            <td>: ${item.nik}</td>
+                            <td style="font-weight: bold;">Presensi SPS</td>
+                            <td>: ${item.hadir || item.spsHadir || 0} Hadir &bull; ${item.alpha || item.spsAlpha || 0} Alpha</td>
+                        </tr>
+                    </table>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                            <div>
-                                <div style="font-weight: bold; color: #39627F; border-bottom: 1px solid #ccc; font-size: 9.5px;">PENGHASILAN</div>
-                                <div style="display:flex; justify-content: space-between;"><span>Gaji Pokok:</span><b>${formatRupiah(c.gapok)}</b></div>
-                                <div style="display:flex; justify-content: space-between;"><span>Tunjangan:</span><b>${formatRupiah(c.tunjangan)}</b></div>
-                                <div style="display:flex; justify-content: space-between;"><span>Lembur (${item.lemburVolume || 0} ${item.lemburJenis || 'Jam'}):</span><b>${formatRupiah(c.lemburNominal)}</b></div>
-                            </div>
-                            <div>
-                                <div style="font-weight: bold; color: #c53030; border-bottom: 1px solid #ccc; font-size: 9.5px;">POTONGAN</div>
-                                <div style="display:flex; justify-content: space-between;"><span>Pot. Alpha (${item.alpha || item.spsAlpha || 0}h):</span><b>${formatRupiah(c.potAlpha)}</b></div>
-                                <div style="display:flex; justify-content: space-between;"><span>BPJS:</span><b>${formatRupiah(c.bpjs)}</b></div>
-                                <div style="display:flex; justify-content: space-between;"><span>PPh 21:</span><b>${formatRupiah(c.pph)}</b></div>
-                            </div>
-                        </div>
-                    </div>
+                    <table style="margin-bottom: 4px;">
+                        <thead>
+                            <tr style="background: #edf2f7; text-align: center; font-weight: bold;">
+                                <th style="width: 33%;">KOMPONEN PENGHASILAN</th>
+                                <th style="width: 17%;">JUMLAH (Rp)</th>
+                                <th style="width: 33%;">KOMPONEN POTONGAN</th>
+                                <th style="width: 17%;">JUMLAH (Rp)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Gaji Pokok</td>
+                                <td style="text-align: right;">${formatRupiah(c.gapok)}</td>
+                                <td>Potongan Alpha (${item.alpha || item.spsAlpha || 0} Hari)</td>
+                                <td style="text-align: right;">${formatRupiah(c.potAlpha)}</td>
+                            </tr>
+                            <tr>
+                                <td>Tunjangan Operasional</td>
+                                <td style="text-align: right;">${formatRupiah(c.tunjangan)}</td>
+                                <td>Iuran BPJS Ketenagakerjaan/Kesehatan</td>
+                                <td style="text-align: right;">${formatRupiah(c.bpjs)}</td>
+                            </tr>
+                            <tr>
+                                <td>Upah Lembur (${item.lemburVolume || 0} ${item.lemburJenis || 'Jam'})</td>
+                                <td style="text-align: right;">${formatRupiah(c.lemburNominal)}</td>
+                                <td>PPh Pasal 21</td>
+                                <td style="text-align: right;">${formatRupiah(c.pph)}</td>
+                            </tr>
+                            <tr style="background: #f7fafc; font-weight: bold;">
+                                <td style="text-align: right;">TOTAL PENGHASILAN (A)</td>
+                                <td style="text-align: right;">${formatRupiah(c.gapok + c.tunjangan + c.lemburNominal)}</td>
+                                <td style="text-align: right;">TOTAL POTONGAN (B)</td>
+                                <td style="text-align: right; color: #c53030;">${formatRupiah(c.totalPot)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                    <div>
-                        <div style="display:flex; justify-content: space-between; align-items:center; background: #edf2f7; border-top: 1.5px solid #BEB000; padding: 4px 8px; border-radius: 4px;">
-                            <span style="font-weight: 900; text-transform: uppercase;">THP BERSIH:</span>
-                            <span style="font-size: 13px; font-weight: 900; color: #39627F;">${formatRupiah(c.thp)}</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; text-align: center; font-size: 8px; color: #555; margin-top: 3px;">
-                            <div>Penerima: <b>(${item.nama})</b></div>
-                            <div>Mengetahui: <b>HRD PT. SARANA PUTRA DAERAH</b></div>
-                        </div>
-                    </div>
+                    <table style="margin-bottom: 5px;">
+                        <tr style="background: #edf2f7;">
+                            <td style="font-size: 11px; font-weight: 900; text-transform: uppercase; width: 65%;">
+                                TOTAL DITERIMA / GAJI BERSIH (THP = A - B)
+                            </td>
+                            <td style="font-size: 13px; font-weight: 900; text-align: right; width: 35%; color: #1a202c;">
+                                ${formatRupiah(c.thp)}
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table style="border:none;">
+                        <tr style="border:none; text-align: center; font-size: 8.5px;">
+                            <td style="border:none; width: 50%;">
+                                Penerima,
+                                <br><br><br>
+                                <b>(${item.nama})</b>
+                            </td>
+                            <td style="border:none; width: 50%;">
+                                Mengetahui / HRD,
+                                <br><br><br>
+                                <b>(PT. SARANA PUTRA DAERAH)</b>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             `;
         }
 
-        // 2. Template Compact untuk Muat 4 Slip dalam 1 Lembar A4
         function generateCompactSlipHTML(item) {
             const c = calculateTHP(item);
+            const periodeDisplay = item.periodeBulan || item.periodeWaktu || '2026-11';
+            
             return `
-                <div class="slip-compact-card">
+                <div class="slip-compact-container">
                     <div>
-                        <div style="display:flex; justify-content: space-between; border-bottom: 1.5px solid #39627F; padding-bottom: 2px;">
-                            <div>
-                                <div style="font-weight: 900; color: #39627F; font-size: 11px;">PT. SARANA PUTRA DAERAH</div>
-                                <div style="font-size: 8px; color: #555;">SLIP GAJI &bull; ${item.periodeBulan}</div>
-                            </div>
-                            <span style="font-size: 8px; font-weight: bold; background: #39627F; color: #E4DE66; padding: 1px 4px; border-radius: 2px; align-self: flex-start;">${item.tipe || 'Bulanan'}</span>
-                        </div>
+                        <table style="border:none; margin-bottom: 3px;">
+                            <tr style="border:none;">
+                                <td style="border:none; padding: 0;">
+                                    <div style="font-weight: 900; font-size: 10px;">PT. SARANA PUTRA DAERAH</div>
+                                    <div style="font-size: 7.5px; color: #555;">SLIP GAJI &bull; PERIODE: ${periodeDisplay}</div>
+                                </td>
+                                <td style="border:none; text-align: right; padding: 0;">
+                                    <span style="border: 1px solid #000; padding: 1px 4px; font-size: 7.5px; font-weight: bold;">${item.tipe || 'Bulanan'}</span>
+                                </td>
+                            </tr>
+                        </table>
 
-                        <div style="background: #f7fafc; padding: 2px 4px; margin: 3px 0; border-radius: 2px; font-size: 8.5px;">
-                            <div><b>${item.nama}</b> (${item.nik}) - Div: ${item.divisi || '-'}</div>
-                            <div>Presensi: ${item.hadir || item.spsHadir || 0} Hadir / ${item.alpha || item.spsAlpha || 0} Alpha</div>
-                        </div>
+                        <table style="margin-bottom: 3px;">
+                            <tr style="background: #f7fafc;">
+                                <td style="width: 15%; font-weight: bold;">Nama</td>
+                                <td style="width: 35%;">: ${item.nama}</td>
+                                <td style="width: 15%; font-weight: bold;">Divisi</td>
+                                <td style="width: 35%;">: ${item.divisi || '-'}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">NIK</td>
+                                <td>: ${item.nik}</td>
+                                <td style="font-weight: bold;">Presensi</td>
+                                <td>: ${item.hadir || item.spsHadir || 0}H / ${item.alpha || item.spsAlpha || 0}A</td>
+                            </tr>
+                        </table>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-size: 8.5px;">
-                            <div>
-                                <div style="color: #39627F; font-weight: bold; border-bottom: 1px solid #ddd;">PENGHASILAN</div>
-                                <div style="display: flex; justify-content: space-between;"><span>Gapok:</span> <b>${formatRupiah(c.gapok)}</b></div>
-                                <div style="display: flex; justify-content: space-between;"><span>Tunj:</span> <b>${formatRupiah(c.tunjangan)}</b></div>
-                                <div style="display: flex; justify-content: space-between;"><span>Lembur:</span> <b>${formatRupiah(c.lemburNominal)}</b></div>
-                            </div>
-                            <div>
-                                <div style="color: #c53030; font-weight: bold; border-bottom: 1px solid #ddd;">POTONGAN</div>
-                                <div style="display: flex; justify-content: space-between;"><span>Alpha:</span> <b>${formatRupiah(c.potAlpha)}</b></div>
-                                <div style="display: flex; justify-content: space-between;"><span>BPJS:</span> <b>${formatRupiah(c.bpjs)}</b></div>
-                                <div style="display: flex; justify-content: space-between;"><span>PPh:</span> <b>${formatRupiah(c.pph)}</b></div>
-                            </div>
-                        </div>
+                        <table style="margin-bottom: 3px;">
+                            <tr style="background: #edf2f7; text-align: center; font-weight: bold;">
+                                <th style="width: 35%;">PENGHASILAN</th>
+                                <th style="width: 15%;">Rp</th>
+                                <th style="width: 35%;">POTONGAN</th>
+                                <th style="width: 15%;">Rp</th>
+                            </tr>
+                            <tr>
+                                <td>Gapok</td>
+                                <td style="text-align: right;">${formatRupiah(c.gapok)}</td>
+                                <td>Pot. Alpha</td>
+                                <td style="text-align: right;">${formatRupiah(c.potAlpha)}</td>
+                            </tr>
+                            <tr>
+                                <td>Tunjangan</td>
+                                <td style="text-align: right;">${formatRupiah(c.tunjangan)}</td>
+                                <td>BPJS</td>
+                                <td style="text-align: right;">${formatRupiah(c.bpjs)}</td>
+                            </tr>
+                            <tr>
+                                <td>Lembur</td>
+                                <td style="text-align: right;">${formatRupiah(c.lemburNominal)}</td>
+                                <td>PPh 21</td>
+                                <td style="text-align: right;">${formatRupiah(c.pph)}</td>
+                            </tr>
+                        </table>
                     </div>
 
                     <div>
-                        <div style="display:flex; justify-content: space-between; align-items:center; background: #edf2f7; border-top: 1.5px solid #BEB000; padding: 2px 4px; margin-top: 3px;">
-                            <span style="font-weight: bold; font-size: 8.5px;">THP:</span>
-                            <span style="font-weight: 900; font-size: 11px; color: #39627F;">${formatRupiah(c.thp)}</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; font-size: 7.5px; color: #666; margin-top: 2px;">
-                            <span>Penerima: (${item.nama})</span>
-                            <span>HRD PT. SPD</span>
-                        </div>
+                        <table style="margin-bottom: 3px;">
+                            <tr style="background: #edf2f7; font-weight: 900;">
+                                <td style="font-size: 9px;">THP BERSIH</td>
+                                <td style="font-size: 11px; text-align: right;">${formatRupiah(c.thp)}</td>
+                            </tr>
+                        </table>
+
+                        <table style="border:none;">
+                            <tr style="border:none; text-align: center; font-size: 7.5px;">
+                                <td style="border:none; width: 50%;">Penerima,<br><br><b>(${item.nama})</b></td>
+                                <td style="border:none; width: 50%;">HRD,<br><br><b>(PT. SPD)</b></td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             `;
@@ -896,7 +1017,7 @@
 
         let currentSlipData = null;
         function previewSlip(nik) {
-            const item = payrollData.find(d => d.nik === nik);
+            const item = payrollData.find(d => d.nik.toString() === nik.toString());
             if (!item) return;
             currentSlipData = item;
             document.getElementById('single-slip-wrapper').innerHTML = generateSingleEnvelopeHTML(item);
@@ -907,7 +1028,6 @@
             document.getElementById('slipModal').classList.add('hidden');
         }
 
-        // Print 1 Slip ukuran 110 x 220 mm
         function directPrintSingle() {
             if (!currentSlipData) return;
             const mount = document.getElementById('print-portal-mount');
@@ -915,13 +1035,12 @@
             window.print();
         }
 
-        // Download PDF ukuran amplop standar 110 x 220 mm
         function downloadSinglePDF() {
             if (!currentSlipData) return;
             const el = document.getElementById('single-slip-wrapper');
             const opt = {
                 margin: 0,
-                filename: `Slip_${currentSlipData.nik}_${currentSlipData.nama}.pdf`,
+                filename: `SlipGaji_${currentSlipData.nik}_${currentSlipData.nama}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 3 },
                 jsPDF: { unit: 'mm', format: [220, 110], orientation: 'landscape' }
@@ -929,32 +1048,35 @@
             html2pdf().set(opt).from(el).save();
         }
 
-        // Print Semua Slip: 1 Lembar A4 Memuat 4 Slip Sekaligus (Grid 2x2)
         function printBatchA4FourPerSheet() {
-            const skemaFilter = document.getElementById('filter-tipe').value;
+            const skemaFilter = document.getElementById('filter-tipe').value.toLowerCase();
             const divisiFilter = document.getElementById('filter-divisi').value;
             const periodeFilter = document.getElementById('filter-periode-waktu').value;
             const statusFilter = document.getElementById('filter-status').value;
             const searchVal = document.getElementById('filter-search').value.toLowerCase();
 
             const filtered = payrollData.filter(d => {
-                const matchSkema = (d.tipe || 'bulanan') === skemaFilter;
-                const matchDivisi = (divisiFilter === 'ALL' || d.divisi === divisiFilter);
-                const matchPeriode = (periodeFilter === 'ALL' || d.periodeBulan === periodeFilter);
-                const matchStatus = (statusFilter === 'ALL' || (d.status || d.statusBayar) === statusFilter);
+                const itemSkema = (d.tipe || 'bulanan').toString().toLowerCase();
+                const itemPeriode = (d.periodeBulan || d.periodeWaktu || '').toString().trim();
+                const itemStatus = (d.status || d.statusBayar || 'Draft').toString();
+                const itemDivisi = (d.divisi || '').toString();
+
+                const matchSkema = (skemaFilter === 'all' || itemSkema === skemaFilter);
+                const matchDivisi = (divisiFilter === 'ALL' || itemDivisi === divisiFilter);
+                const matchPeriode = (periodeFilter === 'ALL' || itemPeriode === periodeFilter);
+                const matchStatus = (statusFilter === 'ALL' || itemStatus.toLowerCase() === statusFilter.toLowerCase());
                 const matchText = ((d.nama || '').toLowerCase().includes(searchVal) || (d.nik || '').toLowerCase().includes(searchVal));
                 return matchSkema && matchDivisi && matchPeriode && matchStatus && matchText;
             });
 
             if (filtered.length === 0) {
-                alert("Tidak ada data karyawan yang siap dicetak pada filter ini.");
+                alert("Tidak ada data karyawan yang siap dicetak.");
                 return;
             }
 
             const mount = document.getElementById('print-portal-mount');
             mount.innerHTML = '';
 
-            // Membagi per 4 slip dalam 1 lembar A4
             for (let i = 0; i < filtered.length; i += 4) {
                 const pageChunk = filtered.slice(i, i + 4);
                 const pageDiv = document.createElement('div');
@@ -964,10 +1086,9 @@
                     pageDiv.innerHTML += generateCompactSlipHTML(item);
                 });
 
-                // Isi sisa slot jika kurang dari 4 agar layout grid tidak berantakan
                 const sisa = 4 - pageChunk.length;
                 for (let k = 0; k < sisa; k++) {
-                    pageDiv.innerHTML += `<div style="border: 1px dashed #cbd5e0; border-radius: 4px;"></div>`;
+                    pageDiv.innerHTML += `<div style="border: 1px dashed #cbd5e0;"></div>`;
                 }
 
                 mount.appendChild(pageDiv);
@@ -977,7 +1098,7 @@
         }
 
         // =========================================================================
-        // SUBMIT REAL-TIME & AUTO-SYNC
+        // PENGIRIMAN DATA FORMULIR
         // =========================================================================
         async function handleFormSubmit(e) {
             e.preventDefault();
@@ -1034,53 +1155,20 @@
                 _t: new Date().getTime()
             });
 
+            // Eksekusi kirim
             const script = document.createElement('script');
             script.src = `${GOOGLE_SPS_URL}?${params.toString()}`;
             document.body.appendChild(script);
 
-            const localItem = {
-                periodeBulan: periodeBulan,
-                nik: nik,
-                nama: nama,
-                divisi: divisi,
-                tipe: tipe,
-                hadir: spsHadir,
-                alpha: spsAlpha,
-                lemburJenis: lemburJenis,
-                lemburVolume: lemburVolume,
-                lemburTarif: lemburTarif,
-                lemburNominal: lemburNominal,
-                gapok: gapok,
-                tunjangan: tunjangan,
-                potAbsen: potAlpha,
-                bpjs: bpjs,
-                pph: pph,
-                totalPotongan: totalPotongan,
-                thp: thp,
-                status: statusBayar
-            };
-
-            const idx = payrollData.findIndex(d => d.nik === localItem.nik);
-            if (idx >= 0) {
-                payrollData[idx] = localItem;
-            } else {
-                payrollData.push(localItem);
-            }
-
-            saveLocalData();
-            populatePeriodOptions();
-            populateDivisiOptions();
-            applyFilters();
-
             setTimeout(() => {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalBtnText;
-                alert(`Data ${nama} (${nik}) berhasil tersinkron ke Sheet SPS!`);
+                alert(`Data ${nama} (${nik}) berhasil disimpan ke Sheet SPS!`);
                 document.getElementById('payrollForm').reset();
                 calcLemburPreview('input');
                 document.body.removeChild(script);
                 fetchFromGoogleSPS(false);
-            }, 1500);
+            }, 1200);
         }
 
         function saveLocalData() {
@@ -1089,7 +1177,7 @@
 
         function deletePayrollItem(nik) {
             if (confirm(`Yakin ingin menghapus payroll untuk NIK ${nik}?`)) {
-                payrollData = payrollData.filter(d => d.nik !== nik);
+                payrollData = payrollData.filter(d => d.nik.toString() !== nik.toString());
                 saveLocalData();
                 populatePeriodOptions();
                 populateDivisiOptions();
@@ -1098,11 +1186,11 @@
         }
 
         // =========================================================================
-        // TARIK DATA REAL-TIME DARI GOOGLE APPS SCRIPT
+        // TARIK DATA REAL-TIME DARI SHEET SPS
         // =========================================================================
         async function fetchFromGoogleSPS(showAlert = false) {
             const btn = document.getElementById('btn-tarik-sps');
-            if(showAlert && btn) btn.innerHTML = `<span class="animate-spin inline-block mr-1">&#9696;</span> Sinkronisasi...`;
+            if(showAlert && btn) btn.innerHTML = `<span class="animate-spin inline-block mr-1">&#9696;</span> Mengambil Data...`;
             
             try {
                 const res = await fetch(`${GOOGLE_SPS_URL}?_t=${new Date().getTime()}`);
@@ -1111,14 +1199,7 @@
                 
                 if (listKaryawan.length > 0) {
                     masterEmployees = listKaryawan;
-                    payrollData = listKaryawan.map(emp => ({
-                        ...emp,
-                        periodeBulan: emp.periodeWaktu || new Date().toISOString().slice(0,7),
-                        hadir: emp.spsHadir || 0,
-                        alpha: emp.spsAlpha || 0,
-                        status: emp.statusBayar || 'Draft'
-                    }));
-
+                    payrollData = listKaryawan; // Mengganti seluruh data lokal dengan data langsung dari Sheet SPS
                     saveLocalData();
 
                     const select = document.getElementById('select-master-employee');
@@ -1141,7 +1222,7 @@
                     populateDivisiOptions();
                     applyFilters();
 
-                    if(showAlert) alert(`Berhasil menarik ${listKaryawan.length} data karyawan dari Google SPS!`);
+                    if(showAlert) alert(`Berhasil menyinkronkan ${listKaryawan.length} data karyawan dari Google SPS!`);
                 }
             } catch (err) {
                 console.error("Gagal sinkron:", err);
@@ -1150,7 +1231,7 @@
                 if(showAlert && btn) {
                     btn.innerHTML = `
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                        <span>Tarik Data SPS Sekarang</span>
+                        <span>Tarik / Refresh Data SPS</span>
                     `;
                 }
             }
@@ -1158,7 +1239,7 @@
 
         function applyMasterEmployee(nik) {
             if (!nik) return;
-            const emp = masterEmployees.find(e => e.nik === nik);
+            const emp = masterEmployees.find(e => e.nik.toString() === nik.toString());
             if (!emp) return;
 
             document.getElementById('input-nama').value = emp.nama || '';
@@ -1179,8 +1260,8 @@
                 return;
             }
             const wb = XLSX.utils.book_new();
-            const bulanan = payrollData.filter(d => (d.tipe || 'bulanan') === 'bulanan');
-            const mingguan = payrollData.filter(d => d.tipe === 'mingguan');
+            const bulanan = payrollData.filter(d => (d.tipe || 'bulanan').toString().toLowerCase() === 'bulanan');
+            const mingguan = payrollData.filter(d => (d.tipe || '').toString().toLowerCase() === 'mingguan');
 
             function mapForSheet(list) {
                 return list.map(item => {
@@ -1189,7 +1270,7 @@
                         'NIK': item.nik,
                         'Nama': item.nama,
                         'Divisi': item.divisi,
-                        'Periode': item.periodeBulan,
+                        'Periode': item.periodeBulan || item.periodeWaktu,
                         'Gaji Pokok': c.gapok,
                         'Tunjangan': c.tunjangan,
                         'Hadir': item.hadir || item.spsHadir || 0,
@@ -1214,13 +1295,13 @@
             applyFilters();
             updateLemburLabel('input');
             
-            // Auto fetch pertama kali
+            // Tarik data saat pertama kali halaman terbuka
             fetchFromGoogleSPS(false);
 
-            // Auto polling per 5 detik
+            // Auto polling per 4 detik
             setInterval(() => {
                 fetchFromGoogleSPS(false);
-            }, 5000);
+            }, 4000);
         };
     </script>
 </body>
