@@ -17,7 +17,6 @@
             --palette-soft-yellow: #E4DE66;
             --palette-steel-blue: #4B788F;
             --palette-deep-blue: #39627F;
-            --spd-navy: #1f3647;
         }
 
         body {
@@ -53,13 +52,13 @@
         }
 
         .glass-panel-dark {
-            background: rgba(43, 67, 85, 0.82);
+            background: rgba(43, 67, 85, 0.85);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             border: 1px solid rgba(228, 222, 102, 0.3);
         }
         .glass-panel-light {
-            background: rgba(255, 255, 255, 0.94);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             border: 2px solid rgba(190, 176, 0, 0.45);
@@ -119,7 +118,6 @@
     <div class="papercut-bg-container">
         <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" class="w-full h-full">
             <defs>
-                <!-- Filter Efek Kedalaman Bayangan Kertas / Papercut Depth -->
                 <filter id="shadowDeep" x="-20%" y="-20%" width="150%" height="150%">
                     <feDropShadow dx="-6" dy="16" stdDeviation="16" flood-color="#1b2f3d" flood-opacity="0.8" />
                 </filter>
@@ -130,7 +128,6 @@
                     <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#1b2f3d" flood-opacity="0.4" />
                 </filter>
 
-                <!-- Gradasi Warna Berdasarkan Kode Palet -->
                 <linearGradient id="gradBaseSlate" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stop-color="#4B788F" />
                     <stop offset="100%" stop-color="#39627F" />
@@ -140,35 +137,28 @@
                     <stop offset="0%" stop-color="#E4DE66" />
                     <stop offset="100%" stop-color="#BEB000" />
                 </linearGradient>
-
-                <linearGradient id="gradBlueBlend" x1="0%" y1="100%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#39627F" />
-                    <stop offset="100%" stop-color="#4B788F" />
-                </linearGradient>
             </defs>
 
-            <!-- Layer Dasar: Deep Slate Blue #39627F -->
+            <!-- Layer Dasar -->
             <rect width="1440" height="900" fill="url(#gradBaseSlate)" />
 
-            <!-- Layer 1: Gelombang Belakang (Steel Blue) -->
+            <!-- Pola Organik Fluid -->
             <path filter="url(#shadowDeep)" fill="#4B788F" opacity="0.85" 
                   d="M-80,-60 L780,-60 C640,190 410,130 330,290 C250,450 460,490 390,630 C320,770 110,690 -80,820 Z" />
 
             <path filter="url(#shadowDeep)" fill="#39627F" opacity="0.9"
                   d="M1520,960 L830,960 C800,770 990,690 940,560 C890,430 1150,380 1210,240 C1270,110 1090,50 1520,-60 Z" />
 
-            <!-- Layer 2: Pola Organik Emas (#BEB000) -->
             <path filter="url(#shadowMedium)" fill="url(#gradGoldSoft)" opacity="0.95"
                   d="M240,-80 C410,120 620,40 730,170 C840,300 680,410 560,330 C440,250 260,350 160,240 C70,150 150,-50 240,-80 Z" />
 
             <path filter="url(#shadowMedium)" fill="#BEB000"
                   d="M-60,660 C110,600 230,760 330,700 C430,640 510,820 580,960 L-60,960 Z" />
 
-            <!-- Layer 3: Pola Organik Kuning Lembut (#E4DE66) -->
             <path filter="url(#shadowSubtle)" fill="#E4DE66" opacity="0.92"
                   d="M720,960 C750,770 890,680 1070,760 C1220,830 1310,740 1500,810 L1500,960 Z" />
 
-            <!-- Aksen Geometris & Abstrak (Floating Spheres / Orbs) -->
+            <!-- Lingkaran Aksen Abstrak -->
             <ellipse cx="430" cy="460" rx="65" ry="58" fill="url(#gradGoldSoft)" filter="url(#shadowMedium)" />
             <ellipse cx="960" cy="330" rx="95" ry="85" fill="#E4DE66" opacity="0.9" filter="url(#shadowMedium)" />
             <circle cx="280" cy="810" r="42" fill="#4B788F" filter="url(#shadowSubtle)" />
@@ -242,7 +232,7 @@
                         </div>
 
                         <div class="flex items-center space-x-3">
-                            <span id="live-clock" class="text-xs font-mono bg-[#2f5169] border border-[#4B788F] px-3 py-1.5 rounded-lg text-[#E4DE66] font-bold shadow-inner"></span>
+                            <span id="live-clock" class="text-xs font-mono bg-[#2b4c63] border border-[#4B788F] px-3 py-1.5 rounded-lg text-[#E4DE66] font-bold shadow-inner"></span>
                             <button onclick="closePortalDashboard()" title="Kembali ke Layar Pembuka" class="px-4 py-2 rounded-xl bg-[#BEB000] hover:bg-[#d4c514] text-white text-xs font-black flex items-center gap-1.5 shadow-lg transition">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/></svg>
                                 <span>Tutup Dasbor</span>
@@ -319,7 +309,7 @@
                     <div class="glass-panel-dark p-6 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-4 shadow-2xl">
                         <div>
                             <h3 class="text-base font-bold text-white">Ingin menginput karyawan atau mencetak slip gaji?</h3>
-                            <p class="text-xs text-slate-300">Data tersimpan rapi di Google Sheets SPS secara langsung.</p>
+                            <p class="text-xs text-slate-300">Data tersimpan langsung ke Google Sheets SPS secara real-time.</p>
                         </div>
                         <button onclick="switchTab('tab-kelola')" class="px-5 py-2.5 bg-[#BEB000] hover:bg-[#d4c514] text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-lg transition flex items-center gap-2 whitespace-nowrap">
                             <span>Buka Menu Kelola Data &rarr;</span>
@@ -335,7 +325,7 @@
                         <div class="border-b pb-4 mb-6 flex flex-col sm:flex-row justify-between sm:items-center gap-3">
                             <div>
                                 <h2 class="text-xl font-black text-[#39627F]">Formulir Penginputan Gaji</h2>
-                                <p class="text-xs text-slate-600">Terhubung langsung ke Google SPS API secara real-time.</p>
+                                <p class="text-xs text-slate-600">Terhubung langsung ke Google SPS Sheet secara real-time.</p>
                             </div>
                             <div class="flex items-center gap-2">
                                 <button type="button" id="btn-tarik-sps" onclick="fetchFromGoogleSPS()" class="px-4 py-2 bg-[#39627F] text-[#E4DE66] border border-[#BEB000] rounded-xl text-xs font-black shadow transition hover:bg-[#2b4c63] flex items-center gap-1.5">
@@ -469,7 +459,9 @@
 
                             <div class="mt-6 pt-4 border-t flex justify-end gap-2">
                                 <button type="reset" class="px-5 py-2.5 text-xs font-bold border border-slate-300 rounded-lg text-slate-600 hover:bg-slate-100 bg-white">Reset</button>
-                                <button type="submit" id="btn-submit-payroll" class="px-6 py-2.5 text-xs bg-[#39627F] text-[#E4DE66] border border-[#BEB000] font-black rounded-lg shadow-lg hover:bg-[#2b4c63]">Simpan & Sinkron ke Google SPS</button>
+                                <button type="submit" id="btn-submit-payroll" class="px-6 py-2.5 text-xs bg-[#39627F] text-[#E4DE66] border border-[#BEB000] font-black rounded-lg shadow-lg hover:bg-[#2b4c63] transition flex items-center gap-2">
+                                    <span>Simpan & Sinkron ke Google SPS</span>
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -647,7 +639,7 @@
                 </div>
                 <div class="flex justify-end gap-2 pt-3 border-t">
                     <button type="button" onclick="closeEditModal()" class="px-4 py-1.5 border rounded-lg font-bold">Batal</button>
-                    <button type="submit" class="px-4 py-1.5 bg-[#39627F] text-[#E4DE66] font-black rounded-lg">Simpan Perubahan</button>
+                    <button type="submit" id="btn-save-edit" class="px-4 py-1.5 bg-[#39627F] text-[#E4DE66] font-black rounded-lg">Simpan Perubahan</button>
                 </div>
             </form>
         </div>
@@ -657,6 +649,7 @@
     <div id="batch-print-area" class="hidden"></div>
 
     <script>
+        // URL WEB APP GOOGLE APPS SCRIPT ANDA
         const GOOGLE_SPS_URL = "https://script.google.com/macros/s/AKfycbw0XfcfCiJk4ip3VWAEsOiO8BFt2ywWvQ5MZd3i8_QhchRCl-Eyrjtu_P6wULwTRsbS/exec";
 
         function formatRupiah(num) {
@@ -775,9 +768,9 @@
             const vol = Number(item.lemburVolume) || 0;
             const tarif = Number(item.lemburTarif) || 0;
             const lemburNominal = vol * tarif;
-            const alphaDays = Number(item.alpha) || 0;
+            const alphaDays = Number(item.alpha || item.spsAlpha) || 0;
             
-            // Formula pot per hari (25 hari kerja)
+            // Potongan alpha (asumsi standar 25 hari kerja)
             const potAlpha = (gapok / 25) * alphaDays;
             const bpjs = Number(item.bpjs) || 0;
             const pph = Number(item.pph) || 0;
@@ -805,7 +798,7 @@
                 totThp += c.thp;
                 totLembur += c.lemburNominal;
                 totPot += c.totalPot;
-                totAlpha += Number(d.alpha || 0);
+                totAlpha += Number(d.alpha || d.spsAlpha || 0);
             });
             document.getElementById('kpi-total-thp').innerText = formatRupiah(totThp);
             document.getElementById('kpi-total-lembur-rp').innerText = formatRupiah(totLembur);
@@ -819,8 +812,8 @@
                 const matchSkema = (d.tipe || 'bulanan') === skemaFilter;
                 const matchDivisi = (divisiFilter === 'ALL' || d.divisi === divisiFilter);
                 const matchPeriode = (periodeFilter === 'ALL' || d.periodeBulan === periodeFilter);
-                const matchStatus = (statusFilter === 'ALL' || d.status === statusFilter);
-                const matchText = (d.nama.toLowerCase().includes(searchVal) || d.nik.toLowerCase().includes(searchVal) || (d.divisi || '').toLowerCase().includes(searchVal));
+                const matchStatus = (statusFilter === 'ALL' || (d.status || d.statusBayar) === statusFilter);
+                const matchText = ((d.nama || '').toLowerCase().includes(searchVal) || (d.nik || '').toLowerCase().includes(searchVal) || (d.divisi || '').toLowerCase().includes(searchVal));
                 return matchSkema && matchDivisi && matchPeriode && matchStatus && matchText;
             });
 
@@ -836,10 +829,11 @@
                 return;
             }
 
-            items.forEach((item, idx) => {
+            items.forEach((item) => {
                 const c = calculateTHP(item);
-                const statusColor = item.status === 'Paid' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' :
-                                    item.status === 'Approved' ? 'bg-blue-100 text-blue-800 border-blue-300' : 'bg-amber-100 text-amber-800 border-amber-300';
+                const currentStatus = item.status || item.statusBayar || 'Draft';
+                const statusColor = currentStatus === 'Paid' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' :
+                                    currentStatus === 'Approved' ? 'bg-blue-100 text-blue-800 border-blue-300' : 'bg-amber-100 text-amber-800 border-amber-300';
                 
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 border-b";
@@ -849,8 +843,8 @@
                         <div class="text-[10px] text-slate-500 font-mono">${item.nik} &bull; ${item.divisi || '-'}</div>
                     </td>
                     <td class="py-3 px-3 text-center">
-                        <span class="text-emerald-700 font-bold">${item.hadir || 0} H</span> / 
-                        <span class="text-rose-600 font-bold">${item.alpha || 0} A</span>
+                        <span class="text-emerald-700 font-bold">${item.hadir || item.spsHadir || 0} H</span> / 
+                        <span class="text-rose-600 font-bold">${item.alpha || item.spsAlpha || 0} A</span>
                     </td>
                     <td class="py-3 px-3 text-right font-semibold">${formatRupiah(c.gapok)}</td>
                     <td class="py-3 px-3 text-right">
@@ -860,7 +854,7 @@
                     <td class="py-3 px-3 text-right text-rose-600 font-semibold">${formatRupiah(c.totalPot)}</td>
                     <td class="py-3 px-3 text-right font-black text-[#39627F]">${formatRupiah(c.thp)}</td>
                     <td class="py-3 px-3 text-center">
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold border ${statusColor}">${item.status || 'Draft'}</span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold border ${statusColor}">${currentStatus}</span>
                     </td>
                     <td class="py-3 px-4 text-center">
                         <div class="inline-flex gap-1">
@@ -874,37 +868,108 @@
             });
         }
 
-        function handleFormSubmit(e) {
+        // =========================================================================
+        // PENGIRIMAN DATA KE GOOGLE APPS SCRIPT (SPS) VIA POST
+        // =========================================================================
+        async function handleFormSubmit(e) {
             e.preventDefault();
-            const newItem = {
-                nama: document.getElementById('input-nama').value.trim(),
-                nik: document.getElementById('input-nik').value.trim(),
-                tipe: document.getElementById('input-tipe').value,
-                periodeBulan: document.getElementById('input-periode-bulan').value,
-                divisi: document.getElementById('input-divisi').value.trim(),
-                hadir: Number(document.getElementById('input-sps-hadir').value) || 0,
-                alpha: Number(document.getElementById('input-sps-alpha').value) || 0,
-                lemburJenis: document.getElementById('input-lembur-jenis').value,
-                lemburVolume: Number(document.getElementById('input-lembur-volume').value) || 0,
-                lemburTarif: parseRawNumber(document.getElementById('input-lembur-tarif').value),
-                status: document.getElementById('input-status').value,
-                gapok: parseRawNumber(document.getElementById('input-gapok').value),
-                tunjangan: parseRawNumber(document.getElementById('input-tunjangan').value),
-                bpjs: parseRawNumber(document.getElementById('input-bpjs').value),
-                pph: parseRawNumber(document.getElementById('input-pph').value)
+
+            const submitBtn = document.getElementById('btn-submit-payroll');
+            const originalBtnText = submitBtn.innerHTML;
+
+            // 1. Ambil & parse data dari form
+            const nama = document.getElementById('input-nama').value.trim();
+            const nik = document.getElementById('input-nik').value.trim();
+            const tipe = document.getElementById('input-tipe').value;
+            const periodeBulan = document.getElementById('input-periode-bulan').value;
+            const divisi = document.getElementById('input-divisi').value.trim();
+            const spsHadir = Number(document.getElementById('input-sps-hadir').value) || 0;
+            const spsAlpha = Number(document.getElementById('input-sps-alpha').value) || 0;
+            const lemburJenis = document.getElementById('input-lembur-jenis').value;
+            const lemburVolume = Number(document.getElementById('input-lembur-volume').value) || 0;
+            const lemburTarif = parseRawNumber(document.getElementById('input-lembur-tarif').value);
+            const lemburNominal = lemburVolume * lemburTarif;
+
+            const gapok = parseRawNumber(document.getElementById('input-gapok').value);
+            const tunjangan = parseRawNumber(document.getElementById('input-tunjangan').value);
+            const bpjs = parseRawNumber(document.getElementById('input-bpjs').value);
+            const pph = parseRawNumber(document.getElementById('input-pph').value);
+            const statusBayar = document.getElementById('input-status').value;
+
+            // Perhitungan Finansial
+            const potAlpha = (gapok / 25) * spsAlpha;
+            const totalPotongan = potAlpha + bpjs + pph;
+            const thp = (gapok + tunjangan + lemburNominal) - totalPotongan;
+
+            // 2. Siapkan Payload yang PERSIS diminta doPost Google Apps Script
+            const payload = {
+                periodeWaktu: periodeBulan,
+                nik: nik,
+                nama: nama,
+                divisi: divisi,
+                tipe: tipe,
+                spsHadir: spsHadir,
+                spsAlpha: spsAlpha,
+                lemburJenis: lemburJenis,
+                lemburVolume: lemburVolume,
+                lemburTarif: lemburTarif,
+                lemburNominal: lemburNominal,
+                gapok: gapok,
+                tunjangan: tunjangan,
+                potAbsen: potAlpha,
+                bpjs: bpjs,
+                pph: pph,
+                totalPotongan: totalPotongan,
+                thp: thp,
+                statusBayar: statusBayar
             };
 
-            const idx = payrollData.findIndex(d => d.nik === newItem.nik && d.periodeBulan === newItem.periodeBulan);
-            if (idx >= 0) {
-                payrollData[idx] = newItem;
-            } else {
-                payrollData.push(newItem);
+            const localItem = {
+                ...payload,
+                periodeBulan: periodeBulan,
+                hadir: spsHadir,
+                alpha: spsAlpha,
+                status: statusBayar
+            };
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<span class="animate-spin inline-block mr-2">&#9696;</span>Menyimpan ke Google SPS...`;
+
+            try {
+                // 3. Post ke Google Apps Script (menggunakan text/plain agar bebas dari CORS preflight block)
+                await fetch(GOOGLE_SPS_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                // 4. Update data lokal
+                const idx = payrollData.findIndex(d => d.nik === localItem.nik && d.periodeBulan === localItem.periodeBulan);
+                if (idx >= 0) {
+                    payrollData[idx] = localItem;
+                } else {
+                    payrollData.push(localItem);
+                }
+
+                saveLocalData();
+                populatePeriodOptions();
+                populateDivisiOptions();
+                applyFilters();
+
+                alert(`BERHASIL! Data payroll ${nama} (${nik}) sudah tersimpan di Google Sheet SPS!`);
+                document.getElementById('payrollForm').reset();
+                calcLemburPreview('input');
+
+            } catch (err) {
+                console.error("Gagal sinkron ke Google SPS:", err);
+                alert("Data tersimpan di cache lokal, namun gagal menghubungi Google SPS. Pastikan setelan deployment Web App disetel ke 'Anyone'.");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
             }
-            saveLocalData();
-            populatePeriodOptions();
-            populateDivisiOptions();
-            applyFilters();
-            alert("Data payroll berhasil disimpan!");
         }
 
         function saveLocalData() {
@@ -918,15 +983,15 @@
             document.getElementById('edit-nik-key').value = item.nik;
             document.getElementById('edit-periode-key').value = item.periodeBulan;
             document.getElementById('edit-nama').value = item.nama;
-            document.getElementById('edit-divisi').value = item.divisi;
+            document.getElementById('edit-divisi').value = item.divisi || '';
             document.getElementById('edit-gapok').value = formatNumberWithDots(item.gapok);
             document.getElementById('edit-tunjangan').value = formatNumberWithDots(item.tunjangan);
             document.getElementById('edit-lembur-jenis').value = item.lemburJenis || 'Jam';
             document.getElementById('edit-lembur-volume').value = item.lemburVolume || 0;
             document.getElementById('edit-lembur-tarif').value = formatNumberWithDots(item.lemburTarif);
-            document.getElementById('edit-hadir').value = item.hadir || 0;
-            document.getElementById('edit-alpha').value = item.alpha || 0;
-            document.getElementById('edit-status').value = item.status || 'Draft';
+            document.getElementById('edit-hadir').value = item.hadir || item.spsHadir || 0;
+            document.getElementById('edit-alpha').value = item.alpha || item.spsAlpha || 0;
+            document.getElementById('edit-status').value = item.status || item.statusBayar || 'Draft';
 
             document.getElementById('editModal').classList.remove('hidden');
         }
@@ -935,26 +1000,79 @@
             document.getElementById('editModal').classList.add('hidden');
         }
 
-        function saveEdit(e) {
+        async function saveEdit(e) {
             e.preventDefault();
+            const btn = document.getElementById('btn-save-edit');
+            const originalText = btn.innerText;
+
             const nik = document.getElementById('edit-nik-key').value;
             const periode = document.getElementById('edit-periode-key').value;
             const idx = payrollData.findIndex(d => d.nik === nik && d.periodeBulan === periode);
+            
             if (idx >= 0) {
-                payrollData[idx].nama = document.getElementById('edit-nama').value;
-                payrollData[idx].divisi = document.getElementById('edit-divisi').value;
-                payrollData[idx].gapok = parseRawNumber(document.getElementById('edit-gapok').value);
-                payrollData[idx].tunjangan = parseRawNumber(document.getElementById('edit-tunjangan').value);
-                payrollData[idx].lemburJenis = document.getElementById('edit-lembur-jenis').value;
-                payrollData[idx].lemburVolume = Number(document.getElementById('edit-lembur-volume').value);
-                payrollData[idx].lemburTarif = parseRawNumber(document.getElementById('edit-lembur-tarif').value);
-                payrollData[idx].hadir = Number(document.getElementById('edit-hadir').value);
-                payrollData[idx].alpha = Number(document.getElementById('edit-alpha').value);
-                payrollData[idx].status = document.getElementById('edit-status').value;
+                const item = payrollData[idx];
+                item.nama = document.getElementById('edit-nama').value;
+                item.divisi = document.getElementById('edit-divisi').value;
+                item.gapok = parseRawNumber(document.getElementById('edit-gapok').value);
+                item.tunjangan = parseRawNumber(document.getElementById('edit-tunjangan').value);
+                item.lemburJenis = document.getElementById('edit-lembur-jenis').value;
+                item.lemburVolume = Number(document.getElementById('edit-lembur-volume').value);
+                item.lemburTarif = parseRawNumber(document.getElementById('edit-lembur-tarif').value);
+                item.lemburNominal = item.lemburVolume * item.lemburTarif;
+                item.hadir = Number(document.getElementById('edit-hadir').value);
+                item.spsHadir = item.hadir;
+                item.alpha = Number(document.getElementById('edit-alpha').value);
+                item.spsAlpha = item.alpha;
+                item.status = document.getElementById('edit-status').value;
+                item.statusBayar = item.status;
+
+                const c = calculateTHP(item);
+                item.potAbsen = c.potAlpha;
+                item.totalPotongan = c.totalPot;
+                item.thp = c.thp;
+
+                btn.disabled = true;
+                btn.innerText = "Mengupdate Sheet...";
+
+                try {
+                    // Update juga ke Google Sheet SPS
+                    await fetch(GOOGLE_SPS_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify({
+                            periodeWaktu: item.periodeBulan,
+                            nik: item.nik,
+                            nama: item.nama,
+                            divisi: item.divisi,
+                            tipe: item.tipe || 'bulanan',
+                            spsHadir: item.spsHadir,
+                            spsAlpha: item.spsAlpha,
+                            lemburJenis: item.lemburJenis,
+                            lemburVolume: item.lemburVolume,
+                            lemburTarif: item.lemburTarif,
+                            lemburNominal: item.lemburNominal,
+                            gapok: item.gapok,
+                            tunjangan: item.tunjangan,
+                            potAbsen: item.potAbsen,
+                            bpjs: item.bpjs || 0,
+                            pph: item.pph || 0,
+                            totalPotongan: item.totalPotongan,
+                            thp: item.thp,
+                            statusBayar: item.statusBayar
+                        })
+                    });
+                } catch(err) {
+                    console.error("Gagal sinkron saat edit:", err);
+                } finally {
+                    btn.disabled = false;
+                    btn.innerText = originalText;
+                }
 
                 saveLocalData();
                 applyFilters();
                 closeEditModal();
+                alert(`Data ${item.nama} berhasil diperbarui di Portal & Google SPS!`);
             }
         }
 
@@ -978,7 +1096,7 @@
                             <p class="text-[10px] text-slate-500">SLIP GAJI KARYAWAN &bull; PERIODE: ${item.periodeBulan}</p>
                         </div>
                         <div class="text-right">
-                            <span class="px-2.5 py-1 rounded bg-[#39627F] text-[#E4DE66] font-bold text-[10px] uppercase">${item.tipe}</span>
+                            <span class="px-2.5 py-1 rounded bg-[#39627F] text-[#E4DE66] font-bold text-[10px] uppercase">${item.tipe || 'Bulanan'}</span>
                         </div>
                     </div>
                     
@@ -989,7 +1107,7 @@
                         </div>
                         <div>
                             <span class="text-slate-500">Divisi:</span> <b class="text-slate-900">${item.divisi || '-'}</b><br>
-                            <span class="text-slate-500">Presensi:</span> <b>${item.hadir} Hadir / ${item.alpha} Alpha</b>
+                            <span class="text-slate-500">Presensi:</span> <b>${item.hadir || item.spsHadir || 0} Hadir / ${item.alpha || item.spsAlpha || 0} Alpha</b>
                         </div>
                     </div>
 
@@ -1005,7 +1123,7 @@
                         </div>
                         <div>
                             <h4 class="font-bold text-rose-700 uppercase border-b pb-1 mb-2">Potongan</h4>
-                            <div class="flex justify-between py-0.5"><span>Alpha (${item.alpha} hari):</span> <b>${formatRupiah(c.potAlpha)}</b></div>
+                            <div class="flex justify-between py-0.5"><span>Alpha (${item.alpha || item.spsAlpha || 0} hari):</span> <b>${formatRupiah(c.potAlpha)}</b></div>
                             <div class="flex justify-between py-0.5"><span>BPJS:</span> <b>${formatRupiah(c.bpjs)}</b></div>
                             <div class="flex justify-between py-0.5"><span>PPh 21:</span> <b>${formatRupiah(c.pph)}</b></div>
                         </div>
@@ -1096,8 +1214,8 @@
                         'Periode': item.periodeBulan,
                         'Gaji Pokok': c.gapok,
                         'Tunjangan': c.tunjangan,
-                        'Hadir': item.hadir,
-                        'Alpha': item.alpha,
+                        'Hadir': item.hadir || item.spsHadir || 0,
+                        'Alpha': item.alpha || item.spsAlpha || 0,
                         'Tipe Lembur': item.lemburJenis,
                         'Vol Lembur': item.lemburVolume,
                         'Lembur (Rp)': c.lemburNominal,
@@ -1105,7 +1223,7 @@
                         'BPJS': c.bpjs,
                         'PPh 21': c.pph,
                         'THP': c.thp,
-                        'Status': item.status
+                        'Status': item.status || item.statusBayar
                     };
                 });
             }
@@ -1122,34 +1240,61 @@
             XLSX.writeFile(wb, `Rekap_Payroll_SPD_${new Date().toISOString().slice(0,10)}.xlsx`);
         }
 
+        // =========================================================================
+        // TARIK DATA DARI GOOGLE APPS SCRIPT VIA GET
+        // =========================================================================
         async function fetchFromGoogleSPS() {
             const btn = document.getElementById('btn-tarik-sps');
             btn.innerHTML = `<span class="animate-spin inline-block mr-1">&#9696;</span> Menghubungkan SPS...`;
             try {
                 const res = await fetch(GOOGLE_SPS_URL);
-                const data = await res.json();
-                if (data && Array.isArray(data)) {
-                    masterEmployees = data;
+                const json = await res.json();
+                
+                // Mendukung response JSON: { status: "success", data: [...] } atau array langsung
+                const listKaryawan = Array.isArray(json) ? json : (json.data || []);
+                
+                if (listKaryawan.length > 0) {
+                    masterEmployees = listKaryawan;
                     const select = document.getElementById('select-master-employee');
                     const datalist = document.getElementById('employee-suggestions');
                     select.innerHTML = '<option value="">-- Pilih Nama Karyawan --</option>';
                     datalist.innerHTML = '';
                     
-                    data.forEach(emp => {
+                    listKaryawan.forEach(emp => {
                         const opt = document.createElement('option');
                         opt.value = emp.nik;
-                        opt.innerText = `${emp.nama} (${emp.nik})`;
+                        opt.innerText = `${emp.nama} (${emp.nik}) - ${emp.divisi || 'Divisi -'}`;
                         select.appendChild(opt);
 
                         const dOpt = document.createElement('option');
                         dOpt.value = emp.nama;
                         datalist.appendChild(dOpt);
+
+                        // Masukkan ke local cache jika belum ada
+                        const existingIdx = payrollData.findIndex(d => d.nik === emp.nik);
+                        if(existingIdx === -1) {
+                            payrollData.push({
+                                ...emp,
+                                periodeBulan: emp.periodeWaktu || new Date().toISOString().slice(0,7),
+                                hadir: emp.spsHadir || 0,
+                                alpha: emp.spsAlpha || 0,
+                                status: emp.statusBayar || 'Draft'
+                            });
+                        }
                     });
-                    alert(`Berhasil sinkron ${data.length} karyawan dari Google SPS!`);
+
+                    saveLocalData();
+                    populatePeriodOptions();
+                    populateDivisiOptions();
+                    applyFilters();
+
+                    alert(`Berhasil menarik ${listKaryawan.length} data karyawan dari Sheet SPS!`);
+                } else {
+                    alert("Sheet SPS terhubung, namun baris data masih kosong.");
                 }
             } catch (err) {
-                console.error(err);
-                alert("Koneksi Google SPS selesai diperbarui!");
+                console.error("Error fetching SPS:", err);
+                alert("Gagal menarik data dari Google SPS. Pastikan script sudah di-Deploy sebagai Web App dengan akses 'Anyone'.");
             } finally {
                 btn.innerHTML = `
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
@@ -1170,8 +1315,8 @@
             document.getElementById('input-tunjangan').value = formatNumberWithDots(emp.tunjangan || 0);
             document.getElementById('input-bpjs').value = formatNumberWithDots(emp.bpjs || 0);
             document.getElementById('input-pph').value = formatNumberWithDots(emp.pph || 0);
-            document.getElementById('input-sps-hadir').value = emp.hadir || 0;
-            document.getElementById('input-sps-alpha').value = emp.alpha || 0;
+            document.getElementById('input-sps-hadir').value = emp.spsHadir || 0;
+            document.getElementById('input-sps-alpha').value = emp.spsAlpha || 0;
             calcLemburPreview('input');
         }
 
