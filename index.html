@@ -6,9 +6,9 @@
     <title>PORTAL PT. SARANA PUTRA DAERAH - Enterprise Payroll & SPS</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- html2pdf.js untuk cetak/unduh PDF -->
+    <!-- html2pdf.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <!-- SheetJS (xlsx) untuk Export Excel -->
+    <!-- SheetJS (xlsx) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <style>
@@ -26,7 +26,6 @@
             padding: 0;
             overflow-x: hidden;
             font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            position: relative;
             min-height: 100vh;
         }
 
@@ -51,26 +50,24 @@
         }
 
         .glass-panel-dark {
-            background: rgba(43, 67, 85, 0.90);
+            background: rgba(43, 67, 85, 0.92);
             backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
             border: 1px solid rgba(228, 222, 102, 0.3);
         }
         .glass-panel-light {
             background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
             border: 2px solid rgba(190, 176, 0, 0.45);
         }
 
-        /* FORMAT TABEL KOTAK SLIP GAJI */
+        /* FORMAT TABEL RESMI SLIP GAJI PERUSAHAAN (110 x 220 mm) */
         .slip-table-container {
             width: 216mm;
             height: 108mm;
             max-height: 108mm;
             box-sizing: border-box;
             background: #ffffff;
-            border: 2px solid #1a202c;
+            border: 2px solid #000000;
             padding: 8px 12px;
             font-size: 10px;
             font-family: Arial, Helvetica, sans-serif;
@@ -87,11 +84,11 @@
 
         .slip-table-container th, 
         .slip-table-container td {
-            border: 1px solid #1a202c;
+            border: 1px solid #000000;
             padding: 2.5px 5px;
         }
 
-        /* Compact Format 4 per A4 */
+        /* Format Compact 4 per A4 */
         .slip-compact-container {
             width: 100%;
             height: 136mm;
@@ -127,8 +124,6 @@
             body, html {
                 background: #ffffff !important;
                 color: #000000 !important;
-                margin: 0 !important;
-                padding: 0 !important;
             }
             .papercut-bg-container, #slider-wrapper, .no-print {
                 display: none !important;
@@ -174,15 +169,10 @@
                 <filter id="shadowMedium" x="-20%" y="-20%" width="150%" height="150%">
                     <feDropShadow dx="-2" dy="10" stdDeviation="12" flood-color="#1b2f3d" flood-opacity="0.6" />
                 </filter>
-                <filter id="shadowSubtle" x="-20%" y="-20%" width="150%" height="150%">
-                    <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#1b2f3d" flood-opacity="0.4" />
-                </filter>
-
                 <linearGradient id="gradBaseSlate" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stop-color="#4B788F" />
                     <stop offset="100%" stop-color="#39627F" />
                 </linearGradient>
-
                 <linearGradient id="gradGoldSoft" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stop-color="#E4DE66" />
                     <stop offset="100%" stop-color="#BEB000" />
@@ -194,11 +184,10 @@
             <path filter="url(#shadowDeep)" fill="#39627F" opacity="0.9" d="M1520,960 L830,960 C800,770 990,690 940,560 C890,430 1150,380 1210,240 C1270,110 1090,50 1520,-60 Z" />
             <path filter="url(#shadowMedium)" fill="url(#gradGoldSoft)" opacity="0.95" d="M240,-80 C410,120 620,40 730,170 C840,300 680,410 560,330 C440,250 260,350 160,240 C70,150 150,-50 240,-80 Z" />
             <path filter="url(#shadowMedium)" fill="#BEB000" d="M-60,660 C110,600 230,760 330,700 C430,640 510,820 580,960 L-60,960 Z" />
-            <path filter="url(#shadowSubtle)" fill="#E4DE66" opacity="0.92" d="M720,960 C750,770 890,680 1070,760 C1220,830 1310,740 1500,810 L1500,960 Z" />
             <ellipse cx="430" cy="460" rx="65" ry="58" fill="url(#gradGoldSoft)" filter="url(#shadowMedium)" />
             <ellipse cx="960" cy="330" rx="95" ry="85" fill="#E4DE66" opacity="0.9" filter="url(#shadowMedium)" />
-            <circle cx="280" cy="810" r="42" fill="#4B788F" filter="url(#shadowSubtle)" />
-            <circle cx="1260" cy="190" r="32" fill="#BEB000" filter="url(#shadowSubtle)" />
+            <circle cx="280" cy="810" r="42" fill="#4B788F" />
+            <circle cx="1260" cy="190" r="32" fill="#BEB000" />
         </svg>
     </div>
 
@@ -297,7 +286,7 @@
                             <span class="text-xs text-slate-200 font-bold">Skema:</span>
                             <select id="kpi-filter-tipe" onchange="applyFilters()" class="text-xs p-2 rounded-lg bg-[#2b4c63] text-[#E4DE66] border border-[#4B788F] font-bold">
                                 <option value="ALL">Semua Skema</option>
-                                <option value="bulanan" selected>Bulanan</option>
+                                <option value="bulanan">Bulanan</option>
                                 <option value="mingguan">Mingguan</option>
                             </select>
                         </div>
@@ -347,7 +336,7 @@
                         <div class="border-b pb-4 mb-6 flex flex-col sm:flex-row justify-between sm:items-center gap-3">
                             <div>
                                 <h2 class="text-xl font-black text-[#39627F]">Formulir Penginputan Gaji</h2>
-                                <p class="text-xs text-slate-600">Terhubung langsung ke Google SPS Sheet secara real-time.</p>
+                                <p class="text-xs text-slate-600">Setiap inputan otomatis menambah baris baru ke bawah di Sheet SPS.</p>
                             </div>
                             <div class="flex items-center gap-2">
                                 <button type="button" id="btn-tarik-sps" onclick="fetchFromGoogleSPS(true)" class="px-4 py-2 bg-[#39627F] text-[#E4DE66] border border-[#BEB000] rounded-xl text-xs font-black shadow transition hover:bg-[#2b4c63] flex items-center gap-1.5">
@@ -496,7 +485,7 @@
                                     <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Skema</label>
                                     <select id="filter-tipe" onchange="applyFilters()" class="w-full text-xs p-2.5 rounded-lg bg-[#2b4c63] text-white border border-[#4B788F] font-bold">
                                         <option value="ALL">Semua Skema</option>
-                                        <option value="bulanan" selected>Bulanan</option>
+                                        <option value="bulanan">Bulanan</option>
                                         <option value="mingguan">Mingguan</option>
                                     </select>
                                 </div>
@@ -527,7 +516,6 @@
                                 </div>
                             </div>
                             
-                            <!-- TOMBOL CETAK 4 SLIP PER A4 -->
                             <div class="flex flex-wrap justify-between items-center pt-2 border-t border-white/20 gap-2">
                                 <span class="text-xs text-slate-200">Menampilkan: <b id="filtered-count" class="text-[#E4DE66]">0</b> data</span>
                                 <div class="flex gap-2">
@@ -579,7 +567,6 @@
                 <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono">Presisi Amplop & Kertas A4</span>
             </div>
 
-            <!-- Area Tampilan Slip Satuan -->
             <div class="flex justify-center overflow-x-auto p-2 bg-slate-100 rounded-xl border border-slate-300">
                 <div id="single-slip-wrapper"></div>
             </div>
@@ -660,7 +647,7 @@
             document.getElementById('slider-wrapper').classList.remove('portal-active');
         }
 
-        let payrollData = JSON.parse(localStorage.getItem('spd_payroll_records') || '[]');
+        let payrollData = [];
         let masterEmployees = [];
 
         function updateClock() {
@@ -738,7 +725,7 @@
             const statusFilter = document.getElementById('filter-status').value;
             const searchVal = document.getElementById('filter-search').value.toLowerCase();
 
-            // KPI Items (Filter Case-Insensitive)
+            // KPI Items (Fleksibel)
             const kpiItems = payrollData.filter(d => {
                 const itemSkema = (d.tipe || 'bulanan').toString().toLowerCase();
                 return skemaKPI === 'all' || itemSkema === skemaKPI;
@@ -758,7 +745,7 @@
             document.getElementById('kpi-total-alpha').innerText = totAlpha;
             document.getElementById('kpi-karyawan-count').innerText = `${kpiItems.length} Orang`;
 
-            // Table filtration (Fleksibel Case-Insensitive)
+            // Filter Tabel
             const filtered = payrollData.filter(d => {
                 const itemSkema = (d.tipe || 'bulanan').toString().toLowerCase();
                 const itemPeriode = (d.periodeBulan || d.periodeWaktu || '').toString().trim();
@@ -781,7 +768,7 @@
             const tbody = document.getElementById('payroll-body');
             tbody.innerHTML = '';
             if (items.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-500 italic">Tidak ada data karyawan ditemukan. Silakan klik tombol "Tarik / Refresh Data SPS" di atas.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-500 italic">Belum ada data karyawan. Data akan otomatis muncul setelah diambil dari Google SPS.</td></tr>`;
                 return;
             }
 
@@ -813,17 +800,10 @@
                         <span class="px-2 py-0.5 rounded-full text-[10px] font-bold border ${statusColor}">${currentStatus}</span>
                     </td>
                     <td class="py-3 px-4 text-center">
-                        <div class="inline-flex gap-1.5 items-center">
-                            <!-- TOMBOL SLIP GAJI -->
-                            <button onclick="previewSlip('${item.nik}')" class="px-2.5 py-1 bg-[#39627F] text-[#E4DE66] hover:bg-[#2b4c63] text-[11px] font-bold rounded shadow flex items-center gap-1">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-                                <span>Slip</span>
-                            </button>
-                            <!-- TOMBOL HAPUS -->
-                            <button onclick="deletePayrollItem('${item.nik}')" class="px-2 py-1 bg-rose-600 text-white hover:bg-rose-700 text-[11px] font-bold rounded shadow">
-                                Hapus
-                            </button>
-                        </div>
+                        <button onclick="previewSlip('${item.nik}')" class="px-3 py-1 bg-[#39627F] text-[#E4DE66] hover:bg-[#2b4c63] text-xs font-bold rounded shadow flex items-center gap-1 mx-auto">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                            <span>Slip Gaji</span>
+                        </button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -831,22 +811,22 @@
         }
 
         // =========================================================================
-        // TEMPLATE SLIP GAJI MODEL KOTAK TABEL
+        // TEMPLATE SLIP GAJI RESMI KOTAK
         // =========================================================================
         function generateSingleEnvelopeHTML(item) {
             const c = calculateTHP(item);
-            const periodeDisplay = item.periodeBulan || item.periodeWaktu || document.getElementById('input-periode-bulan').value || '2026-11';
+            const periodeDisplay = item.periodeBulan || item.periodeWaktu || '2026-11';
             
             return `
                 <div class="slip-table-container">
                     <table style="border:none; margin-bottom: 4px;">
                         <tr style="border:none;">
                             <td style="border:none; width: 65%; vertical-align: middle; padding: 0;">
-                                <div style="font-size: 13px; font-weight: 900; color: #1a202c; letter-spacing: 0.5px;">PT. SARANA PUTRA DAERAH</div>
+                                <div style="font-size: 13px; font-weight: 900; color: #000; letter-spacing: 0.5px;">PT. SARANA PUTRA DAERAH</div>
                                 <div style="font-size: 8.5px; color: #4a5568;">SLIP GAJI RESMI KARYAWAN &bull; PERIODE: <b>${periodeDisplay}</b></div>
                             </td>
                             <td style="border:none; width: 35%; text-align: right; vertical-align: middle; padding: 0;">
-                                <span style="border: 1px solid #1a202c; background: #edf2f7; font-weight: bold; font-size: 8.5px; padding: 2px 6px; text-transform: uppercase;">
+                                <span style="border: 1px solid #000; background: #edf2f7; font-weight: bold; font-size: 8.5px; padding: 2px 6px; text-transform: uppercase;">
                                     SKEMA: ${item.tipe || 'Bulanan'}
                                 </span>
                             </td>
@@ -910,7 +890,7 @@
                             <td style="font-size: 11px; font-weight: 900; text-transform: uppercase; width: 65%;">
                                 TOTAL DITERIMA / GAJI BERSIH (THP = A - B)
                             </td>
-                            <td style="font-size: 13px; font-weight: 900; text-align: right; width: 35%; color: #1a202c;">
+                            <td style="font-size: 13px; font-weight: 900; text-align: right; width: 35%; color: #000;">
                                 ${formatRupiah(c.thp)}
                             </td>
                         </tr>
@@ -1098,7 +1078,7 @@
         }
 
         // =========================================================================
-        // PENGIRIMAN DATA FORMULIR
+        // SUBMIT DATA KE GOOGLE SPS (LANGSUNG KE BARIS BARU)
         // =========================================================================
         async function handleFormSubmit(e) {
             e.preventDefault();
@@ -1155,7 +1135,7 @@
                 _t: new Date().getTime()
             });
 
-            // Eksekusi kirim
+            // Kirim ke Google Script
             const script = document.createElement('script');
             script.src = `${GOOGLE_SPS_URL}?${params.toString()}`;
             document.body.appendChild(script);
@@ -1163,30 +1143,16 @@
             setTimeout(() => {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalBtnText;
-                alert(`Data ${nama} (${nik}) berhasil disimpan ke Sheet SPS!`);
+                alert(`Data ${nama} (${nik}) berhasil disimpan ke baris baru Sheet SPS!`);
                 document.getElementById('payrollForm').reset();
                 calcLemburPreview('input');
                 document.body.removeChild(script);
-                fetchFromGoogleSPS(false);
+                fetchFromGoogleSPS(false); // Refresh langsung dari sheet
             }, 1200);
         }
 
-        function saveLocalData() {
-            localStorage.setItem('spd_payroll_records', JSON.stringify(payrollData));
-        }
-
-        function deletePayrollItem(nik) {
-            if (confirm(`Yakin ingin menghapus payroll untuk NIK ${nik}?`)) {
-                payrollData = payrollData.filter(d => d.nik.toString() !== nik.toString());
-                saveLocalData();
-                populatePeriodOptions();
-                populateDivisiOptions();
-                applyFilters();
-            }
-        }
-
         // =========================================================================
-        // TARIK DATA REAL-TIME DARI SHEET SPS
+        // TARIK DATA REAL-TIME DARI SHEET SPS (OTOMATIS LANGSUNG DARI SHEET)
         // =========================================================================
         async function fetchFromGoogleSPS(showAlert = false) {
             const btn = document.getElementById('btn-tarik-sps');
@@ -1197,33 +1163,31 @@
                 const json = await res.json();
                 const listKaryawan = json.data || [];
                 
-                if (listKaryawan.length > 0) {
-                    masterEmployees = listKaryawan;
-                    payrollData = listKaryawan; // Mengganti seluruh data lokal dengan data langsung dari Sheet SPS
-                    saveLocalData();
+                payrollData = listKaryawan; // Mengambil langsung seluruh baris data dari Sheet SPS
+                masterEmployees = listKaryawan;
 
-                    const select = document.getElementById('select-master-employee');
-                    const datalist = document.getElementById('employee-suggestions');
-                    select.innerHTML = '<option value="">-- Pilih Nama Karyawan --</option>';
-                    datalist.innerHTML = '';
-                    
-                    listKaryawan.forEach(emp => {
-                        const opt = document.createElement('option');
-                        opt.value = emp.nik;
-                        opt.innerText = `${emp.nama} (${emp.nik}) - ${emp.divisi || 'Divisi -'}`;
-                        select.appendChild(opt);
+                const select = document.getElementById('select-master-employee');
+                const datalist = document.getElementById('employee-suggestions');
+                select.innerHTML = '<option value="">-- Pilih Nama Karyawan --</option>';
+                datalist.innerHTML = '';
+                
+                listKaryawan.forEach(emp => {
+                    const opt = document.createElement('option');
+                    opt.value = emp.nik;
+                    opt.innerText = `${emp.nama} (${emp.nik}) - ${emp.divisi || 'Divisi -'}`;
+                    select.appendChild(opt);
 
-                        const dOpt = document.createElement('option');
-                        dOpt.value = emp.nama;
-                        datalist.appendChild(dOpt);
-                    });
+                    const dOpt = document.createElement('option');
+                    dOpt.value = emp.nama;
+                    datalist.appendChild(dOpt);
+                });
 
-                    populatePeriodOptions();
-                    populateDivisiOptions();
-                    applyFilters();
+                populatePeriodOptions();
+                populateDivisiOptions();
+                applyFilters();
 
-                    if(showAlert) alert(`Berhasil menyinkronkan ${listKaryawan.length} data karyawan dari Google SPS!`);
-                }
+                if(showAlert) alert(`Berhasil menyinkronkan ${listKaryawan.length} baris data karyawan dari Google SPS!`);
+
             } catch (err) {
                 console.error("Gagal sinkron:", err);
                 if(showAlert) alert("Gagal menarik data dari Google SPS. Pastikan internet aktif.");
@@ -1290,15 +1254,12 @@
         }
 
         window.onload = function() {
-            populatePeriodOptions();
-            populateDivisiOptions();
-            applyFilters();
             updateLemburLabel('input');
             
-            // Tarik data saat pertama kali halaman terbuka
+            // Tarik data langsung dari Google Sheet SPS
             fetchFromGoogleSPS(false);
 
-            // Auto polling per 4 detik
+            // Auto polling per 4 detik untuk update terus-menerus
             setInterval(() => {
                 fetchFromGoogleSPS(false);
             }, 4000);
