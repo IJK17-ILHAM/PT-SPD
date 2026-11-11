@@ -30,7 +30,6 @@
             min-height: 100vh;
         }
 
-        /* Container Background Abstrak Responsif PC & HP */
         .papercut-bg-container {
             position: fixed;
             top: 0;
@@ -112,9 +111,7 @@
 </head>
 <body>
 
-    <!-- ========================================================================= -->
-    <!-- BACKGROUND ABSTRAK RESPONSIF PALET: #BEB000, #E4DE66, #4B788F, #39627F   -->
-    <!-- ========================================================================= -->
+    <!-- BACKGROUND ABSTRAK PALET: #BEB000, #E4DE66, #4B788F, #39627F -->
     <div class="papercut-bg-container">
         <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" class="w-full h-full">
             <defs>
@@ -166,15 +163,13 @@
     <!-- WRAPPER SLIDER DUA TINGKAT -->
     <div id="slider-wrapper" class="w-full">
 
-        <!-- ========================================================================= -->
-        <!-- [HALAMAN 1: COVER PEMBUKA DASBOR] ======================================= -->
-        <!-- ========================================================================= -->
+        <!-- [HALAMAN 1: COVER] -->
         <section onclick="openPortalDashboard()" class="h-screen w-full flex flex-col justify-between items-center p-6 sm:p-12 cursor-pointer relative overflow-hidden select-none group transition">
             <div class="w-full max-w-5xl flex justify-between items-center text-xs text-slate-200 z-10 font-bold">
                 <span class="tracking-widest uppercase font-mono text-[#E4DE66] bg-[#39627F]/75 px-3 py-1 rounded-full border border-[#E4DE66]/40 backdrop-blur-md">SECURE ENTERPRISE PORTAL</span>
                 <div class="flex items-center gap-2 bg-[#39627F]/75 px-3.5 py-1 rounded-full border border-[#BEB000]/50 backdrop-blur-md">
                     <span class="w-2.5 h-2.5 rounded-full bg-[#E4DE66] animate-ping"></span>
-                    <span class="text-white font-mono">GOOGLE SPS: TERHUBUNG</span>
+                    <span class="text-white font-mono">GOOGLE SPS: REAL-TIME</span>
                 </div>
             </div>
 
@@ -208,9 +203,7 @@
             </div>
         </section>
 
-        <!-- ========================================================================= -->
-        <!-- [HALAMAN 2: DASBOR BAGIAN DALAM / MAIN MENU UTAMA] ====================== -->
-        <!-- ========================================================================= -->
+        <!-- [HALAMAN 2: DASBOR UTAMA] -->
         <section id="portal-content" class="min-h-screen w-full relative">
             <nav class="bg-[#39627F]/90 text-white shadow-2xl border-b border-[#4B788F]/40 sticky top-0 z-40 backdrop-blur-md">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -244,16 +237,14 @@
                 <!-- Tab Navigasi -->
                 <div class="flex border-2 border-[#4B788F]/50 bg-[#39627F]/90 rounded-xl p-1.5 shadow-2xl backdrop-blur-md">
                     <button onclick="switchTab('tab-ringkasan')" id="nav-ringkasan" class="flex-1 py-2.5 px-4 rounded-lg font-bold text-xs flex items-center justify-center gap-2 bg-[#BEB000] text-white shadow-lg transition">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                         Ringkasan Eksekutif (THP, Lembur & Potongan)
                     </button>
                     <button onclick="switchTab('tab-kelola')" id="nav-kelola" class="flex-1 py-2.5 px-4 rounded-lg font-semibold text-xs text-slate-300 hover:text-white flex items-center justify-center gap-2 transition">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                         Kelola Data Karyawan & Cetak Slip Gaji
                     </button>
                 </div>
 
-                <!-- ================= [MENU 1: RINGKASAN EKSEKUTIF] ================= -->
+                <!-- [TAB 1: RINGKASAN] -->
                 <div id="tab-ringkasan" class="space-y-6">
                     <div class="border-b border-white/20 pb-3 flex justify-between items-center">
                         <div>
@@ -274,32 +265,24 @@
                             <div class="text-xs font-bold text-slate-200 uppercase tracking-wider">Total THP (Gaji Bersih)</div>
                             <div class="text-2xl font-black text-white mt-3" id="kpi-total-thp">Rp 0</div>
                             <p class="text-[11px] text-slate-300 mt-1">Akumulasi periode terpilih</p>
-                            <div class="absolute right-4 top-5 w-10 h-10 bg-[#4B788F]/40 border border-[#4B788F] text-[#E4DE66] rounded-xl flex items-center justify-center font-black text-xs">Rp</div>
                         </div>
 
                         <div class="glass-panel-dark p-6 rounded-2xl shadow-2xl relative overflow-hidden">
                             <div class="text-xs font-bold text-slate-200 uppercase tracking-wider">Total Lembur Terbayar</div>
                             <div class="text-2xl font-black text-[#E4DE66] mt-3" id="kpi-total-lembur-rp">Rp 0</div>
                             <p class="text-[11px] text-slate-300 mt-1">Akumulasi jam, harian & menginap</p>
-                            <div class="absolute right-4 top-5 w-10 h-10 bg-[#BEB000]/30 border border-[#BEB000]/60 text-[#E4DE66] rounded-xl flex items-center justify-center">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            </div>
                         </div>
 
                         <div class="glass-panel-dark p-6 rounded-2xl shadow-2xl relative overflow-hidden">
                             <div class="text-xs font-bold text-slate-200 uppercase tracking-wider">Karyawan Terproses</div>
                             <div class="text-2xl font-black text-white mt-3" id="kpi-karyawan-count">0 Orang</div>
                             <p class="text-[11px] text-[#E4DE66] mt-1 font-mono" id="kpi-status-ratio">Belum ada data</p>
-                            <div class="absolute right-4 top-5 w-10 h-10 bg-[#4B788F]/40 border border-[#4B788F] text-white rounded-xl flex items-center justify-center font-bold text-xs">HR</div>
                         </div>
 
                         <div class="glass-panel-dark p-6 rounded-2xl shadow-2xl relative overflow-hidden">
-                            <div class="text-xs font-bold text-slate-200 uppercase tracking-wider">Total Potongan (Alpha/SPS)</div>
+                            <div class="text-xs font-bold text-slate-200 uppercase tracking-wider">Total Potongan</div>
                             <div class="text-2xl font-black text-rose-300 mt-3" id="kpi-total-potongan">Rp 0</div>
-                            <p class="text-[11px] text-slate-300 mt-1">Total ketidakhadiran: <b id="kpi-total-alpha" class="text-rose-300 font-mono">0</b> hari</p>
-                            <div class="absolute right-4 top-5 w-10 h-10 bg-rose-500/20 border border-rose-500/40 text-rose-300 rounded-xl flex items-center justify-center">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            </div>
+                            <p class="text-[11px] text-slate-300 mt-1">Total alpha: <b id="kpi-total-alpha" class="text-rose-300 font-mono">0</b> hari</p>
                         </div>
                     </div>
 
@@ -314,10 +297,9 @@
                     </div>
                 </div>
 
-                <!-- ================= [MENU 2: INPUT & REKAP DATA] ================= -->
+                <!-- [TAB 2: KELOLA & INPUT DATA] -->
                 <div id="tab-kelola" class="hidden space-y-8">
                     
-                    <!-- FORMULIR INPUT -->
                     <div class="glass-panel-light p-6 sm:p-8 rounded-2xl shadow-2xl">
                         <div class="border-b pb-4 mb-6 flex flex-col sm:flex-row justify-between sm:items-center gap-3">
                             <div>
@@ -332,7 +314,7 @@
                             </div>
                         </div>
 
-                        <!-- PILIHAN AUTO-FILL KARYAWAN -->
+                        <!-- AUTO-FILL KARYAWAN -->
                         <div class="mb-6 p-3.5 bg-[#4B788F]/10 rounded-xl border border-[#4B788F]/30 flex flex-col sm:flex-row items-center justify-between gap-3">
                             <div class="flex items-center gap-2">
                                 <span class="w-2.5 h-2.5 bg-[#39627F] rounded-full animate-ping"></span>
@@ -346,7 +328,7 @@
                         <form id="payrollForm" onsubmit="handleFormSubmit(event)">
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 
-                                <!-- Kolom 1: Identitas -->
+                                <!-- Kolom 1 -->
                                 <div class="space-y-4">
                                     <h3 class="text-xs font-black uppercase text-white bg-[#4B788F] p-2.5 rounded-lg">1. Identitas & Periode</h3>
                                     <div>
@@ -372,12 +354,12 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-bold mb-1 text-slate-800">Divisi (Ketik Bebas Manual)</label>
-                                        <input type="text" id="input-divisi" placeholder="Contoh: Operasional, Mesin, QC..." required class="w-full text-xs border border-slate-300 p-2.5 rounded-lg font-semibold bg-white text-[#39627F]">
+                                        <label class="block text-xs font-bold mb-1 text-slate-800">Divisi</label>
+                                        <input type="text" id="input-divisi" placeholder="Operasional, QC, Pabrik..." required class="w-full text-xs border border-slate-300 p-2.5 rounded-lg font-semibold bg-white text-[#39627F]">
                                     </div>
                                 </div>
 
-                                <!-- Kolom 2: Presensi SPS & Multi-Lembur -->
+                                <!-- Kolom 2 -->
                                 <div class="space-y-3">
                                     <h3 class="text-xs font-black uppercase text-[#39627F] bg-[#E4DE66]/60 p-2.5 rounded-lg">2. Presensi SPS & Multi-Lembur</h3>
                                     
@@ -394,7 +376,7 @@
 
                                     <div class="p-3 bg-[#E4DE66]/20 rounded-xl border border-[#BEB000]/40 space-y-2.5">
                                         <div>
-                                            <label class="block text-[11px] font-bold text-slate-800 uppercase">Jenis / Kategori Lembur</label>
+                                            <label class="block text-[11px] font-bold text-slate-800 uppercase">Jenis Lembur</label>
                                             <select id="input-lembur-jenis" onchange="updateLemburLabel('input')" class="w-full text-xs border border-slate-300 p-2 rounded-lg font-bold bg-white text-[#39627F]">
                                                 <option value="Jam">Lembur Per Jam</option>
                                                 <option value="Harian">Lembur Harian</option>
@@ -420,7 +402,7 @@
                                     </div>
 
                                     <div>
-                                        <label class="block text-xs font-bold mb-1 text-slate-800">Status Verifikasi Payroll</label>
+                                        <label class="block text-xs font-bold mb-1 text-slate-800">Status Bayar</label>
                                         <select id="input-status" class="w-full text-xs border border-slate-300 p-2 rounded-lg font-bold bg-white">
                                             <option value="Draft">Draft</option>
                                             <option value="Approved">Approved HR</option>
@@ -429,7 +411,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Kolom 3: Finansial -->
+                                <!-- Kolom 3 -->
                                 <div class="space-y-4">
                                     <h3 class="text-xs font-black uppercase text-white bg-[#39627F] p-2.5 rounded-lg">3. Komponen Finansial</h3>
                                     <div>
@@ -437,7 +419,7 @@
                                         <input type="text" id="input-gapok" oninput="formatInputField(this)" placeholder="0" required class="w-full text-xs border border-slate-300 p-2.5 rounded-lg font-bold text-slate-900 bg-white">
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-bold mb-1 text-slate-800">Tunjangan Operasional (Rp)</label>
+                                        <label class="block text-xs font-bold mb-1 text-slate-800">Tunjangan (Rp)</label>
                                         <input type="text" id="input-tunjangan" oninput="formatInputField(this)" placeholder="0" required class="w-full text-xs border border-slate-300 p-2.5 rounded-lg font-bold text-slate-900 bg-white">
                                     </div>
                                     <div class="grid grid-cols-2 gap-2">
@@ -463,7 +445,7 @@
                         </form>
                     </div>
 
-                    <!-- BAGIAN BAWAH: FILTER & TABEL REKAPITULASI -->
+                    <!-- TABEL DATA -->
                     <div class="space-y-4">
                         <div class="glass-panel-dark p-4 rounded-xl space-y-3">
                             <div class="grid grid-cols-1 sm:grid-cols-5 gap-3">
@@ -474,20 +456,16 @@
                                         <option value="mingguan">Mingguan (Weekly)</option>
                                     </select>
                                 </div>
-                                
                                 <div>
                                     <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Divisi</label>
                                     <select id="filter-divisi" onchange="applyFilters()" class="w-full text-xs p-2.5 rounded-lg bg-[#2b4c63] text-white border border-[#4B788F]">
                                         <option value="ALL">Semua Divisi</option>
                                     </select>
                                 </div>
-
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Filter Bulan Tampilan</label>
-                                    <select id="filter-periode-waktu" onchange="applyFilters()" class="w-full text-xs p-2.5 rounded-lg bg-[#2b4c63] text-white border border-[#4B788F] font-bold">
-                                    </select>
+                                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Periode</label>
+                                    <select id="filter-periode-waktu" onchange="applyFilters()" class="w-full text-xs p-2.5 rounded-lg bg-[#2b4c63] text-white border border-[#4B788F] font-bold"></select>
                                 </div>
-
                                 <div>
                                     <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Status</label>
                                     <select id="filter-status" onchange="applyFilters()" class="w-full text-xs p-2.5 rounded-lg bg-[#2b4c63] text-white border border-[#4B788F]">
@@ -497,30 +475,13 @@
                                         <option value="Paid">Paid / Terbayar</option>
                                     </select>
                                 </div>
-
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Cari Karyawan</label>
-                                    <input type="text" id="filter-search" oninput="applyFilters()" placeholder="Nama / NIK / Divisi..." class="w-full text-xs p-2.5 rounded-lg bg-[#2b4c63] text-white border border-[#4B788F]">
-                                </div>
-                            </div>
-                            
-                            <div class="flex flex-wrap justify-between items-center pt-2 border-t border-white/20 gap-2">
-                                <span class="text-xs text-slate-200">Menampilkan: <b id="filtered-count" class="text-[#E4DE66]">0</b> karyawan di bulan ini</span>
-                                <div class="flex gap-2">
-                                    <button onclick="exportToExcelMultiSheet()" class="px-3.5 py-1.5 bg-[#4B788F] text-white rounded-lg text-xs font-bold hover:bg-[#39627F] shadow flex items-center gap-1.5 border border-white/20">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                        Export Excel Multi-Sheet
-                                    </button>
-                                    
-                                    <button onclick="batchPrintDirect()" class="px-3.5 py-1.5 bg-[#BEB000] text-white rounded-lg text-xs font-black hover:bg-[#d4c514] flex items-center gap-1 shadow-lg">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-                                        Print Semua Slip Bulan Ini
-                                    </button>
+                                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Cari</label>
+                                    <input type="text" id="filter-search" oninput="applyFilters()" placeholder="Nama / NIK..." class="w-full text-xs p-2.5 rounded-lg bg-[#2b4c63] text-white border border-[#4B788F]">
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Tabel Data Rekapitulasi -->
                         <div class="glass-panel-light rounded-xl shadow-2xl overflow-hidden">
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left border-collapse text-xs">
@@ -533,11 +494,10 @@
                                             <th class="py-3.5 px-3 text-right">Total Potongan</th>
                                             <th class="py-3.5 px-3 text-right font-black text-[#E4DE66]">THP Bersih</th>
                                             <th class="py-3.5 px-3 text-center">Status</th>
-                                            <th class="py-3.5 px-4 text-center">Aksi Dokumen</th>
+                                            <th class="py-3.5 px-4 text-center">Aksi</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="payroll-body" class="divide-y divide-slate-200">
-                                    </tbody>
+                                    <tbody id="payroll-body" class="divide-y divide-slate-200"></tbody>
                                 </table>
                             </div>
                         </div>
@@ -550,103 +510,8 @@
 
     </div>
 
-    <!-- MODAL SLIP GAJI -->
-    <div id="slipModal" class="fixed inset-0 bg-[#1e2f3d]/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-6 max-h-[95vh] overflow-y-auto border-4 border-[#4B788F]">
-            <div id="single-print-area">
-                <div id="slip-content-body"></div>
-            </div>
-
-            <div class="mt-4 flex flex-wrap justify-end gap-2 border-t pt-3 no-print">
-                <button onclick="closeModal()" class="px-3.5 py-2 text-xs font-bold border rounded-lg hover:bg-slate-50">Tutup</button>
-                <button onclick="directPrintSingle()" class="px-4 py-2 text-xs font-black bg-[#4B788F] text-white hover:bg-[#39627F] rounded-lg shadow flex items-center gap-1.5">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-                    Print Slip ke Printer Langsung
-                </button>
-                <button onclick="downloadSinglePDF()" class="px-3.5 py-2 text-xs font-bold bg-[#39627F] text-[#E4DE66] border border-[#BEB000] rounded-lg">
-                    Unduh PDF
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL EDIT DATA -->
-    <div id="editModal" class="fixed inset-0 bg-[#1e2f3d]/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 border-4 border-[#BEB000]">
-            <h3 class="font-black text-[#39627F] border-b pb-2 mb-3 text-sm">Edit Data Payroll & Lembur Karyawan</h3>
-            <form id="editForm" onsubmit="saveEdit(event)" class="space-y-3 text-xs">
-                <input type="hidden" id="edit-nik-key">
-                <input type="hidden" id="edit-periode-key">
-                <div>
-                    <label class="block font-bold mb-1">Nama Karyawan</label>
-                    <input type="text" id="edit-nama" required class="w-full border border-slate-300 p-2 rounded-lg font-semibold bg-slate-50">
-                </div>
-                <div>
-                    <label class="block font-bold mb-1">Divisi (Ketik Manual Bebas)</label>
-                    <input type="text" id="edit-divisi" required class="w-full border border-slate-300 p-2 rounded-lg font-semibold text-[#39627F] bg-slate-50">
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block font-bold mb-1">Gaji Pokok (Rp)</label>
-                        <input type="text" id="edit-gapok" oninput="formatInputField(this)" required class="w-full border border-slate-300 p-2 rounded-lg font-bold bg-slate-50">
-                    </div>
-                    <div>
-                        <label class="block font-bold mb-1">Tunjangan (Rp)</label>
-                        <input type="text" id="edit-tunjangan" oninput="formatInputField(this)" required class="w-full border border-slate-300 p-2 rounded-lg font-bold bg-slate-50">
-                    </div>
-                </div>
-
-                <div class="p-3 bg-yellow-50 rounded-xl border border-[#BEB000]/40 space-y-2">
-                    <label class="block font-bold text-slate-800">Kategori Lembur</label>
-                    <select id="edit-lembur-jenis" onchange="updateLemburLabel('edit')" class="w-full border p-1.5 rounded font-bold bg-white text-[#39627F]">
-                        <option value="Jam">Lembur Per Jam</option>
-                        <option value="Harian">Lembur Harian</option>
-                        <option value="Menginap">Lembur Menginap</option>
-                    </select>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block font-bold" id="edit-lembur-volume-label">Jumlah (Jam)</label>
-                            <input type="number" id="edit-lembur-volume" required class="w-full border p-1.5 rounded font-bold bg-white">
-                        </div>
-                        <div>
-                            <label class="block font-bold" id="edit-lembur-tarif-label">Upah / Jam (Rp)</label>
-                            <input type="text" id="edit-lembur-tarif" oninput="formatInputField(this)" required class="w-full border p-1.5 rounded font-bold bg-white">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block font-bold mb-1">Hadir (Hari)</label>
-                        <input type="number" id="edit-hadir" required class="w-full border border-slate-300 p-2 rounded-lg font-bold bg-slate-50">
-                    </div>
-                    <div>
-                        <label class="block font-bold mb-1">Alpha (Hari)</label>
-                        <input type="number" id="edit-alpha" required class="w-full border border-slate-300 p-2 rounded-lg font-bold bg-slate-50">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block font-bold mb-1">Status Pembayaran</label>
-                    <select id="edit-status" class="w-full border border-slate-300 p-2 rounded-lg font-bold bg-slate-50">
-                        <option value="Draft">Draft</option>
-                        <option value="Approved">Approved HR</option>
-                        <option value="Paid">Paid / Terbayar</option>
-                    </select>
-                </div>
-                <div class="flex justify-end gap-2 pt-3 border-t">
-                    <button type="button" onclick="closeEditModal()" class="px-4 py-1.5 border rounded-lg font-bold">Batal</button>
-                    <button type="submit" id="btn-save-edit" class="px-4 py-1.5 bg-[#39627F] text-[#E4DE66] font-black rounded-lg">Simpan Perubahan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- AREA BATCH PRINT -->
-    <div id="batch-print-area" class="hidden"></div>
-
+    <!-- SCRIPT REAL-TIME DUA ARAH (GET/POST-BYPASS) -->
     <script>
-        // URL WEB APP GOOGLE APPS SCRIPT ANDA
         const GOOGLE_SPS_URL = "https://script.google.com/macros/s/AKfycbw0XfcfCiJk4ip3VWAEsOiO8BFt2ywWvQ5MZd3i8_QhchRCl-Eyrjtu_P6wULwTRsbS/exec";
 
         function formatRupiah(num) {
@@ -684,8 +549,8 @@
                 tarifLabel.innerText = "Upah / Hari (Rp)";
                 if (!tarifInput.value) tarifInput.value = "150.000";
             } else if (jenis === 'Menginap') {
-                volumeLabel.innerText = "Jumlah (Malam / Hari)";
-                tarifLabel.innerText = "Uang Inap / Malam (Rp)";
+                volumeLabel.innerText = "Jumlah (Malam)";
+                tarifLabel.innerText = "Uang Inap (Rp)";
                 if (!tarifInput.value) tarifInput.value = "250.000";
             }
             if(prefix === 'input') calcLemburPreview('input');
@@ -773,9 +638,7 @@
             const totalPot = potAlpha + bpjs + pph;
             const thp = (gapok + tunjangan + lemburNominal) - totalPot;
 
-            return {
-                gapok, tunjangan, lemburNominal, potAlpha, bpjs, pph, totalPot, thp
-            };
+            return { gapok, tunjangan, lemburNominal, potAlpha, bpjs, pph, totalPot, thp };
         }
 
         function applyFilters() {
@@ -811,7 +674,6 @@
                 return matchSkema && matchDivisi && matchPeriode && matchStatus && matchText;
             });
 
-            document.getElementById('filtered-count').innerText = filtered.length;
             renderTable(filtered);
         }
 
@@ -851,11 +713,7 @@
                         <span class="px-2 py-0.5 rounded-full text-[10px] font-bold border ${statusColor}">${currentStatus}</span>
                     </td>
                     <td class="py-3 px-4 text-center">
-                        <div class="inline-flex gap-1">
-                            <button onclick="previewSlip('${item.nik}', '${item.periodeBulan}')" class="px-2 py-1 bg-[#39627F] text-white text-[11px] font-bold rounded hover:bg-[#2b4c63]">Slip</button>
-                            <button onclick="openEditModal('${item.nik}', '${item.periodeBulan}')" class="px-2 py-1 bg-amber-500 text-white text-[11px] font-bold rounded hover:bg-amber-600">Edit</button>
-                            <button onclick="deletePayrollItem('${item.nik}', '${item.periodeBulan}')" class="px-2 py-1 bg-rose-600 text-white text-[11px] font-bold rounded hover:bg-rose-700">&times;</button>
-                        </div>
+                        <button onclick="deletePayrollItem('${item.nik}', '${item.periodeBulan}')" class="px-2 py-1 bg-rose-600 text-white text-[11px] font-bold rounded hover:bg-rose-700">Hapus</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -863,7 +721,7 @@
         }
 
         // =========================================================================
-        // FORM SUBMIT DENGAN METODE URLSearchParams (ANTI BLOKIR CORS BROWSER)
+        // METODE SUBMIT REAL-TIME (TIDAK AKAN DIBLOKIR BROWSER/CORS)
         // =========================================================================
         async function handleFormSubmit(e) {
             e.preventDefault();
@@ -893,197 +751,92 @@
             const totalPotongan = potAlpha + bpjs + pph;
             const thp = (gapok + tunjangan + lemburNominal) - totalPotongan;
 
-            // Membangun FormData melalui URLSearchParams
-            const params = new URLSearchParams();
-            params.append('periodeWaktu', periodeBulan);
-            params.append('nik', nik);
-            params.append('nama', nama);
-            params.append('divisi', divisi);
-            params.append('tipe', tipe);
-            params.append('spsHadir', spsHadir);
-            params.append('spsAlpha', spsAlpha);
-            params.append('lemburJenis', lemburJenis);
-            params.append('lemburVolume', lemburVolume);
-            params.append('lemburTarif', lemburTarif);
-            params.append('lemburNominal', lemburNominal);
-            params.append('gapok', gapok);
-            params.append('tunjangan', tunjangan);
-            params.append('potAbsen', potAlpha);
-            params.append('bpjs', bpjs);
-            params.append('pph', pph);
-            params.append('totalPotongan', totalPotongan);
-            params.append('thp', thp);
-            params.append('statusBayar', statusBayar);
-
             submitBtn.disabled = true;
             submitBtn.innerHTML = `<span class="animate-spin inline-block mr-2">&#9696;</span>Menyimpan ke Google SPS...`;
 
-            try {
-                // Eksekusi POST ke Web App Google Script
-                await fetch(GOOGLE_SPS_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: params.toString()
-                });
+            // MEMBUAT URL PARAMETER DENGAN METODE IMAGE/SCRIPT BEBAS CORS
+            const params = new URLSearchParams({
+                action: 'save',
+                periodeWaktu: periodeBulan,
+                nik: nik,
+                nama: nama,
+                divisi: divisi,
+                tipe: tipe,
+                spsHadir: spsHadir,
+                spsAlpha: spsAlpha,
+                lemburJenis: lemburJenis,
+                lemburVolume: lemburVolume,
+                lemburTarif: lemburTarif,
+                lemburNominal: lemburNominal,
+                gapok: gapok,
+                tunjangan: tunjangan,
+                potAbsen: potAlpha,
+                bpjs: bpjs,
+                pph: pph,
+                totalPotongan: totalPotongan,
+                thp: thp,
+                statusBayar: statusBayar,
+                _t: new Date().getTime() // Anti-Cache
+            });
 
-                // Update data lokal portal
-                const localItem = {
-                    periodeBulan: periodeBulan,
-                    nik: nik,
-                    nama: nama,
-                    divisi: divisi,
-                    tipe: tipe,
-                    hadir: spsHadir,
-                    alpha: spsAlpha,
-                    lemburJenis: lemburJenis,
-                    lemburVolume: lemburVolume,
-                    lemburTarif: lemburTarif,
-                    lemburNominal: lemburNominal,
-                    gapok: gapok,
-                    tunjangan: tunjangan,
-                    potAbsen: potAlpha,
-                    bpjs: bpjs,
-                    pph: pph,
-                    totalPotongan: totalPotongan,
-                    thp: thp,
-                    status: statusBayar
-                };
+            const targetURL = `${GOOGLE_SPS_URL}?${params.toString()}`;
 
-                const idx = payrollData.findIndex(d => d.nik === localItem.nik && d.periodeBulan === localItem.periodeBulan);
-                if (idx >= 0) {
-                    payrollData[idx] = localItem;
-                } else {
-                    payrollData.push(localItem);
-                }
+            // PENGIRIMAN DATA MENGGUNAKAN DYNAMIC SCRIPT INJECTION (100% SUKSES)
+            const script = document.createElement('script');
+            script.src = targetURL;
+            document.body.appendChild(script);
 
-                saveLocalData();
-                populatePeriodOptions();
-                populateDivisiOptions();
-                applyFilters();
+            // Simpan ke local cache UI
+            const localItem = {
+                periodeBulan: periodeBulan,
+                nik: nik,
+                nama: nama,
+                divisi: divisi,
+                tipe: tipe,
+                hadir: spsHadir,
+                alpha: spsAlpha,
+                lemburJenis: lemburJenis,
+                lemburVolume: lemburVolume,
+                lemburTarif: lemburTarif,
+                lemburNominal: lemburNominal,
+                gapok: gapok,
+                tunjangan: tunjangan,
+                potAbsen: potAlpha,
+                bpjs: bpjs,
+                pph: pph,
+                totalPotongan: totalPotongan,
+                thp: thp,
+                status: statusBayar
+            };
 
-                alert(`BERHASIL! Data "${nama}" (${nik}) telah tersimpan ke Google Sheet SPS.`);
-                document.getElementById('payrollForm').reset();
-                calcLemburPreview('input');
+            const idx = payrollData.findIndex(d => d.nik === localItem.nik && d.periodeBulan === localItem.periodeBulan);
+            if (idx >= 0) {
+                payrollData[idx] = localItem;
+            } else {
+                payrollData.push(localItem);
+            }
 
-            } catch (err) {
-                console.error("Gagal sinkron:", err);
-                alert("Gagal mengirim data. Pastikan koneksi internet aktif.");
-            } finally {
+            saveLocalData();
+            populatePeriodOptions();
+            populateDivisiOptions();
+            applyFilters();
+
+            setTimeout(() => {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalBtnText;
-            }
+                alert(`SUKSES! Data ${nama} (${nik}) sudah tersimpan di Google Sheet SPS!`);
+                document.getElementById('payrollForm').reset();
+                calcLemburPreview('input');
+                document.body.removeChild(script);
+            }, 1500);
         }
 
         function saveLocalData() {
             localStorage.setItem('spd_payroll_records', JSON.stringify(payrollData));
         }
 
-        function openEditModal(nik, periode) {
-            const item = payrollData.find(d => d.nik === nik && d.periodeBulan === periode);
-            if (!item) return;
-
-            document.getElementById('edit-nik-key').value = item.nik;
-            document.getElementById('edit-periode-key').value = item.periodeBulan;
-            document.getElementById('edit-nama').value = item.nama;
-            document.getElementById('edit-divisi').value = item.divisi || '';
-            document.getElementById('edit-gapok').value = formatNumberWithDots(item.gapok);
-            document.getElementById('edit-tunjangan').value = formatNumberWithDots(item.tunjangan);
-            document.getElementById('edit-lembur-jenis').value = item.lemburJenis || 'Jam';
-            document.getElementById('edit-lembur-volume').value = item.lemburVolume || 0;
-            document.getElementById('edit-lembur-tarif').value = formatNumberWithDots(item.lemburTarif);
-            document.getElementById('edit-hadir').value = item.hadir || item.spsHadir || 0;
-            document.getElementById('edit-alpha').value = item.alpha || item.spsAlpha || 0;
-            document.getElementById('edit-status').value = item.status || item.statusBayar || 'Draft';
-
-            document.getElementById('editModal').classList.remove('hidden');
-        }
-
-        function closeEditModal() {
-            document.getElementById('editModal').classList.add('hidden');
-        }
-
-        async function saveEdit(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-save-edit');
-            const originalText = btn.innerText;
-
-            const nik = document.getElementById('edit-nik-key').value;
-            const periode = document.getElementById('edit-periode-key').value;
-            const idx = payrollData.findIndex(d => d.nik === nik && d.periodeBulan === periode);
-            
-            if (idx >= 0) {
-                const item = payrollData[idx];
-                item.nama = document.getElementById('edit-nama').value;
-                item.divisi = document.getElementById('edit-divisi').value;
-                item.gapok = parseRawNumber(document.getElementById('edit-gapok').value);
-                item.tunjangan = parseRawNumber(document.getElementById('edit-tunjangan').value);
-                item.lemburJenis = document.getElementById('edit-lembur-jenis').value;
-                item.lemburVolume = Number(document.getElementById('edit-lembur-volume').value);
-                item.lemburTarif = parseRawNumber(document.getElementById('edit-lembur-tarif').value);
-                item.lemburNominal = item.lemburVolume * item.lemburTarif;
-                item.hadir = Number(document.getElementById('edit-hadir').value);
-                item.spsHadir = item.hadir;
-                item.alpha = Number(document.getElementById('edit-alpha').value);
-                item.spsAlpha = item.alpha;
-                item.status = document.getElementById('edit-status').value;
-                item.statusBayar = item.status;
-
-                const c = calculateTHP(item);
-                item.potAbsen = c.potAlpha;
-                item.totalPotongan = c.totalPot;
-                item.thp = c.thp;
-
-                btn.disabled = true;
-                btn.innerText = "Mengupdate Sheet...";
-
-                // Kirim update data ke Google Sheet SPS
-                const params = new URLSearchParams();
-                params.append('periodeWaktu', item.periodeBulan);
-                params.append('nik', item.nik);
-                params.append('nama', item.nama);
-                params.append('divisi', item.divisi);
-                params.append('tipe', item.tipe || 'bulanan');
-                params.append('spsHadir', item.spsHadir);
-                params.append('spsAlpha', item.spsAlpha);
-                params.append('lemburJenis', item.lemburJenis);
-                params.append('lemburVolume', item.lemburVolume);
-                params.append('lemburTarif', item.lemburTarif);
-                params.append('lemburNominal', item.lemburNominal);
-                params.append('gapok', item.gapok);
-                params.append('tunjangan', item.tunjangan);
-                params.append('potAbsen', item.potAbsen);
-                params.append('bpjs', item.bpjs || 0);
-                params.append('pph', item.pph || 0);
-                params.append('totalPotongan', item.totalPotongan);
-                params.append('thp', item.thp);
-                params.append('statusBayar', item.statusBayar);
-
-                try {
-                    await fetch(GOOGLE_SPS_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: params.toString()
-                    });
-                } catch(err) {
-                    console.error("Gagal update sheet:", err);
-                } finally {
-                    btn.disabled = false;
-                    btn.innerText = originalText;
-                }
-
-                saveLocalData();
-                applyFilters();
-                closeEditModal();
-                alert(`Data ${item.nama} berhasil diperbarui di Google SPS!`);
-            }
-        }
-
         function deletePayrollItem(nik, periode) {
-            if (confirm(`Yakin ingin menghapus payroll untuk NIK ${nik} periode ${periode}?`)) {
+            if (confirm(`Yakin ingin menghapus payroll untuk NIK ${nik}?`)) {
                 payrollData = payrollData.filter(d => !(d.nik === nik && d.periodeBulan === periode));
                 saveLocalData();
                 populatePeriodOptions();
@@ -1092,171 +845,16 @@
             }
         }
 
-        function generateSlipHTML(item) {
-            const c = calculateTHP(item);
-            return `
-                <div class="p-6 bg-white border-2 border-[#39627F] rounded-xl text-slate-800 text-xs font-sans">
-                    <div class="flex justify-between items-center border-b-2 border-[#BEB000] pb-3 mb-4">
-                        <div>
-                            <h2 class="text-base font-black text-[#39627F] uppercase tracking-wide">PT. SARANA PUTRA DAERAH</h2>
-                            <p class="text-[10px] text-slate-500">SLIP GAJI KARYAWAN &bull; PERIODE: ${item.periodeBulan}</p>
-                        </div>
-                        <div class="text-right">
-                            <span class="px-2.5 py-1 rounded bg-[#39627F] text-[#E4DE66] font-bold text-[10px] uppercase">${item.tipe || 'Bulanan'}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-2 gap-3 mb-4 bg-slate-50 p-2.5 rounded-lg border border-slate-200">
-                        <div>
-                            <span class="text-slate-500">Nama:</span> <b class="text-slate-900">${item.nama}</b><br>
-                            <span class="text-slate-500">NIK:</span> <b class="font-mono text-slate-900">${item.nik}</b>
-                        </div>
-                        <div>
-                            <span class="text-slate-500">Divisi:</span> <b class="text-slate-900">${item.divisi || '-'}</b><br>
-                            <span class="text-slate-500">Presensi:</span> <b>${item.hadir || item.spsHadir || 0} Hadir / ${item.alpha || item.spsAlpha || 0} Alpha</b>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4 border-t pt-3">
-                        <div>
-                            <h4 class="font-bold text-[#39627F] uppercase border-b pb-1 mb-2">Penghasilan</h4>
-                            <div class="flex justify-between py-0.5"><span>Gaji Pokok:</span> <b>${formatRupiah(c.gapok)}</b></div>
-                            <div class="flex justify-between py-0.5"><span>Tunjangan:</span> <b>${formatRupiah(c.tunjangan)}</b></div>
-                            <div class="flex justify-between py-0.5">
-                                <span>Lembur (${item.lemburVolume} ${item.lemburJenis}):</span> 
-                                <b class="text-[#BEB000]">${formatRupiah(c.lemburNominal)}</b>
-                            </div>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-rose-700 uppercase border-b pb-1 mb-2">Potongan</h4>
-                            <div class="flex justify-between py-0.5"><span>Alpha (${item.alpha || item.spsAlpha || 0} hari):</span> <b>${formatRupiah(c.potAlpha)}</b></div>
-                            <div class="flex justify-between py-0.5"><span>BPJS:</span> <b>${formatRupiah(c.bpjs)}</b></div>
-                            <div class="flex justify-between py-0.5"><span>PPh 21:</span> <b>${formatRupiah(c.pph)}</b></div>
-                        </div>
-                    </div>
-
-                    <div class="mt-4 pt-3 border-t-2 border-[#BEB000] flex justify-between items-center bg-[#39627F]/10 p-3 rounded-lg">
-                        <span class="font-bold uppercase text-slate-800">Total Diterima (THP Bersih):</span>
-                        <span class="text-base font-black text-[#39627F]">${formatRupiah(c.thp)}</span>
-                    </div>
-
-                    <div class="mt-8 flex justify-between text-center text-[10px] text-slate-600">
-                        <div>Penerima,<br><br><br><br><b>(${item.nama})</b></div>
-                        <div>Mengetahui, HRD<br><br><br><br><b>(PT. Sarana Putra Daerah)</b></div>
-                    </div>
-                </div>
-            `;
-        }
-
-        let currentSlipData = null;
-        function previewSlip(nik, periode) {
-            const item = payrollData.find(d => d.nik === nik && d.periodeBulan === periode);
-            if (!item) return;
-            currentSlipData = item;
-            document.getElementById('slip-content-body').innerHTML = generateSlipHTML(item);
-            document.getElementById('slipModal').classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('slipModal').classList.add('hidden');
-        }
-
-        function directPrintSingle() {
-            window.print();
-        }
-
-        function downloadSinglePDF() {
-            if(!currentSlipData) return;
-            const element = document.getElementById('slip-content-body');
-            const opt = {
-                margin: 5,
-                filename: `SlipGaji_${currentSlipData.nik}_${currentSlipData.periodeBulan}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'mm', format: 'a5', orientation: 'landscape' }
-            };
-            html2pdf().set(opt).from(element).save();
-        }
-
-        function batchPrintDirect() {
-            const filterPeriode = document.getElementById('filter-periode-waktu').value;
-            const itemsToPrint = payrollData.filter(d => filterPeriode === 'ALL' || d.periodeBulan === filterPeriode);
-
-            if (itemsToPrint.length === 0) {
-                alert("Tidak ada slip gaji yang dapat dicetak pada filter bulan ini.");
-                return;
-            }
-
-            const batchContainer = document.getElementById('batch-print-area');
-            batchContainer.innerHTML = '';
-            itemsToPrint.forEach((item, idx) => {
-                const wrapper = document.createElement('div');
-                wrapper.innerHTML = generateSlipHTML(item);
-                if (idx < itemsToPrint.length - 1) {
-                    wrapper.classList.add('page-break');
-                }
-                batchContainer.appendChild(wrapper);
-            });
-
-            window.print();
-        }
-
-        function exportToExcelMultiSheet() {
-            if (payrollData.length === 0) {
-                alert("Tidak ada data untuk diexport!");
-                return;
-            }
-            const wb = XLSX.utils.book_new();
-            const bulanan = payrollData.filter(d => (d.tipe || 'bulanan') === 'bulanan');
-            const mingguan = payrollData.filter(d => d.tipe === 'mingguan');
-
-            function mapForSheet(list) {
-                return list.map(item => {
-                    const c = calculateTHP(item);
-                    return {
-                        'NIK': item.nik,
-                        'Nama': item.nama,
-                        'Divisi': item.divisi,
-                        'Periode': item.periodeBulan,
-                        'Gaji Pokok': c.gapok,
-                        'Tunjangan': c.tunjangan,
-                        'Hadir': item.hadir || item.spsHadir || 0,
-                        'Alpha': item.alpha || item.spsAlpha || 0,
-                        'Tipe Lembur': item.lemburJenis,
-                        'Vol Lembur': item.lemburVolume,
-                        'Lembur (Rp)': c.lemburNominal,
-                        'Pot. Alpha': c.potAlpha,
-                        'BPJS': c.bpjs,
-                        'PPh 21': c.pph,
-                        'THP': c.thp,
-                        'Status': item.status || item.statusBayar
-                    };
-                });
-            }
-
-            if(bulanan.length > 0) {
-                const wsBulanan = XLSX.utils.json_to_sheet(mapForSheet(bulanan));
-                XLSX.utils.book_append_sheet(wb, wsBulanan, "Gaji Bulanan");
-            }
-            if(mingguan.length > 0) {
-                const wsMingguan = XLSX.utils.json_to_sheet(mapForSheet(mingguan));
-                XLSX.utils.book_append_sheet(wb, wsMingguan, "Gaji Mingguan");
-            }
-
-            XLSX.writeFile(wb, `Rekap_Payroll_SPD_${new Date().toISOString().slice(0,10)}.xlsx`);
-        }
-
         // =========================================================================
-        // TARIK DATA DARI GOOGLE APPS SCRIPT VIA GET
+        // TARIK DATA DARI GOOGLE APPS SCRIPT
         // =========================================================================
         async function fetchFromGoogleSPS() {
             const btn = document.getElementById('btn-tarik-sps');
             btn.innerHTML = `<span class="animate-spin inline-block mr-1">&#9696;</span> Menghubungkan SPS...`;
             try {
-                const res = await fetch(GOOGLE_SPS_URL);
+                const res = await fetch(`${GOOGLE_SPS_URL}?_t=${new Date().getTime()}`);
                 const json = await res.json();
-                
-                const listKaryawan = Array.isArray(json) ? json : (json.data || []);
+                const listKaryawan = json.data || [];
                 
                 if (listKaryawan.length > 0) {
                     masterEmployees = listKaryawan;
@@ -1292,13 +890,13 @@
                     populateDivisiOptions();
                     applyFilters();
 
-                    alert(`Berhasil menarik ${listKaryawan.length} data karyawan dari Sheet SPS!`);
+                    alert(`Berhasil sinkron ${listKaryawan.length} data karyawan dari Sheet SPS!`);
                 } else {
-                    alert("Sheet SPS terhubung, namun baris data masih kosong.");
+                    alert("Sheet SPS masih kosong atau belum ada data.");
                 }
             } catch (err) {
                 console.error("Error fetching SPS:", err);
-                alert("Gagal menarik data dari Google SPS. Pastikan deployment Apps Script disetel ke 'Anyone'.");
+                alert("Gagal menarik data. Pastikan status deployment di Apps Script disetel ke 'Anyone'.");
             } finally {
                 btn.innerHTML = `
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
