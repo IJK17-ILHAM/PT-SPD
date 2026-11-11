@@ -6,7 +6,7 @@
     <title>PORTAL PT. SARANA PUTRA DAERAH - Enterprise Payroll & SPS</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- html2pdf.js -->
+    <!-- html2pdf.js Bundle Resmi -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <!-- SheetJS (xlsx) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -60,21 +60,16 @@
             border: 2px solid rgba(190, 176, 0, 0.45);
         }
 
-        /* FORMAT TABEL RESMI SLIP GAJI (110 x 220 mm) */
+        /* FORMAT TABEL RESMI SLIP GAJI (STANDAR KOTAK 110 x 220 mm) */
         .slip-table-container {
-            width: 216mm;
-            height: 108mm;
-            max-height: 108mm;
+            width: 760px;
             box-sizing: border-box;
-            background: #ffffff;
+            background: #ffffff !important;
             border: 2px solid #000000;
-            padding: 8px 12px;
-            font-size: 10px;
+            padding: 12px 14px;
+            font-size: 11px;
             font-family: Arial, Helvetica, sans-serif;
-            color: #000000;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            color: #000000 !important;
         }
 
         .slip-table-container table {
@@ -85,21 +80,21 @@
         .slip-table-container th, 
         .slip-table-container td {
             border: 1px solid #000000;
-            padding: 2.5px 5px;
+            padding: 3px 6px;
         }
 
-        /* Format Compact 4 per A4 */
+        /* Compact Format 4 per A4 */
         .slip-compact-container {
             width: 100%;
             height: 136mm;
             max-height: 136mm;
             box-sizing: border-box;
-            background: #ffffff;
+            background: #ffffff !important;
             border: 1px solid #000000;
             padding: 6px 8px;
             font-size: 8.5px;
             font-family: Arial, Helvetica, sans-serif;
-            color: #000000;
+            color: #000000 !important;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -125,7 +120,7 @@
                 background: #ffffff !important;
                 color: #000000 !important;
             }
-            .papercut-bg-container, #slider-wrapper, .no-print {
+            .papercut-bg-container, #slider-wrapper, .no-print, #slipModal {
                 display: none !important;
             }
             body * {
@@ -159,7 +154,7 @@
 </head>
 <body>
 
-    <!-- BACKGROUND ABSTRAK RESPONSIF PALET -->
+    <!-- BACKGROUND ABSTRAK -->
     <div class="papercut-bg-container">
         <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" class="w-full h-full">
             <defs>
@@ -188,10 +183,10 @@
         </svg>
     </div>
 
-    <!-- WRAPPER SLIDER DUA TINGKAT -->
+    <!-- WRAPPER SLIDER -->
     <div id="slider-wrapper" class="w-full">
 
-        <!-- [HALAMAN 1: COVER] -->
+        <!-- [COVER DEPAN] -->
         <section onclick="openPortalDashboard()" class="h-screen w-full flex flex-col justify-between items-center p-6 sm:p-12 cursor-pointer relative overflow-hidden select-none group transition">
             <div class="w-full max-w-5xl flex justify-between items-center text-xs text-slate-200 z-10 font-bold">
                 <span class="tracking-widest uppercase font-mono text-[#E4DE66] bg-[#39627F]/75 px-3 py-1 rounded-full border border-[#E4DE66]/40 backdrop-blur-md">SECURE ENTERPRISE PORTAL</span>
@@ -231,7 +226,7 @@
             </div>
         </section>
 
-        <!-- [HALAMAN 2: DASBOR UTAMA] -->
+        <!-- [DASBOR UTAMA] -->
         <section id="portal-content" class="min-h-screen w-full relative">
             <nav class="bg-[#39627F]/90 text-white shadow-2xl border-b border-[#4B788F]/40 sticky top-0 z-40 backdrop-blur-md">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -314,20 +309,10 @@
                             <p class="text-[11px] text-slate-300 mt-1">Total alpha: <b id="kpi-total-alpha" class="text-rose-300 font-mono">0</b> hari</p>
                         </div>
                     </div>
-
-                    <div class="glass-panel-dark p-6 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-4 shadow-2xl">
-                        <div>
-                            <h3 class="text-base font-bold text-white">Ingin menginput karyawan atau mencetak slip gaji?</h3>
-                            <p class="text-xs text-slate-300">Data tersimpan langsung ke Google Sheets SPS secara real-time.</p>
-                        </div>
-                        <button onclick="switchTab('tab-kelola')" class="px-5 py-2.5 bg-[#BEB000] hover:bg-[#d4c514] text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-lg transition flex items-center gap-2 whitespace-nowrap">
-                            <span>Buka Menu Kelola Data &rarr;</span>
-                        </button>
-                    </div>
                 </div>
 
                 <!-- [TAB 2: KELOLA & INPUT DATA] -->
-                <div id="tab-kelola" class="hidden space-y-8">
+                <div id="tab-kelola" class="space-y-8">
                     
                     <div class="glass-panel-light p-6 sm:p-8 rounded-2xl shadow-2xl">
                         <div class="border-b pb-4 mb-6 flex flex-col sm:flex-row justify-between sm:items-center gap-3">
@@ -555,7 +540,7 @@
 
     </div>
 
-    <!-- MODAL SLIP GAJI FORMAT TABEL RESMI PERUSAHAAN (110 x 220 mm) -->
+    <!-- MODAL SLIP GAJI -->
     <div id="slipModal" class="fixed inset-0 bg-[#1e2f3d]/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full p-6 max-h-[96vh] overflow-y-auto border-4 border-[#4B788F]">
             
@@ -581,7 +566,7 @@
         </div>
     </div>
 
-    <!-- MOUNT CONTAINER KHUSUS CETAK PRINTER -->
+    <!-- MOUNT KHUSUS PRINT BROWSER -->
     <div id="print-portal-mount" class="hidden"></div>
 
     <script>
@@ -597,11 +582,10 @@
             return new Intl.NumberFormat('id-ID').format(cleanNumber);
         }
 
-        // FUNGSI MEMBERSIHKAN RUPIAH DARI GOOGLE SHEET (MENCEGAH RP 0)
+        // PARSER NOMINAL DARI SHEET
         function cleanRupiahToNumber(val) {
             if (val === null || val === undefined || val === '') return 0;
             if (typeof val === 'number') return val;
-            // Hapus teks "Rp", spasi, dan titik ribuan
             var cleanStr = val.toString().replace(/Rp/gi, '').replace(/\s/g, '').replace(/\./g, '').replace(/,/g, '.');
             var num = parseFloat(cleanStr);
             return isNaN(num) ? 0 : num;
@@ -706,14 +690,12 @@
             });
         }
 
-        // PERHITUNGAN THP DAN NOMINAL DENGAN PEMBERSIH RUPIAH OTOMATIS
         function calculateTHP(item) {
             const gapok = cleanRupiahToNumber(item.gapok);
             const tunjangan = cleanRupiahToNumber(item.tunjangan);
             const vol = cleanRupiahToNumber(item.lemburVolume);
             const tarif = cleanRupiahToNumber(item.lemburTarif);
             
-            // Hitung nominal lembur jika di sheet belum ada
             let lemburNominal = cleanRupiahToNumber(item.lemburNominal);
             if (lemburNominal === 0 && vol > 0 && tarif > 0) {
                 lemburNominal = vol * tarif;
@@ -745,7 +727,6 @@
             const statusFilter = document.getElementById('filter-status').value;
             const searchVal = document.getElementById('filter-search').value.toLowerCase();
 
-            // KPI Items
             const kpiItems = payrollData.filter(d => {
                 const itemSkema = (d.tipe || 'bulanan').toString().toLowerCase();
                 return skemaKPI === 'all' || itemSkema === skemaKPI;
@@ -765,7 +746,6 @@
             document.getElementById('kpi-total-alpha').innerText = totAlpha;
             document.getElementById('kpi-karyawan-count').innerText = `${kpiItems.length} Orang`;
 
-            // Filter Tabel Bebas Huruf Besar/Kecil
             const filtered = payrollData.filter(d => {
                 const itemSkema = (d.tipe || 'bulanan').toString().toLowerCase();
                 const itemPeriode = (d.periodeBulan || d.periodeWaktu || '').toString().trim();
@@ -788,7 +768,7 @@
             const tbody = document.getElementById('payroll-body');
             tbody.innerHTML = '';
             if (items.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-500 italic">Belum ada data yang cocok dengan filter di atas.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-500 italic">Belum ada data yang cocok dengan filter.</td></tr>`;
                 return;
             }
 
@@ -891,412 +871,3 @@
                                 <td style="text-align: right;">${formatRupiah(c.bpjs)}</td>
                             </tr>
                             <tr>
-                                <td>Upah Lembur (${cleanRupiahToNumber(item.lemburVolume)} ${item.lemburJenis || 'Jam'})</td>
-                                <td style="text-align: right;">${formatRupiah(c.lemburNominal)}</td>
-                                <td>PPh Pasal 21</td>
-                                <td style="text-align: right;">${formatRupiah(c.pph)}</td>
-                            </tr>
-                            <tr style="background: #f7fafc; font-weight: bold;">
-                                <td style="text-align: right;">TOTAL PENGHASILAN (A)</td>
-                                <td style="text-align: right;">${formatRupiah(c.gapok + c.tunjangan + c.lemburNominal)}</td>
-                                <td style="text-align: right;">TOTAL POTONGAN (B)</td>
-                                <td style="text-align: right; color: #c53030;">${formatRupiah(c.totalPot)}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <table style="margin-bottom: 5px;">
-                        <tr style="background: #edf2f7;">
-                            <td style="font-size: 11px; font-weight: 900; text-transform: uppercase; width: 65%;">
-                                TOTAL DITERIMA / GAJI BERSIH (THP = A - B)
-                            </td>
-                            <td style="font-size: 13px; font-weight: 900; text-align: right; width: 35%; color: #000;">
-                                ${formatRupiah(c.thp)}
-                            </td>
-                        </tr>
-                    </table>
-
-                    <table style="border:none;">
-                        <tr style="border:none; text-align: center; font-size: 8.5px;">
-                            <td style="border:none; width: 50%;">
-                                Penerima,
-                                <br><br><br>
-                                <b>(${item.nama})</b>
-                            </td>
-                            <td style="border:none; width: 50%;">
-                                Mengetahui / HRD,
-                                <br><br><br>
-                                <b>(PT. SARANA PUTRA DAERAH)</b>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            `;
-        }
-
-        function generateCompactSlipHTML(item) {
-            const c = calculateTHP(item);
-            const periodeDisplay = item.periodeBulan || item.periodeWaktu || '2026-11';
-            
-            return `
-                <div class="slip-compact-container">
-                    <div>
-                        <table style="border:none; margin-bottom: 3px;">
-                            <tr style="border:none;">
-                                <td style="border:none; padding: 0;">
-                                    <div style="font-weight: 900; font-size: 10px;">PT. SARANA PUTRA DAERAH</div>
-                                    <div style="font-size: 7.5px; color: #555;">SLIP GAJI &bull; PERIODE: ${periodeDisplay}</div>
-                                </td>
-                                <td style="border:none; text-align: right; padding: 0;">
-                                    <span style="border: 1px solid #000; padding: 1px 4px; font-size: 7.5px; font-weight: bold;">${item.tipe || 'Bulanan'}</span>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <table style="margin-bottom: 3px;">
-                            <tr style="background: #f7fafc;">
-                                <td style="width: 15%; font-weight: bold;">Nama</td>
-                                <td style="width: 35%;">: ${item.nama}</td>
-                                <td style="width: 15%; font-weight: bold;">Divisi</td>
-                                <td style="width: 35%;">: ${item.divisi || '-'}</td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: bold;">NIK</td>
-                                <td>: ${item.nik}</td>
-                                <td style="font-weight: bold;">Presensi</td>
-                                <td>: ${cleanRupiahToNumber(item.hadir || item.spsHadir)}H / ${cleanRupiahToNumber(item.alpha || item.spsAlpha)}A</td>
-                            </tr>
-                        </table>
-
-                        <table style="margin-bottom: 3px;">
-                            <tr style="background: #edf2f7; text-align: center; font-weight: bold;">
-                                <th style="width: 35%;">PENGHASILAN</th>
-                                <th style="width: 15%;">Rp</th>
-                                <th style="width: 35%;">POTONGAN</th>
-                                <th style="width: 15%;">Rp</th>
-                            </tr>
-                            <tr>
-                                <td>Gapok</td>
-                                <td style="text-align: right;">${formatRupiah(c.gapok)}</td>
-                                <td>Pot. Alpha</td>
-                                <td style="text-align: right;">${formatRupiah(c.potAlpha)}</td>
-                            </tr>
-                            <tr>
-                                <td>Tunjangan</td>
-                                <td style="text-align: right;">${formatRupiah(c.tunjangan)}</td>
-                                <td>BPJS</td>
-                                <td style="text-align: right;">${formatRupiah(c.bpjs)}</td>
-                            </tr>
-                            <tr>
-                                <td>Lembur</td>
-                                <td style="text-align: right;">${formatRupiah(c.lemburNominal)}</td>
-                                <td>PPh 21</td>
-                                <td style="text-align: right;">${formatRupiah(c.pph)}</td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div>
-                        <table style="margin-bottom: 3px;">
-                            <tr style="background: #edf2f7; font-weight: 900;">
-                                <td style="font-size: 9px;">THP BERSIH</td>
-                                <td style="font-size: 11px; text-align: right;">${formatRupiah(c.thp)}</td>
-                            </tr>
-                        </table>
-
-                        <table style="border:none;">
-                            <tr style="border:none; text-align: center; font-size: 7.5px;">
-                                <td style="border:none; width: 50%;">Penerima,<br><br><b>(${item.nama})</b></td>
-                                <td style="border:none; width: 50%;">HRD,<br><br><b>(PT. SPD)</b></td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            `;
-        }
-
-        let currentSlipData = null;
-        function previewSlipByIndex(idx) {
-            const item = payrollData[idx];
-            if (!item) return;
-            currentSlipData = item;
-            document.getElementById('single-slip-wrapper').innerHTML = generateSingleEnvelopeHTML(item);
-            document.getElementById('slipModal').classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('slipModal').classList.add('hidden');
-        }
-
-        function directPrintSingle() {
-            if (!currentSlipData) return;
-            const mount = document.getElementById('print-portal-mount');
-            mount.innerHTML = generateSingleEnvelopeHTML(currentSlipData);
-            window.print();
-        }
-
-        function downloadSinglePDF() {
-            if (!currentSlipData) return;
-            const el = document.getElementById('single-slip-wrapper');
-            const opt = {
-                margin: 0,
-                filename: `SlipGaji_${currentSlipData.nik}_${currentSlipData.nama}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 3 },
-                jsPDF: { unit: 'mm', format: [220, 110], orientation: 'landscape' }
-            };
-            html2pdf().set(opt).from(el).save();
-        }
-
-        function printBatchA4FourPerSheet() {
-            const skemaFilter = document.getElementById('filter-tipe').value.toLowerCase();
-            const divisiFilter = document.getElementById('filter-divisi').value;
-            const periodeFilter = document.getElementById('filter-periode-waktu').value;
-            const statusFilter = document.getElementById('filter-status').value;
-            const searchVal = document.getElementById('filter-search').value.toLowerCase();
-
-            const filtered = payrollData.filter(d => {
-                const itemSkema = (d.tipe || 'bulanan').toString().toLowerCase();
-                const itemPeriode = (d.periodeBulan || d.periodeWaktu || '').toString().trim();
-                const itemStatus = (d.status || d.statusBayar || 'Draft').toString();
-                const itemDivisi = (d.divisi || '').toString();
-
-                const matchSkema = (skemaFilter === 'all' || itemSkema === skemaFilter);
-                const matchDivisi = (divisiFilter === 'ALL' || itemDivisi === divisiFilter);
-                const matchPeriode = (periodeFilter === 'ALL' || itemPeriode === periodeFilter);
-                const matchStatus = (statusFilter === 'ALL' || itemStatus.toLowerCase() === statusFilter.toLowerCase());
-                const matchText = ((d.nama || '').toLowerCase().includes(searchVal) || (d.nik || '').toLowerCase().includes(searchVal));
-                return matchSkema && matchDivisi && matchPeriode && matchStatus && matchText;
-            });
-
-            if (filtered.length === 0) {
-                alert("Tidak ada data karyawan yang siap dicetak.");
-                return;
-            }
-
-            const mount = document.getElementById('print-portal-mount');
-            mount.innerHTML = '';
-
-            for (let i = 0; i < filtered.length; i += 4) {
-                const pageChunk = filtered.slice(i, i + 4);
-                const pageDiv = document.createElement('div');
-                pageDiv.className = 'a4-page-grid';
-
-                pageChunk.forEach(item => {
-                    pageDiv.innerHTML += generateCompactSlipHTML(item);
-                });
-
-                const sisa = 4 - pageChunk.length;
-                for (let k = 0; k < sisa; k++) {
-                    pageDiv.innerHTML += `<div style="border: 1px dashed #cbd5e0;"></div>`;
-                }
-
-                mount.appendChild(pageDiv);
-            }
-
-            window.print();
-        }
-
-        // =========================================================================
-        // SUBMIT DATA VIA JSONP (MENAMBAH BARIS KE BAWAH)
-        // =========================================================================
-        async function handleFormSubmit(e) {
-            e.preventDefault();
-
-            const submitBtn = document.getElementById('btn-submit-payroll');
-            const originalBtnText = submitBtn.innerHTML;
-
-            const nama = document.getElementById('input-nama').value.trim();
-            const nik = document.getElementById('input-nik').value.trim();
-            const tipe = document.getElementById('input-tipe').value;
-            const periodeBulan = document.getElementById('input-periode-bulan').value;
-            const divisi = document.getElementById('input-divisi').value.trim();
-            const spsHadir = Number(document.getElementById('input-sps-hadir').value) || 0;
-            const spsAlpha = Number(document.getElementById('input-sps-alpha').value) || 0;
-            const lemburJenis = document.getElementById('input-lembur-jenis').value;
-            const lemburVolume = Number(document.getElementById('input-lembur-volume').value) || 0;
-            const lemburTarif = cleanRupiahToNumber(document.getElementById('input-lembur-tarif').value);
-            const lemburNominal = lemburVolume * lemburTarif;
-
-            const gapok = cleanRupiahToNumber(document.getElementById('input-gapok').value);
-            const tunjangan = cleanRupiahToNumber(document.getElementById('input-tunjangan').value);
-            const bpjs = cleanRupiahToNumber(document.getElementById('input-bpjs').value);
-            const pph = cleanRupiahToNumber(document.getElementById('input-pph').value);
-            const statusBayar = document.getElementById('input-status').value;
-
-            const potAlpha = (gapok / 25) * spsAlpha;
-            const totalPotongan = potAlpha + bpjs + pph;
-            const thp = (gapok + tunjangan + lemburNominal) - totalPotongan;
-
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = `<span class="animate-spin inline-block mr-2">&#9696;</span>Menyimpan ke Google SPS...`;
-
-            const callbackName = 'sps_save_' + Date.now();
-            const params = new URLSearchParams({
-                action: 'save',
-                periodeWaktu: periodeBulan,
-                nik: nik,
-                nama: nama,
-                divisi: divisi,
-                tipe: tipe,
-                spsHadir: spsHadir,
-                spsAlpha: spsAlpha,
-                lemburJenis: lemburJenis,
-                lemburVolume: lemburVolume,
-                lemburTarif: lemburTarif,
-                lemburNominal: lemburNominal,
-                gapok: gapok,
-                tunjangan: tunjangan,
-                potAbsen: potAlpha,
-                bpjs: bpjs,
-                pph: pph,
-                totalPotongan: totalPotongan,
-                thp: thp,
-                statusBayar: statusBayar,
-                callback: callbackName,
-                _t: Date.now()
-            });
-
-            window[callbackName] = function(res) {
-                delete window[callbackName];
-                document.body.removeChild(script);
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalBtnText;
-                alert(`Data ${nama} (${nik}) berhasil disimpan ke baris baru Sheet SPS!`);
-                document.getElementById('payrollForm').reset();
-                calcLemburPreview('input');
-                fetchFromGoogleSPS(false);
-            };
-
-            const script = document.createElement('script');
-            script.src = `${GOOGLE_SPS_URL}?${params.toString()}`;
-            document.body.appendChild(script);
-        }
-
-        // =========================================================================
-        // TARIK DATA REAL-TIME VIA JSONP
-        // =========================================================================
-        function fetchFromGoogleSPS(showAlert = false) {
-            const btn = document.getElementById('btn-tarik-sps');
-            if(showAlert && btn) btn.innerHTML = `<span class="animate-spin inline-block mr-1">&#9696;</span> Menghubungkan SPS...`;
-
-            const callbackName = 'sps_get_' + Date.now();
-            const script = document.createElement('script');
-            script.src = `${GOOGLE_SPS_URL}?action=get&callback=${callbackName}&_t=${Date.now()}`;
-
-            window[callbackName] = function(json) {
-                delete window[callbackName];
-                document.body.removeChild(script);
-
-                const listKaryawan = json.data || [];
-                payrollData = listKaryawan;
-                masterEmployees = listKaryawan;
-
-                const select = document.getElementById('select-master-employee');
-                const datalist = document.getElementById('employee-suggestions');
-                select.innerHTML = '<option value="">-- Pilih Nama Karyawan --</option>';
-                datalist.innerHTML = '';
-                
-                listKaryawan.forEach(emp => {
-                    const opt = document.createElement('option');
-                    opt.value = emp.nik;
-                    opt.innerText = `${emp.nama} (${emp.nik}) - ${emp.divisi || 'Divisi -'}`;
-                    select.appendChild(opt);
-
-                    const dOpt = document.createElement('option');
-                    dOpt.value = emp.nama;
-                    datalist.appendChild(dOpt);
-                });
-
-                populatePeriodOptions();
-                populateDivisiOptions();
-                applyFilters();
-
-                if(showAlert && btn) {
-                    btn.innerHTML = `
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                        <span>Tarik / Refresh Data SPS</span>
-                    `;
-                    alert(`SUKSES! Ditemukan ${listKaryawan.length} baris data karyawan dari Google SPS.`);
-                }
-            };
-
-            script.onerror = function() {
-                if(showAlert && btn) {
-                    btn.innerHTML = `
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                        <span>Tarik / Refresh Data SPS</span>
-                    `;
-                    alert("Koneksi gagal! Pastikan deployment Apps Script disetel ke 'Anyone'.");
-                }
-            };
-
-            document.body.appendChild(script);
-        }
-
-        function applyMasterEmployee(nik) {
-            if (!nik) return;
-            const emp = masterEmployees.find(e => e.nik.toString() === nik.toString());
-            if (!emp) return;
-
-            document.getElementById('input-nama').value = emp.nama || '';
-            document.getElementById('input-nik').value = emp.nik || '';
-            document.getElementById('input-divisi').value = emp.divisi || '';
-            document.getElementById('input-gapok').value = formatNumberWithDots(cleanRupiahToNumber(emp.gapok));
-            document.getElementById('input-tunjangan').value = formatNumberWithDots(cleanRupiahToNumber(emp.tunjangan));
-            document.getElementById('input-bpjs').value = formatNumberWithDots(cleanRupiahToNumber(emp.bpjs));
-            document.getElementById('input-pph').value = formatNumberWithDots(cleanRupiahToNumber(emp.pph));
-            document.getElementById('input-sps-hadir').value = cleanRupiahToNumber(emp.spsHadir);
-            document.getElementById('input-sps-alpha').value = cleanRupiahToNumber(emp.spsAlpha);
-            calcLemburPreview('input');
-        }
-
-        function exportToExcelMultiSheet() {
-            if (payrollData.length === 0) {
-                alert("Tidak ada data untuk diexport!");
-                return;
-            }
-            const wb = XLSX.utils.book_new();
-            const bulanan = payrollData.filter(d => (d.tipe || 'bulanan').toString().toLowerCase() === 'bulanan');
-            const mingguan = payrollData.filter(d => (d.tipe || '').toString().toLowerCase() === 'mingguan');
-
-            function mapForSheet(list) {
-                return list.map(item => {
-                    const c = calculateTHP(item);
-                    return {
-                        'NIK': item.nik,
-                        'Nama': item.nama,
-                        'Divisi': item.divisi,
-                        'Periode': item.periodeBulan || item.periodeWaktu,
-                        'Gaji Pokok': c.gapok,
-                        'Tunjangan': c.tunjangan,
-                        'Hadir': cleanRupiahToNumber(item.hadir || item.spsHadir),
-                        'Alpha': cleanRupiahToNumber(item.alpha || item.spsAlpha),
-                        'Lembur (Rp)': c.lemburNominal,
-                        'Potongan': c.totalPot,
-                        'THP': c.thp,
-                        'Status': item.status || item.statusBayar
-                    };
-                });
-            }
-
-            if(bulanan.length > 0) XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(mapForSheet(bulanan)), "Bulanan");
-            if(mingguan.length > 0) XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(mapForSheet(mingguan)), "Mingguan");
-
-            XLSX.writeFile(wb, `Rekap_Payroll_SPD_${new Date().toISOString().slice(0,10)}.xlsx`);
-        }
-
-        window.onload = function() {
-            updateLemburLabel('input');
-            
-            // Tarik data langsung saat halaman dibuka
-            fetchFromGoogleSPS(false);
-
-            // Auto polling per 5 detik
-            setInterval(() => {
-                fetchFromGoogleSPS(false);
-            }, 5000);
-        };
-    </script>
-</body>
-</html>
