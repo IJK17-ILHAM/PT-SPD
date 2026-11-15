@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>spd. Payroll &amp; Kas Tonase — PT. Sarana Putra Daerah</title>
+    <title>spd. Payroll — PT. Sarana Putra Daerah</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -108,7 +108,7 @@
 
                 <div class="my-auto py-8">
                     <h1 class="text-2xl sm:text-3xl font-bold text-[#60a5fa] tracking-tight">PT. Sarana Putra Daerah</h1>
-                    <p class="text-sm text-[#93c5fd]/80 mt-2">Portal payroll mingguan, rekap kas &amp; tonase</p>
+                    <p class="text-sm text-[#93c5fd]/80 mt-2">Portal payroll mingguan dan monitoring SPS</p>
                 </div>
 
                 <div class="flex items-center gap-2 text-xs font-semibold">
@@ -150,7 +150,7 @@
         </div>
     </section>
 
-    <!-- SCREEN 2: PORTAL UTAMA DENGAN SIDEBAR TUNGGAL -->
+    <!-- SCREEN 2: PORTAL UTAMA DENGAN SIDEBAR -->
     <div id="app-shell" class="hidden min-h-screen flex flex-col lg:flex-row bg-[#0f1115]">
 
         <aside class="w-full lg:w-64 bg-[#14171d] border-b lg:border-b-0 lg:border-r border-[#262c36] flex flex-col justify-between shrink-0">
@@ -158,7 +158,7 @@
                 <div class="p-5 border-b border-[#262c36] flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <span class="text-xl font-black text-white tracking-tight">spd<span class="text-[#f5a623]">.</span></span>
-                        <span class="text-lg font-bold text-white" id="sidebar-brand-title">Payroll</span>
+                        <span class="text-lg font-bold text-white">Payroll</span>
                     </div>
                     <button onclick="toggleMobileSidebar()" class="lg:hidden px-2.5 py-1 rounded-lg border border-[#2b323d] text-xs text-slate-300">Menu</button>
                 </div>
@@ -179,27 +179,6 @@
                     <button onclick="switchMenu('menu-laporan')" id="btn-menu-laporan" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-[#1b2029] hover:text-white transition text-left">
                         <span>Laporan</span>
                     </button>
-
-                    <!-- MENU BREAKDOWN: REKAP KAS & TONASE (TANPA SIDEBAR DOBEL) -->
-                    <div class="pt-2 mt-2 border-t border-[#262c36]">
-                        <button onclick="toggleTonaseSection()" id="btn-menu-tonase" class="w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg text-sm font-medium text-emerald-300 hover:bg-[#1b2029] hover:text-white transition text-left">
-                            <span>Rekap Kas &amp; Tonase</span>
-                            <span id="tonase-chevron" class="text-xs transition-transform">&#9662;</span>
-                        </button>
-
-                        <!-- Sub-menu breakdown otomatis saat Rekap Kas diklik -->
-                        <div id="tonase-submenu" class="hidden pl-3 ml-2.5 mt-1 border-l border-[#262c36] space-y-0.5 text-xs">
-                            <button onclick="openTonaseSubPage('dashboard')" id="tonase-sub-dashboard" class="w-full text-left px-3 py-2 rounded-lg text-slate-300 hover:bg-[#1b2029] hover:text-white transition">Dashboard Tonase</button>
-                            <button onclick="openTonaseSubPage('transaksi')" id="tonase-sub-transaksi" class="w-full text-left px-3 py-2 rounded-lg text-slate-300 hover:bg-[#1b2029] hover:text-white transition">Transaksi</button>
-                            <button onclick="openTonaseSubPage('stok')" id="tonase-sub-stok" class="w-full text-left px-3 py-2 rounded-lg text-slate-300 hover:bg-[#1b2029] hover:text-white transition">Stok</button>
-                            <button onclick="openTonaseSubPage('harga')" id="tonase-sub-harga" class="w-full text-left px-3 py-2 rounded-lg text-slate-300 hover:bg-[#1b2029] hover:text-white transition">Harga barang</button>
-                            <button onclick="openTonaseSubPage('customer')" id="tonase-sub-customer" class="w-full text-left px-3 py-2 rounded-lg text-slate-300 hover:bg-[#1b2029] hover:text-white transition">Customer</button>
-                            <button onclick="openTonaseSubPage('hutang')" id="tonase-sub-hutang" class="w-full text-left px-3 py-2 rounded-lg text-slate-300 hover:bg-[#1b2029] hover:text-white transition">Hutang piutang</button>
-                            <button onclick="openTonaseSubPage('laporan')" id="tonase-sub-laporan" class="w-full text-left px-3 py-2 rounded-lg text-slate-300 hover:bg-[#1b2029] hover:text-white transition">Laporan Kas</button>
-                            <button onclick="openTonaseSubPage('pengaturan')" id="tonase-sub-pengaturan" class="w-full text-left px-3 py-2 rounded-lg text-slate-300 hover:bg-[#1b2029] hover:text-white transition">Pengaturan Kas</button>
-                        </div>
-                    </div>
-
                     <button onclick="switchMenu('menu-akun')" id="btn-menu-akun" class="hidden w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-[#f5a623] hover:bg-[#1b2029] transition text-left">
                         <span>Kelola Akun</span>
                     </button>
@@ -232,8 +211,8 @@
         </aside>
 
         <!-- MAIN WORKSPACE -->
-        <main id="main-workspace" class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
-            <div id="main-container" class="max-w-7xl mx-auto space-y-6">
+        <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+            <div class="max-w-7xl mx-auto space-y-6">
 
                 <!-- MENU 1: RINGKASAN -->
                 <section id="menu-ringkasan" class="space-y-5">
@@ -839,12 +818,7 @@
                     </div>
                 </section>
 
-                <!-- MENU 6: REKAP KAS & TONASE (FULL AREA TANPA SIDEBAR DOBEL) -->
-                <section id="menu-tonase" class="hidden w-full h-full">
-                    <iframe id="tonaseFrame" src="about:blank" class="w-full h-[calc(100vh-56px)] lg:h-screen border-0 bg-[#E9EEF3]"></iframe>
-                </section>
-
-                <!-- MENU 7: KELOLA AKUN -->
+                <!-- MENU 6: KELOLA AKUN (SESUAI KOLOM TAB AKUN ANDA) -->
                 <section id="menu-akun" class="hidden space-y-5">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div>
@@ -964,8 +938,6 @@
 
         let activeLembur = { hari: false, jam: true, inap: false };
         let supirSpdUnit = 'trip';
-        let pendingTonasePage = 'dashboard';
-        let activeTonasePage = 'dashboard';
 
         function jsonpRequest(params = {}, timeoutMs = 15000) {
             return new Promise((resolve, reject) => {
@@ -1035,11 +1007,6 @@
             return r.includes('admin') || r.includes('hr');
         }
 
-        function isOwnerRole(role) {
-            const r = (role || '').toString().toLowerCase();
-            return r.includes('admin') || r.includes('hr') || r.includes('manajer') || r.includes('owner');
-        }
-
         // =========================================================================
         // SISTEM LOGIN & MULTI-AKUN GOOGLE SHEET
         // =========================================================================
@@ -1091,17 +1058,15 @@
             document.getElementById('sidebar-user-role').innerText = user.role || 'Staff';
 
             const btnAkun = document.getElementById('btn-menu-akun');
-            if (isAdminRole(user.role)) btnAkun.classList.remove('hidden');
-            else btnAkun.classList.add('hidden');
-
-            const isOwner = isOwnerRole(user.role);
-            document.getElementById('tonase-sub-laporan').classList.toggle('hidden', !isOwner);
-            document.getElementById('tonase-sub-pengaturan').classList.toggle('hidden', !isOwner);
+            if (isAdminRole(user.role)) {
+                btnAkun.classList.remove('hidden');
+            } else {
+                btnAkun.classList.add('hidden');
+            }
 
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('app-shell').classList.remove('hidden');
 
-            switchMenu('menu-ringkasan');
             fetchFromGoogleSPS(false);
             if (isAdminRole(user.role)) {
                 fetchUsersFromSPS();
@@ -1111,85 +1076,12 @@
         function closePortalDashboard() {
             currentUser = null;
             localStorage.removeItem('spd_logged_user');
-            const frame = document.getElementById('tonaseFrame');
-            if (frame) {
-                frame.src = 'about:blank';
-                delete frame.dataset.loaded;
-            }
             document.getElementById('login-password').value = '';
             document.getElementById('app-shell').classList.add('hidden');
             document.getElementById('login-screen').classList.remove('hidden');
             switchMenu('menu-ringkasan');
         }
 
-        // =========================================================================
-        // BREAKDOWN MENU REKAP KAS & TONASE (SINGLE SIDEBAR)
-        // =========================================================================
-        function toggleTonaseSection() {
-            const sub = document.getElementById('tonase-submenu');
-            const isCurrentlyTonase = !document.getElementById('menu-tonase').classList.contains('hidden');
-            if (!isCurrentlyTonase) {
-                // Otomatis break down & langsung ganti dasbor ke Kas Tonase!
-                sub.classList.remove('hidden');
-                openTonaseSubPage('dashboard');
-            } else {
-                sub.classList.toggle('hidden');
-            }
-            document.getElementById('tonase-chevron').style.transform = sub.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
-        }
-
-        function openTonaseSubPage(pageId) {
-            pendingTonasePage = pageId;
-            activeTonasePage = pageId;
-            document.getElementById('tonase-submenu').classList.remove('hidden');
-            document.getElementById('tonase-chevron').style.transform = 'rotate(180deg)';
-
-            switchMenu('menu-tonase');
-            highlightTonaseSubItem(pageId);
-
-            const frame = document.getElementById('tonaseFrame');
-            if (frame) {
-                if (!frame.dataset.loaded) {
-                    frame.src = 'tonase.html';
-                    frame.dataset.loaded = '1';
-                } else if (frame.contentWindow && typeof frame.contentWindow.switchPage === 'function') {
-                    frame.contentWindow.switchPage(pageId);
-                }
-            }
-        }
-
-        function highlightTonaseSubItem(pageId) {
-            const ids = ['dashboard', 'transaksi', 'stok', 'harga', 'customer', 'hutang', 'laporan', 'pengaturan'];
-            ids.forEach(id => {
-                const el = document.getElementById('tonase-sub-' + id);
-                if (!el) return;
-                const hiddenCls = el.classList.contains('hidden') ? 'hidden ' : '';
-                if (id === pageId) {
-                    el.className = hiddenCls + "w-full text-left px-3 py-2 rounded-lg bg-[#0b2c59]/70 text-emerald-300 font-bold transition";
-                } else {
-                    el.className = hiddenCls + "w-full text-left px-3 py-2 rounded-lg text-slate-300 hover:bg-[#1b2029] hover:text-white transition";
-                }
-            });
-        }
-
-        document.getElementById('tonaseFrame').addEventListener('load', () => {
-            try {
-                const frame = document.getElementById('tonaseFrame');
-                if (frame.contentWindow && typeof frame.contentWindow.switchPage === 'function') {
-                    frame.contentWindow.switchPage(pendingTonasePage || 'dashboard');
-                }
-            } catch (e) {}
-        });
-
-        window.addEventListener('message', (ev) => {
-            if (ev.data && ev.data.type === 'tonase-page-changed' && ev.data.page) {
-                highlightTonaseSubItem(ev.data.page);
-            }
-        });
-
-        // =========================================================================
-        // KELOLA AKUN
-        // =========================================================================
         async function fetchUsersFromSPS() {
             const tbody = document.getElementById('akun-table-body');
             if (tbody) tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-400">Memuat daftar akun dari tab Akun...</td></tr>';
@@ -1319,7 +1211,7 @@
         }
 
         // =========================================================================
-        // NAVIGASI SIDEBAR
+        // NAVIGASI & CLOCK
         // =========================================================================
         function toggleMobileSidebar() {
             const nav = document.getElementById('sidebar-nav');
@@ -1328,8 +1220,8 @@
         }
 
         function switchMenu(menuId) {
-            const menus = ['menu-ringkasan', 'menu-input', 'menu-karyawan', 'menu-slip', 'menu-laporan', 'menu-tonase', 'menu-akun'];
-            const btns = ['btn-menu-ringkasan', 'btn-menu-input', 'btn-menu-karyawan', 'btn-menu-slip', 'btn-menu-laporan', 'btn-menu-tonase', 'btn-menu-akun'];
+            const menus = ['menu-ringkasan', 'menu-input', 'menu-karyawan', 'menu-slip', 'menu-laporan', 'menu-akun'];
+            const btns = ['btn-menu-ringkasan', 'btn-menu-input', 'btn-menu-karyawan', 'btn-menu-slip', 'btn-menu-laporan', 'btn-menu-akun'];
 
             menus.forEach(id => document.getElementById(id).classList.add('hidden'));
             document.getElementById(menuId).classList.remove('hidden');
@@ -1338,13 +1230,8 @@
                 const el = document.getElementById(btnId);
                 if (!el) return;
                 const isAkun = btnId === 'btn-menu-akun';
-                const isTonase = btnId === 'btn-menu-tonase';
                 const extraHidden = (isAkun && (!currentUser || !isAdminRole(currentUser.role))) ? 'hidden ' : '';
-                if (isTonase) {
-                    el.className = "w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg text-sm font-medium text-emerald-300 hover:bg-[#1b2029] hover:text-white transition text-left";
-                } else {
-                    el.className = extraHidden + "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium " + (isAkun ? "text-[#f5a623]" : "text-slate-300") + " hover:bg-[#1b2029] hover:text-white transition text-left";
-                }
+                el.className = extraHidden + "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium " + (isAkun ? "text-[#f5a623]" : "text-slate-300") + " hover:bg-[#1b2029] hover:text-white transition text-left";
             });
 
             const activeMap = {
@@ -1353,32 +1240,11 @@
                 'menu-karyawan': 'btn-menu-karyawan',
                 'menu-slip': 'btn-menu-slip',
                 'menu-laporan': 'btn-menu-laporan',
-                'menu-tonase': 'btn-menu-tonase',
                 'menu-akun': 'btn-menu-akun'
             };
             const activeBtn = document.getElementById(activeMap[menuId]);
             if (activeBtn) {
-                if (menuId === 'menu-tonase') {
-                    activeBtn.className = "w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg text-sm font-semibold bg-[#0b2c59] text-emerald-300 transition text-left";
-                } else {
-                    activeBtn.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold bg-[#0b2c59] text-[#60a5fa] transition text-left";
-                }
-            }
-
-            const workspace = document.getElementById('main-workspace');
-            const container = document.getElementById('main-container');
-            const brandTitle = document.getElementById('sidebar-brand-title');
-
-            if (menuId === 'menu-tonase') {
-                workspace.className = "flex-1 p-0 overflow-hidden";
-                container.className = "w-full h-full";
-                if (brandTitle) brandTitle.innerText = "Kas & Tonase";
-            } else {
-                workspace.className = "flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto";
-                container.className = "max-w-7xl mx-auto space-y-6";
-                if (brandTitle) brandTitle.innerText = "Payroll";
-                document.getElementById('tonase-submenu').classList.add('hidden');
-                document.getElementById('tonase-chevron').style.transform = 'rotate(0deg)';
+                activeBtn.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold bg-[#0b2c59] text-[#60a5fa] transition text-left";
             }
 
             if (menuId === 'menu-akun') fetchUsersFromSPS();
@@ -1420,13 +1286,17 @@
             updateLiveSlipPreview();
         }
 
-        function onDivisiChange(val) { setFormSkema(val, true); }
+        function onDivisiChange(val) {
+            setFormSkema(val, true);
+        }
 
         function setFormSkema(skema, autoToggleLembur = true) {
             const normalized = (skema === 'Supir B3' || skema === 'Supir SPD') ? skema : 'Karyawan limbah';
             document.getElementById('input-skema').value = normalized;
             const divSelect = document.getElementById('input-divisi');
-            if (divSelect && divSelect.value !== normalized) divSelect.value = normalized;
+            if (divSelect && divSelect.value !== normalized) {
+                divSelect.value = normalized;
+            }
 
             const secHarian = document.getElementById('section-pokok-harian');
             const secTrip = document.getElementById('section-pokok-trip');
@@ -1451,6 +1321,7 @@
                 document.getElementById('live-label-gapok').innerText = 'Gaji pokok (Harian)';
                 if (autoToggleLembur) setLemburActiveState({ hari: false, jam: true, inap: false });
             }
+
             updateLiveSlipPreview();
         }
 
@@ -1760,7 +1631,9 @@
             document.getElementById('input-divisi').value = c.skema;
 
             setFormSkema(c.skema, false);
-            if (c.skema === 'Supir SPD') setSupirSpdUnit(c.isTrip ? 'trip' : 'hari', false);
+            if (c.skema === 'Supir SPD') {
+                setSupirSpdUnit(c.isTrip ? 'trip' : 'hari', false);
+            }
 
             if (c.isTrip) {
                 document.getElementById('input-trip').value = c.unitPokok || 0;
@@ -2315,7 +2188,9 @@
             document.getElementById('slipModal').classList.remove('hidden');
         }
 
-        function closeModal() { document.getElementById('slipModal').classList.add('hidden'); }
+        function closeModal() {
+            document.getElementById('slipModal').classList.add('hidden');
+        }
 
         function directPrintSingle() {
             if (!currentSlipItem) return;
@@ -2547,7 +2422,9 @@
             try {
                 setSyncBadge('loading', 'SAVING...');
                 const resJson = await jsonpRequest(payload);
-                if (resJson && resJson.status === 'error') throw new Error(resJson.message || 'Gagal simpan di SPS');
+                if (resJson && resJson.status === 'error') {
+                    throw new Error(resJson.message || 'Gagal simpan di SPS');
+                }
 
                 payrollData.unshift(payload);
                 localStorage.setItem('spd_payroll_cache', JSON.stringify(payrollData));
@@ -2579,8 +2456,14 @@
             }
         }
 
-        function handleFormSubmit(event) { event.preventDefault(); submitPayrollData(false); }
-        function saveAndNextEmployee() { submitPayrollData(true); }
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            submitPayrollData(false);
+        }
+
+        function saveAndNextEmployee() {
+            submitPayrollData(true);
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
             setFormSkema('Karyawan limbah', true);
@@ -2590,928 +2473,12 @@
             if (savedUser) {
                 try {
                     const parsed = JSON.parse(savedUser);
-                    if (parsed && (parsed.username || parsed.email)) applyLoggedInSession(parsed);
+                    if (parsed && (parsed.username || parsed.email)) {
+                        applyLoggedInSession(parsed);
+                    }
                 } catch (e) {}
             }
         });
     </script>
 </body>
 </html>
-
-File 2: tonase.html (Otomatis Sembunyikan Sidebar Saat Masuk Portal index.html)
-
-Di file tonase.html, hanya ada 2 tambahan kecil (menambahkan class
-.embedded-mode agar sidebar dobelnya hilang total dan sinkronisasi highlight
-sub-menu saat pindah halaman). Berikut kode tonase.html lengkap siap upload:
-
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kas & Tonase - Terhubung SPS Real-Time</title>
-  <script>
-    if (window.self !== window.top) {
-      document.documentElement.classList.add('embedded-mode');
-    }
-  </script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
-  <style>
-    :root {
-      --sidebar-bg: #46627F;
-      --sidebar-active: #344B63;
-      --btn-primary: #B8AB3A;
-      --btn-primary-hover: #A3962E;
-      --btn-primary-text: #1F2D3A;
-      --page-bg: #E9EEF3;
-      --card-bg: #FFFFFF;
-      --text-main: #1F2D3A;
-      --accent-stok: #46627F;
-    }
-    body.theme-b {
-      --sidebar-bg: #1F5C4A;
-      --sidebar-active: #164436;
-      --btn-primary: #2E9E6B;
-      --btn-primary-hover: #258559;
-      --btn-primary-text: #FFFFFF;
-      --page-bg: #F1F5F2;
-      --card-bg: #FFFFFF;
-      --text-main: #1E2A24;
-      --accent-stok: #D98E2B;
-    }
-    body { background-color: var(--page-bg); color: var(--text-main); }
-    .bg-sidebar { background-color: var(--sidebar-bg); }
-    .bg-sidebar-active { background-color: var(--sidebar-active); }
-    .btn-main { background-color: var(--btn-primary); color: var(--btn-primary-text); }
-    .btn-main:hover { background-color: var(--btn-primary-hover); }
-    .bar-stok { background-color: var(--accent-stok); }
-
-    /* Hilangkan sidebar dobel saat dibuka di dalam portal spd. Payroll */
-    .embedded-mode aside,
-    .embedded-mode header.md\:hidden,
-    .embedded-mode nav.md\:hidden {
-      display: none !important;
-    }
-    .embedded-mode main {
-      padding-bottom: 2rem !important;
-    }
-
-    @media print {
-      body * { visibility: hidden; }
-      #printArea, #printArea * { visibility: visible; }
-      #printArea { position: absolute; left: 0; top: 0; width: 100%; }
-    }
-  </style>
-</head>
-<body class="font-sans antialiased min-h-screen flex flex-col md:flex-row">
-
-  <!-- SIDEBAR DESKTOP (otomatis tersembunyi jika di dalam portal spd. Payroll) -->
-  <aside class="hidden md:flex md:w-60 bg-sidebar text-white flex-col justify-between shrink-0 min-h-screen sticky top-0">
-    <div>
-      <div class="px-5 py-5 border-b border-white/10">
-        <div class="font-bold text-lg tracking-tight">Kas dan tonase</div>
-        <div class="text-xs text-white/70 mt-0.5 flex items-center justify-between">
-          <span id="roleBadgeSidebar">Pemilik</span>
-          <span class="text-[10px] bg-white/15 px-1.5 py-0.5 rounded">tonase.spd.co.id</span>
-        </div>
-      </div>
-      <nav id="desktopNav" class="p-3 space-y-1 text-sm"></nav>
-    </div>
-    <div class="p-4 border-t border-white/10 text-xs">
-      <div id="spsIndicatorSide" class="flex items-center gap-2 text-emerald-300 font-medium">
-        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-        <span>SPS tersinkron</span>
-      </div>
-    </div>
-  </aside>
-
-  <!-- MOBILE TOPBAR -->
-  <header class="md:hidden bg-sidebar text-white px-4 py-3 flex justify-between items-center sticky top-0 z-30 shadow">
-    <div>
-      <div class="font-bold text-base">Kas dan tonase</div>
-      <div id="spsIndicatorMobile" class="text-[11px] text-emerald-300 flex items-center gap-1.5">
-        <span class="w-2 h-2 rounded-full bg-emerald-400"></span> SPS tersinkron
-      </div>
-    </div>
-    <div class="text-xs bg-white/15 px-2.5 py-1 rounded-full" id="roleBadgeMobile">Pemilik</div>
-  </header>
-
-  <!-- KONTEN UTAMA -->
-  <main class="flex-1 p-4 md:p-6 pb-24 md:pb-8 max-w-7xl w-full mx-auto space-y-5">
-
-    <!-- ==================== 1. DASHBOARD ==================== -->
-    <section id="page-dashboard" class="space-y-5">
-      <div class="flex flex-wrap justify-between items-center gap-3">
-        <div>
-          <h1 class="text-xl font-bold">Dashboard</h1>
-          <p class="text-xs text-slate-500">Ringkasan arus kas, margin laba kotor, dan tonase gudang</p>
-        </div>
-        <div class="flex items-center gap-2">
-          <select id="dashPeriode" onchange="renderDashboard()" class="bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-medium">
-            <option value="month">Bulan ini</option>
-            <option value="today">Hari ini</option>
-            <option value="week">7 hari terakhir</option>
-            <option value="all">Semua waktu</option>
-          </select>
-          <button onclick="bukaTransaksiBaru()" class="btn-main px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
-            Transaksi
-          </button>
-        </div>
-      </div>
-
-      <div id="dashAlertStok" class="hidden bg-amber-100 border border-amber-300 text-amber-900 px-4 py-2.5 rounded-xl text-xs font-medium flex items-center gap-2">
-        <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
-        <span id="dashAlertStokText"></span>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200/70">
-          <div class="text-xs font-medium text-slate-500">Kas masuk (jual & piutang)</div>
-          <div id="kpiKasMasuk" class="text-xl font-bold text-emerald-700 mt-1">Rp 0</div>
-          <div id="kpiTonJual" class="text-xs text-slate-500 mt-1">0 ton terjual</div>
-        </div>
-        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200/70">
-          <div class="text-xs font-medium text-slate-500">Kas keluar (beli & ops)</div>
-          <div id="kpiKasKeluar" class="text-xl font-bold text-rose-700 mt-1">Rp 0</div>
-          <div id="kpiTonBeli" class="text-xs text-slate-500 mt-1">0 ton dibeli</div>
-        </div>
-        <div class="bg-blue-50 p-4 rounded-xl shadow-sm border border-blue-200">
-          <div class="text-xs font-medium text-blue-800">Selisih kas</div>
-          <div id="kpiSelisihKas" class="text-xl font-bold text-blue-900 mt-1">Rp 0</div>
-          <div id="kpiMargin" class="text-xs text-blue-700 mt-1">Margin kotor: 0%</div>
-        </div>
-        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200/70">
-          <div class="text-xs font-medium text-slate-500">Stok gudang</div>
-          <div id="kpiStokTotal" class="text-xl font-bold mt-1">0 ton</div>
-          <div id="kpiJenisStok" class="text-xs text-slate-500 mt-1">0 jenis barang</div>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
-        <div class="lg:col-span-3 bg-white p-5 rounded-xl shadow-sm border border-slate-200/70">
-          <div class="flex justify-between items-center mb-4">
-            <h2 class="text-sm font-bold">Beli dan jual 7 hari terakhir</h2>
-            <div class="flex gap-3 text-xs">
-              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-rose-500 inline-block"></span> Beli</span>
-              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-600 inline-block"></span> Jual</span>
-            </div>
-          </div>
-          <div id="chart7Hari" class="h-44 flex items-end justify-between gap-2 pt-4 border-b border-slate-200"></div>
-          <div id="chart7HariLabels" class="flex justify-between text-[11px] text-slate-500 pt-2"></div>
-        </div>
-
-        <div class="lg:col-span-2 bg-white p-5 rounded-xl shadow-sm border border-slate-200/70">
-          <div class="flex justify-between items-center mb-4">
-            <h2 class="text-sm font-bold">Stok per barang</h2>
-            <button onclick="switchPage('stok')" class="text-xs text-blue-700 hover:underline">Lihat semua</button>
-          </div>
-          <div id="dashStokList" class="space-y-3.5 text-xs"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== 2. TRANSAKSI ==================== -->
-    <section id="page-transaksi" class="hidden space-y-5">
-      <div class="flex flex-wrap justify-between items-center gap-3">
-        <div class="flex bg-white p-1 rounded-xl border border-slate-200 text-xs font-semibold">
-          <button onclick="setTrxView('form')" id="tabTrxForm" class="px-3.5 py-1.5 rounded-lg bg-slate-800 text-white">Transaksi baru</button>
-          <button onclick="setTrxView('riwayat')" id="tabTrxRiwayat" class="px-3.5 py-1.5 rounded-lg text-slate-600">Riwayat nota</button>
-          <button onclick="setTrxView('kaslain')" id="tabTrxKasLain" class="px-3.5 py-1.5 rounded-lg text-slate-600">Kas lain (Ops)</button>
-        </div>
-      </div>
-
-      <div id="trxViewForm" class="space-y-4">
-        <div class="flex flex-wrap justify-between items-center gap-3">
-          <div>
-            <h1 class="text-xl font-bold" id="formTrxTitle">Transaksi baru</h1>
-            <p class="text-xs text-slate-500">Nota <span id="notaNomor" class="font-semibold text-slate-700"></span></p>
-          </div>
-          <div class="inline-flex bg-white p-1 rounded-xl border border-slate-300 shadow-sm">
-            <button type="button" onclick="setModeTransaksi('BELI')" id="btnModeBeli" class="px-5 py-1.5 rounded-lg text-xs font-bold btn-main">Beli</button>
-            <button type="button" onclick="setModeTransaksi('JUAL')" id="btnModeJual" class="px-5 py-1.5 rounded-lg text-xs font-bold text-slate-600">Jual</button>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-          <div class="lg:col-span-2 space-y-4">
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200/80 grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
-              <div class="sm:col-span-2">
-                <label class="block text-[11px] font-semibold text-slate-500 mb-1">Customer / Buyer (cari nama)</label>
-                <div class="flex gap-2">
-                  <input list="customerDatalist" id="trxCustomerInput" oninput="onCustomerSelect()" placeholder="Ketik atau pilih customer..." class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-blue-500 outline-none" />
-                  <datalist id="customerDatalist"></datalist>
-                  <input type="text" id="trxPlat" placeholder="No. Polisi" class="w-28 border border-slate-300 rounded-lg px-2.5 py-2 text-xs outline-none" />
-                </div>
-              </div>
-              <div class="bg-slate-50 px-3 py-2 rounded-lg border border-slate-200 text-right">
-                <div class="text-[11px] text-slate-500" id="lblSaldoCust">Saldo Hutang</div>
-                <div id="trxCustSaldo" class="text-sm font-bold text-amber-700">Rp 0</div>
-              </div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200/80 overflow-hidden">
-              <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs">
-                  <thead class="bg-slate-50 border-b border-slate-200 text-slate-500">
-                    <tr>
-                      <th class="py-2.5 px-3">Barang & Harga/kg</th>
-                      <th class="py-2.5 px-2 w-20">Bruto</th>
-                      <th class="py-2.5 px-2 w-16">Tara</th>
-                      <th class="py-2.5 px-2 w-16">Pot.%</th>
-                      <th class="py-2.5 px-2 text-right">Netto</th>
-                      <th class="py-2.5 px-3 text-right">Subtotal</th>
-                      <th class="py-2.5 px-2 w-8"></th>
-                    </tr>
-                  </thead>
-                  <tbody id="trxRowsBody" class="divide-y divide-slate-100"></tbody>
-                </table>
-              </div>
-              <div class="p-3 bg-slate-50/70 border-t border-slate-200 flex flex-wrap justify-between items-center gap-2">
-                <button type="button" onclick="tambahBarisBarang()" class="text-xs font-semibold text-blue-700 hover:text-blue-900 flex items-center gap-1">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
-                  Tambah barang
-                </button>
-                <div id="stokWarningBox" class="hidden text-xs font-semibold text-rose-600 flex items-center gap-1">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01M5 19h14a2 2 0 001.7-3L13.7 4a2 2 0 00-3.4 0L3.3 16A2 2 0 005 19z"/></svg>
-                  <span id="stokWarningMsg"></span>
-                </div>
-              </div>
-            </div>
-
-            <div class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200/80 flex flex-wrap items-center justify-between gap-3 text-xs">
-              <div class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3"/></svg>
-                <span class="font-medium text-slate-600">Foto nota / kendaraan (opsional):</span>
-                <input type="file" id="trxFotoInput" accept="image/*" onchange="previewFoto(event)" class="text-xs text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded file:border-0 file:bg-slate-100 file:text-slate-700" />
-              </div>
-              <img id="trxFotoPreview" class="hidden h-10 w-14 object-cover rounded border" />
-            </div>
-          </div>
-
-          <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200/80 space-y-4 h-fit">
-            <div class="flex justify-between items-center text-xs text-slate-500">
-              <span>Total netto</span>
-              <span id="trxTotalNetto" class="text-sm font-bold text-slate-800">0 kg (0 ton)</span>
-            </div>
-            <div>
-              <div class="text-xs text-slate-500">Total bayar</div>
-              <div id="trxTotalBayar" class="text-2xl font-bold mt-0.5">Rp 0</div>
-            </div>
-
-            <div>
-              <div class="text-[11px] font-semibold text-slate-500 mb-1.5">Metode pembayaran</div>
-              <div class="grid grid-cols-3 gap-1.5 text-xs font-semibold">
-                <button type="button" onclick="setMetodeBayar('Tunai')" id="payTunai" class="py-2 rounded-lg border border-blue-600 bg-blue-50 text-blue-800">Tunai</button>
-                <button type="button" onclick="setMetodeBayar('Transfer')" id="payTransfer" class="py-2 rounded-lg border border-slate-200 text-slate-600">Transfer</button>
-                <button type="button" onclick="setMetodeBayar('Hutang')" id="payHutang" class="py-2 rounded-lg border border-slate-200 text-slate-600">Hutang</button>
-              </div>
-            </div>
-
-            <div class="space-y-2 pt-1 text-xs">
-              <div class="flex justify-between items-center gap-2">
-                <span class="text-slate-600">Dibayar (Rp)</span>
-                <input type="number" id="trxDibayar" oninput="hitungSisaHutang()" class="w-36 text-right font-bold border border-slate-300 rounded-lg px-2.5 py-1.5 outline-none focus:ring-2 focus:ring-blue-500" />
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-slate-600" id="lblSisaHutang">Sisa hutang</span>
-                <span id="trxSisaHutang" class="font-bold text-amber-700">Rp 0</span>
-              </div>
-            </div>
-
-            <button type="button" onclick="simpanTransaksi()" class="w-full btn-main py-2.5 rounded-xl text-sm font-bold shadow-sm transition">
-              Simpan dan cetak nota
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div id="trxViewRiwayat" class="hidden bg-white p-5 rounded-xl shadow-sm border border-slate-200/80 space-y-4">
-        <div class="flex flex-wrap justify-between items-center gap-3">
-          <h2 class="text-base font-bold">Riwayat transaksi</h2>
-          <div class="flex flex-wrap gap-2 text-xs">
-            <input type="date" id="fltTglMulai" onchange="renderRiwayat()" class="border rounded-lg px-2.5 py-1.5" />
-            <input type="date" id="fltTglAkhir" onchange="renderRiwayat()" class="border rounded-lg px-2.5 py-1.5" />
-            <select id="fltMode" onchange="renderRiwayat()" class="border rounded-lg px-2.5 py-1.5">
-              <option value="ALL">Semua</option>
-              <option value="BELI">Beli</option>
-              <option value="JUAL">Jual</option>
-            </select>
-            <input type="text" id="fltCari" onkeyup="renderRiwayat()" placeholder="Cari nota / customer..." class="border rounded-lg px-2.5 py-1.5" />
-          </div>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-slate-50 border-b text-slate-500">
-              <tr>
-                <th class="py-2.5 px-3">Nota & Tanggal</th>
-                <th class="py-2.5 px-3">Tipe & Customer</th>
-                <th class="py-2.5 px-3">Rincian Barang</th>
-                <th class="py-2.5 px-3 text-right">Netto</th>
-                <th class="py-2.5 px-3 text-right">Total & Bayar</th>
-                <th class="py-2.5 px-3 text-center">SPS</th>
-                <th class="py-2.5 px-3 text-center">Aksi</th>
-              </tr>
-            </thead>
-            <tbody id="riwayatBody" class="divide-y"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <div id="trxViewKasLain" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200/80 space-y-3 h-fit">
-          <h2 class="text-sm font-bold">Catat kas lain (Operasional)</h2>
-          <p class="text-xs text-slate-500">Bensin, upah bongkar muat, makan, atau pemasukan lain.</p>
-          <select id="opsTipe" class="w-full border rounded-lg px-3 py-2 text-xs">
-            <option value="KELUAR">Kas Keluar (Biaya Operasional)</option>
-            <option value="MASUK">Kas Masuk Lainnya</option>
-          </select>
-          <input type="text" id="opsKet" placeholder="Keterangan (mis: Upah bongkar truk)" class="w-full border rounded-lg px-3 py-2 text-xs" />
-          <input type="number" id="opsNominal" placeholder="Nominal (Rp)" class="w-full border rounded-lg px-3 py-2 text-xs" />
-          <button onclick="simpanKasLain()" class="w-full btn-main py-2 rounded-lg text-xs font-bold">Simpan kas</button>
-        </div>
-        <div class="lg:col-span-2 bg-white p-5 rounded-xl shadow-sm border border-slate-200/80">
-          <h2 class="text-sm font-bold mb-3">Riwayat kas operasional</h2>
-          <table class="w-full text-left text-xs">
-            <thead class="bg-slate-50 border-b text-slate-500">
-              <tr><th class="py-2 px-3">Tanggal</th><th class="py-2 px-3">Keterangan</th><th class="py-2 px-3">Tipe</th><th class="py-2 px-3 text-right">Nominal</th><th class="py-2 px-3"></th></tr>
-            </thead>
-            <tbody id="kasLainBody" class="divide-y"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== 3. STOK ==================== -->
-    <section id="page-stok" class="hidden space-y-5">
-      <div class="flex justify-between items-center">
-        <div>
-          <h1 class="text-xl font-bold">Stok barang</h1>
-          <p class="text-xs text-slate-500">Pantau tonase per jenis barang, batas minimum, harga beli rata-rata, dan stok opname</p>
-        </div>
-      </div>
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200/80 overflow-x-auto">
-        <table class="w-full text-left text-xs">
-          <thead class="bg-slate-50 border-b text-slate-500">
-            <tr>
-              <th class="py-3 px-4">Jenis barang</th>
-              <th class="py-3 px-4 text-right">Stok fisik (kg / ton)</th>
-              <th class="py-3 px-4 text-right">Batas minimum</th>
-              <th class="py-3 px-4 text-right role-owner-only">HPP rata-rata/kg</th>
-              <th class="py-3 px-4 text-center">Status</th>
-              <th class="py-3 px-4 text-center">Stok opname</th>
-            </tr>
-          </thead>
-          <tbody id="stokBody" class="divide-y"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- ==================== 4. HARGA BARANG ==================== -->
-    <section id="page-harga" class="hidden space-y-5">
-      <div class="flex flex-wrap justify-between items-center gap-3">
-        <div>
-          <h1 class="text-xl font-bold">Harga barang</h1>
-          <p class="text-xs text-slate-500">Master harga beli & jual per 1 kg beserta riwayat perubahan harga</p>
-        </div>
-        <button onclick="tambahJenisBarangModal()" class="btn-main px-4 py-2 rounded-lg text-xs font-bold">+ Tambah jenis barang</button>
-      </div>
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200/80 overflow-x-auto">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-slate-50 border-b text-slate-500">
-              <tr>
-                <th class="py-3 px-4">Barang</th>
-                <th class="py-3 px-4 text-right role-owner-only">Harga beli/kg</th>
-                <th class="py-3 px-4 text-right">Harga jual/kg</th>
-                <th class="py-3 px-4 text-right">Min. stok (kg)</th>
-                <th class="py-3 px-4 text-center">Aksi</th>
-              </tr>
-            </thead>
-            <tbody id="hargaBody" class="divide-y"></tbody>
-          </table>
-        </div>
-        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200/80 space-y-3">
-          <h2 class="text-sm font-bold">Riwayat perubahan harga</h2>
-          <div id="riwayatHargaList" class="space-y-2 text-xs max-h-80 overflow-y-auto"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== 5. CUSTOMER ==================== -->
-    <section id="page-customer" class="hidden space-y-5">
-      <div class="flex flex-wrap justify-between items-center gap-3">
-        <div>
-          <h1 class="text-xl font-bold">Customer & buyer</h1>
-          <p class="text-xs text-slate-500">Kelola data customer, nomor WhatsApp, kendaraan, dan harga khusus</p>
-        </div>
-        <button onclick="bukaModalCustomer()" class="btn-main px-4 py-2 rounded-lg text-xs font-bold">+ Tambah customer</button>
-      </div>
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200/80 overflow-x-auto">
-        <table class="w-full text-left text-xs">
-          <thead class="bg-slate-50 border-b text-slate-500">
-            <tr>
-              <th class="py-3 px-4">Nama & Tipe</th>
-              <th class="py-3 px-4">No. WhatsApp</th>
-              <th class="py-3 px-4">Kendaraan</th>
-              <th class="py-3 px-4">Harga Khusus</th>
-              <th class="py-3 px-4 text-right">Hutang / Piutang</th>
-              <th class="py-3 px-4 text-center">Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="customerBody" class="divide-y"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- ==================== 6. HUTANG PIUTANG ==================== -->
-    <section id="page-hutang" class="hidden space-y-5">
-      <div>
-        <h1 class="text-xl font-bold">Hutang & piutang</h1>
-        <p class="text-xs text-slate-500">Pelunasan bertahap hutang pembelian ke customer dan piutang penjualan dari buyer</p>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl">
-          <div class="text-xs text-amber-800 font-medium">Total hutang kita (pembelian belum lunas)</div>
-          <div id="totalHutangKita" class="text-xl font-bold text-amber-900 mt-1">Rp 0</div>
-        </div>
-        <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl">
-          <div class="text-xs text-blue-800 font-medium">Total piutang (penjualan belum dibayar buyer)</div>
-          <div id="totalPiutangKita" class="text-xl font-bold text-blue-900 mt-1">Rp 0</div>
-        </div>
-      </div>
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200/80 overflow-x-auto">
-        <table class="w-full text-left text-xs">
-          <thead class="bg-slate-50 border-b text-slate-500">
-            <tr>
-              <th class="py-3 px-4">Nota</th>
-              <th class="py-3 px-4">Customer / Buyer</th>
-              <th class="py-3 px-4">Jenis</th>
-              <th class="py-3 px-4 text-right">Total Nota</th>
-              <th class="py-3 px-4 text-right">Sisa Belum Lunas</th>
-              <th class="py-3 px-4 text-center">Pelunasan</th>
-            </tr>
-          </thead>
-          <tbody id="hutangBody" class="divide-y"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- ==================== 7. LAPORAN ==================== -->
-    <section id="page-laporan" class="hidden space-y-5">
-      <div class="flex flex-wrap justify-between items-center gap-3">
-        <div>
-          <h1 class="text-xl font-bold">Laporan & tutup kas</h1>
-          <p class="text-xs text-slate-500">Laporan margin per barang, tutup kas harian, dan ekspor Excel</p>
-        </div>
-        <div class="flex gap-2">
-          <button onclick="exportExcelCSV()" class="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-lg text-xs font-bold">Ekspor Excel (.csv)</button>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200/80">
-          <h2 class="text-sm font-bold mb-3">Margin kotor per barang (penjualan - HPP)</h2>
-          <table class="w-full text-left text-xs">
-            <thead class="bg-slate-50 border-b text-slate-500">
-              <tr><th class="py-2 px-2">Barang</th><th class="py-2 px-2 text-right">Terjual</th><th class="py-2 px-2 text-right">Omzet</th><th class="py-2 px-2 text-right">Laba Kotor</th></tr>
-            </thead>
-            <tbody id="laporanMarginBody" class="divide-y"></tbody>
-          </table>
-        </div>
-
-        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200/80 space-y-3">
-          <h2 class="text-sm font-bold">Tutup kas harian (rekonsiliasi laci tunai)</h2>
-          <div class="bg-slate-50 p-3 rounded-lg text-xs space-y-1 border">
-            <div class="flex justify-between"><span>Kas tunai masuk hari ini:</span><b id="tkMasuk" class="text-emerald-700">Rp 0</b></div>
-            <div class="flex justify-between"><span>Kas tunai keluar hari ini:</span><b id="tkKeluar" class="text-rose-700">Rp 0</b></div>
-            <div class="flex justify-between border-t pt-1 font-bold"><span>Saldo tunai sistem hari ini:</span><span id="tkSaldoSistem">Rp 0</span></div>
-          </div>
-          <div class="flex gap-2 items-center text-xs">
-            <input type="number" id="tkFisik" placeholder="Uang fisik di laci (Rp)" class="w-full border rounded-lg px-3 py-2" />
-            <button onclick="simpanTutupKas()" class="btn-main px-4 py-2 rounded-lg font-bold shrink-0">Tutup kas</button>
-          </div>
-          <div id="tkRiwayat" class="text-[11px] text-slate-600 space-y-1 max-h-28 overflow-y-auto"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== 8. PENGATURAN ==================== -->
-    <section id="page-pengaturan" class="hidden space-y-5">
-      <div>
-        <h1 class="text-xl font-bold">Pengaturan</h1>
-        <p class="text-xs text-slate-500">Tema warna, hak akses pengguna, koneksi SPS real-time, backup Google Sheets, dan log audit</p>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200/80 space-y-4">
-          <h2 class="text-sm font-bold">Tampilan & hak akses</h2>
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1.5">Pilihan palet warna</label>
-            <div class="grid grid-cols-2 gap-2 text-xs">
-              <button onclick="setTheme('a')" id="btnThemeA" class="p-3 rounded-xl border-2 border-blue-600 text-left">
-                <div class="font-bold">Pilihan A (Payroll SPD)</div>
-                <div class="text-[11px] text-slate-500">Biru keabuan & kuning zaitun</div>
-              </button>
-              <button onclick="setTheme('b')" id="btnThemeB" class="p-3 rounded-xl border border-slate-200 text-left">
-                <div class="font-bold">Pilihan B (Daur Ulang)</div>
-                <div class="text-[11px] text-slate-500">Hijau tua & hijau segar</div>
-              </button>
-            </div>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1.5">Mode hak akses (Simulasi Login)</label>
-            <select id="selectRole" onchange="setRole(this.value)" class="w-full border rounded-lg px-3 py-2 text-xs">
-              <option value="OWNER">Pemilik (Akses penuh: Laporan, HPP, Pengaturan)</option>
-              <option value="PETUGAS">Petugas Timbang (Hanya input transaksi & lihat stok)</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">URL Webhook Google Sheets (Auto-Backup)</label>
-            <div class="flex gap-2">
-              <input type="text" id="gsheetUrl" placeholder="https://script.google.com/macros/s/.../exec" class="w-full border rounded-lg px-3 py-2 text-xs" />
-              <button onclick="simpanConfigIntegrasi()" class="btn-main px-3 py-2 rounded-lg text-xs font-bold">Simpan</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200/80 space-y-3">
-          <div class="flex justify-between items-center">
-            <h2 class="text-sm font-bold">Koneksi real-time SPS</h2>
-            <span id="spsStatusDetail" class="text-[11px] px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 font-semibold">Terhubung Lokal</span>
-          </div>
-          <div class="grid grid-cols-2 gap-2 text-xs">
-            <input type="text" id="spsUrl" value="http://localhost:3000" class="border rounded-lg px-2.5 py-1.5" placeholder="Server SPS URL" />
-            <input type="text" id="spsKey" value="SPS-SECRET-KEY-2025" class="border rounded-lg px-2.5 py-1.5" placeholder="API Key" />
-          </div>
-          <div class="flex gap-2">
-            <button onclick="connectSPS()" class="btn-main px-3 py-1.5 rounded-lg text-xs font-bold">Hubungkan ulang SPS</button>
-            <button onclick="testPullSPS()" class="bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg text-xs font-medium">Uji terima data SPS</button>
-          </div>
-          <div class="text-[11px] font-semibold text-slate-500 pt-1">Log sinkronisasi SPS:</div>
-          <div id="spsTechLog" class="bg-slate-50 border rounded-lg p-2.5 h-28 overflow-y-auto font-mono text-[11px] text-slate-700 space-y-1"></div>
-        </div>
-
-        <div class="lg:col-span-2 bg-white p-5 rounded-xl shadow-sm border border-slate-200/80">
-          <h2 class="text-sm font-bold mb-2">Log aktivitas & perubahan data (Audit Trail)</h2>
-          <div id="auditLogBody" class="max-h-40 overflow-y-auto text-xs space-y-1 text-slate-600"></div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- MOBILE BOTTOM NAVIGATION -->
-  <nav class="md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 flex justify-around items-center py-1.5 z-40 text-[10px] font-medium text-slate-600">
-    <button onclick="switchPage('dashboard')" class="flex flex-col items-center p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/></svg>Dashboard</button>
-    <button onclick="switchPage('stok')" class="flex flex-col items-center p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"/></svg>Stok</button>
-    <button onclick="bukaTransaksiBaru()" class="btn-main w-11 h-11 rounded-full flex items-center justify-center -mt-5 shadow-lg border-2 border-white">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
-    </button>
-    <button onclick="switchPage('hutang')" class="flex flex-col items-center p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V7m0 10v-1"/></svg>Hutang</button>
-    <button onclick="toggleMobileMenu()" class="flex flex-col items-center p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Menu</button>
-  </nav>
-
-  <!-- MOBILE DRAWER -->
-  <div id="mobileDrawer" class="hidden fixed inset-0 bg-black/40 z-50 md:hidden" onclick="toggleMobileMenu()">
-    <div class="bg-white w-64 h-full p-4 space-y-2 text-sm" onclick="event.stopPropagation()">
-      <div class="font-bold text-base pb-2 border-b">Semua Menu</div>
-      <button onclick="switchPage('transaksi');toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100">Transaksi & Kas Lain</button>
-      <button onclick="switchPage('harga');toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100">Harga Barang</button>
-      <button onclick="switchPage('customer');toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100">Customer</button>
-      <button onclick="switchPage('laporan');toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 role-owner-only">Laporan & Tutup Kas</button>
-      <button onclick="switchPage('pengaturan');toggleMobileMenu()" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 role-owner-only">Pengaturan</button>
-    </div>
-  </div>
-
-  <!-- MODAL CETAK NOTA -->
-  <div id="modalNota" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl max-w-md w-full p-5 space-y-4">
-      <div id="printArea" class="text-xs font-mono space-y-2 border p-4 rounded-lg bg-white text-slate-900">
-        <div class="text-center border-b pb-2">
-          <div class="font-bold text-sm">NOTA TIMBANGAN KAS & TONASE</div>
-          <div id="notaPrintMeta" class="text-[11px] text-slate-600"></div>
-        </div>
-        <div id="notaPrintCust" class="border-b pb-2"></div>
-        <div id="notaPrintItems" class="space-y-1 border-b pb-2"></div>
-        <div id="notaPrintTotal" class="space-y-1 font-bold"></div>
-      </div>
-      <div class="flex flex-wrap justify-end gap-2">
-        <button onclick="tutupModal('modalNota')" class="px-3 py-2 text-xs bg-slate-200 rounded-lg">Tutup</button>
-        <a id="btnKirimWA" href="#" target="_blank" class="px-3 py-2 text-xs bg-emerald-600 text-white rounded-lg font-bold">Kirim WhatsApp</a>
-        <button onclick="window.print()" class="btn-main px-4 py-2 text-xs rounded-lg font-bold">Cetak Nota</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL CUSTOMER BARU -->
-  <div id="modalCustomer" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl max-w-md w-full p-5 space-y-3 text-xs">
-      <h3 class="text-base font-bold">Tambah / Edit Customer</h3>
-      <input type="text" id="custNama" placeholder="Nama Customer / Pabrik *" class="w-full border rounded-lg px-3 py-2" />
-      <select id="custTipe" class="w-full border rounded-lg px-3 py-2">
-        <option value="Supplier">Supplier (Penjual ke kita)</option>
-        <option value="Buyer">Buyer / Pabrik (Pembeli dari kita)</option>
-      </select>
-      <input type="text" id="custWa" placeholder="No. WhatsApp (mis: 628123456789)" class="w-full border rounded-lg px-3 py-2" />
-      <input type="text" id="custPlat" placeholder="No. Polisi Kendaraan" class="w-full border rounded-lg px-3 py-2" />
-      <input type="number" id="custDiskonKhusus" placeholder="Penyesuaian harga khusus (Rp/kg, mis: +100 atau 0)" class="w-full border rounded-lg px-3 py-2" />
-      <div class="flex justify-end gap-2 pt-2">
-        <button onclick="tutupModal('modalCustomer')" class="px-3 py-2 bg-slate-200 rounded-lg">Batal</button>
-        <button onclick="simpanCustomer()" class="btn-main px-4 py-2 rounded-lg font-bold">Simpan</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const loggedUserRaw = localStorage.getItem('spd_logged_user');
-    if (!loggedUserRaw) {
-      window.location.replace('index.html');
-    }
-
-    const ICONS = {
-      dashboard: '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/></svg>',
-      transaksi: '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>',
-      stok: '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"/></svg>',
-      harga: '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"/></svg>',
-      customer: '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>',
-      hutang: '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V7m0 10v-1m9-4a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
-      laporan: '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>',
-      pengaturan: '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>'
-    };
-
-    const MENUS = [
-      { id: 'dashboard', label: 'Dashboard', icon: ICONS.dashboard, ownerOnly: false },
-      { id: 'transaksi', label: 'Transaksi', icon: ICONS.transaksi, ownerOnly: false },
-      { id: 'stok', label: 'Stok', icon: ICONS.stok, ownerOnly: false },
-      { id: 'harga', label: 'Harga barang', icon: ICONS.harga, ownerOnly: false },
-      { id: 'customer', label: 'Customer', icon: ICONS.customer, ownerOnly: false },
-      { id: 'hutang', label: 'Hutang piutang', icon: ICONS.hutang, ownerOnly: false },
-      { id: 'laporan', label: 'Laporan', icon: ICONS.laporan, ownerOnly: true },
-      { id: 'pengaturan', label: 'Pengaturan', icon: ICONS.pengaturan, ownerOnly: true }
-    ];
-
-    const todayStr = new Date().toISOString().slice(0, 10);
-    let state = JSON.parse(localStorage.getItem('spdTonaseState')) || {
-      theme: 'a',
-      role: 'OWNER',
-      currentPage: 'dashboard',
-      notaSeq: 5,
-      gsheetUrl: '',
-      barang: [
-        { id: 1, nama: 'Kardus OCC', hargaBeli: 2200, hargaJual: 2900, stokKg: 6100, minKg: 1000, avgBeli: 2150 },
-        { id: 2, nama: 'Duplex', hargaBeli: 1500, hargaJual: 2100, stokKg: 3200, minKg: 800, avgBeli: 1480 },
-        { id: 3, nama: 'Plastik PP', hargaBeli: 3500, hargaJual: 4600, stokKg: 2700, minKg: 500, avgBeli: 3450 },
-        { id: 4, nama: 'Besi tua', hargaBeli: 5000, hargaJual: 6300, stokKg: 400, minKg: 1000, avgBeli: 4900 }
-      ],
-      customers: [
-        { id: 1, nama: 'CV Maju Jaya', tipe: 'Supplier', wa: '6281234567890', plat: 'B 1234 XY', khususRp: 0 },
-        { id: 2, nama: 'PT Pabrik Kertas Nusantara', tipe: 'Buyer', wa: '6281198765432', plat: 'B 9088 KRT', khususRp: 100 },
-        { id: 3, nama: 'Pak Budi Lapak', tipe: 'Supplier', wa: '6285611223344', plat: 'D 4421 AB', khususRp: 50 }
-      ],
-      transaksi: [
-        {
-          id: 'TRX-1115-001', tanggal: todayStr, waktu: '08:30', mode: 'BELI', customer: 'CV Maju Jaya', plat: 'B 1234 XY',
-          items: [
-            { barangId: 1, nama: 'Kardus OCC', bruto: 1850, tara: 350, pot: 2, netto: 1470, harga: 2200, subtotal: 3234000, hppPerKg: 2200 },
-            { barangId: 2, nama: 'Duplex', bruto: 400, tara: 0, pot: 0, netto: 400, harga: 1500, subtotal: 600000, hppPerKg: 1500 }
-          ],
-          totalNetto: 1870, totalBayar: 3834000, metode: 'Tunai', dibayar: 3000000, sisa: 834000, spsSynced: true, foto: ''
-        },
-        {
-          id: 'TRX-1115-002', tanggal: todayStr, waktu: '11:15', mode: 'JUAL', customer: 'PT Pabrik Kertas Nusantara', plat: 'B 9088 KRT',
-          items: [
-            { barangId: 1, nama: 'Kardus OCC', bruto: 4500, tara: 500, pot: 0, netto: 4000, harga: 3000, subtotal: 12000000, hppPerKg: 2150 },
-            { barangId: 3, nama: 'Plastik PP', bruto: 1500, tara: 100, pot: 0, netto: 1400, harga: 4600, subtotal: 6440000, hppPerKg: 3450 }
-          ],
-          totalNetto: 5400, totalBayar: 18440000, metode: 'Transfer', dibayar: 18440000, sisa: 0, spsSynced: true, foto: ''
-        }
-      ],
-      kasLain: [
-        { id: 1, tanggal: todayStr, tipe: 'KELUAR', ket: 'Upah bongkar muat & solar forklift', nominal: 350000 }
-      ],
-      riwayatHarga: [
-        { waktu: todayStr + ' 08:00', barang: 'Kardus OCC', ket: 'Beli Rp 2.200 | Jual Rp 2.900' }
-      ],
-      tutupKas: [],
-      auditLog: [
-        { waktu: todayStr + ' 08:00', user: 'Pemilik', aksi: 'Inisialisasi sistem Kas & Tonase tersinkron SPS' }
-      ]
-    };
-
-    let formRows = [];
-    let formMode = 'BELI';
-    let formMetode = 'Tunai';
-    let formFoto = '';
-    let editingTrxId = null;
-    let socket = null;
-
-    const esc = (s) => String(s ?? '').replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
-    const rp = (n) => 'Rp ' + Math.round(n || 0).toLocaleString('id-ID');
-    const rpRingkas = (n) => Math.abs(n) >= 1000000 ? `Rp ${(n / 1000000).toFixed(1).replace('.', ',')} jt` : rp(n);
-    const num = (n) => Number(n || 0).toLocaleString('id-ID', { maximumFractionDigits: 2 });
-    const saveState = () => localStorage.setItem('spdTonaseState', JSON.stringify(state));
-
-    function getLoggedUserLabel() {
-      try {
-        const u = JSON.parse(localStorage.getItem('spd_logged_user') || '{}');
-        return u.nama ? `${u.nama} (${u.role || 'User'})` : (state.role === 'OWNER' ? 'Pemilik' : 'Petugas Timbang');
-      } catch (e) {
-        return state.role === 'OWNER' ? 'Pemilik' : 'Petugas Timbang';
-      }
-    }
-
-    function logAudit(aksi) {
-      const w = new Date().toLocaleString('id-ID');
-      state.auditLog.unshift({ waktu: w, user: getLoggedUserLabel(), aksi });
-      if (state.auditLog.length > 50) state.auditLog.pop();
-      saveState();
-    }
-
-    function logSPS(msg) {
-      const box = document.getElementById('spsTechLog');
-      if (!box) return;
-      const p = document.createElement('div');
-      p.textContent = `[${new Date().toLocaleTimeString('id-ID')}] ${msg}`;
-      box.prepend(p);
-    }
-
-    window.onload = () => {
-      try {
-        const u = JSON.parse(localStorage.getItem('spd_logged_user') || '{}');
-        const r = (u.role || '').toLowerCase();
-        if (r) {
-          state.role = (r.includes('admin') || r.includes('hr') || r.includes('manajer') || r.includes('owner')) ? 'OWNER' : 'PETUGAS';
-        }
-      } catch (e) {}
-
-      setTheme(state.theme, false);
-      setRole(state.role, false);
-      renderSidebar();
-      resetFormTransaksi();
-      switchPage(state.currentPage || 'dashboard');
-      connectSPS(true);
-    };
-
-    function renderSidebar() {
-      const nav = document.getElementById('desktopNav');
-      nav.innerHTML = '';
-      MENUS.forEach(m => {
-        if (m.ownerOnly && state.role !== 'OWNER') return;
-        const active = state.currentPage === m.id ? 'bg-sidebar-active font-semibold' : 'text-white/80 hover:bg-white/10';
-        nav.innerHTML += `
-          <button onclick="switchPage('${m.id}')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg transition ${active}">
-            ${m.icon}<span>${m.label}</span>
-          </button>`;
-      });
-    }
-
-    function switchPage(pageId) {
-      if ((pageId === 'laporan' || pageId === 'pengaturan') && state.role !== 'OWNER') pageId = 'dashboard';
-      state.currentPage = pageId;
-      saveState();
-      MENUS.forEach(m => {
-        const el = document.getElementById('page-' + m.id);
-        if (el) el.classList.toggle('hidden', m.id !== pageId);
-      });
-      renderSidebar();
-      if (window.parent && window.parent !== window) {
-        window.parent.postMessage({ type: 'tonase-page-changed', page: pageId }, '*');
-      }
-      if (pageId === 'dashboard') renderDashboard();
-      if (pageId === 'transaksi') { renderCustomerDatalist(); renderRiwayat(); renderKasLain(); }
-      if (pageId === 'stok') renderStok();
-      if (pageId === 'harga') renderHarga();
-      if (pageId === 'customer') renderCustomer();
-      if (pageId === 'hutang') renderHutang();
-      if (pageId === 'laporan') renderLaporan();
-      if (pageId === 'pengaturan') renderPengaturan();
-    }
-
-    function bukaTransaksiBaru() { switchPage('transaksi'); setTrxView('form'); }
-    function toggleMobileMenu() { document.getElementById('mobileDrawer').classList.toggle('hidden'); }
-
-    function renderDashboard() {
-      const periode = document.getElementById('dashPeriode').value;
-      const now = new Date();
-      const filterByDate = (tgl) => {
-        if (periode === 'all') return true;
-        if (periode === 'today') return tgl === todayStr;
-        if (periode === 'month') return tgl.slice(0, 7) === todayStr.slice(0, 7);
-        return ((now - new Date(tgl)) / 86400000) <= 7;
-      };
-
-      let kasMasuk = 0, kasKeluar = 0, tonJual = 0, tonBeli = 0, totalOmzetJual = 0, totalHppJual = 0;
-      state.transaksi.filter(t => filterByDate(t.tanggal)).forEach(t => {
-        if (t.mode === 'JUAL') {
-          kasMasuk += t.dibayar;
-          tonJual += t.totalNetto / 1000;
-          totalOmzetJual += t.totalBayar;
-          t.items.forEach(i => totalHppJual += (i.netto * (i.hppPerKg || 0)));
-        } else {
-          kasKeluar += t.dibayar;
-          tonBeli += t.totalNetto / 1000;
-        }
-      });
-      state.kasLain.filter(k => filterByDate(k.tanggal)).forEach(k => {
-        if (k.tipe === 'MASUK') kasMasuk += k.nominal; else kasKeluar += k.nominal;
-      });
-
-      const selisihKas = kasMasuk - kasKeluar;
-      const marginPct = totalOmzetJual > 0 ? Math.round(((totalOmzetJual - totalHppJual) / totalOmzetJual) * 100) : 0;
-
-      document.getElementById('kpiKasMasuk').textContent = rpRingkas(kasMasuk);
-      document.getElementById('kpiTonJual').textContent = `${tonJual.toFixed(1).replace('.', ',')} ton terjual`;
-      document.getElementById('kpiKasKeluar').textContent = rpRingkas(kasKeluar);
-      document.getElementById('kpiTonBeli').textContent = `${tonBeli.toFixed(1).replace('.', ',')} ton dibeli`;
-      document.getElementById('kpiSelisihKas').textContent = rpRingkas(selisihKas);
-      document.getElementById('kpiMargin').textContent = state.role === 'OWNER' ? `Margin kotor: ${marginPct}%` : 'Selisih arus kas';
-
-      let totalStokKg = 0;
-      const stokLow = [];
-      const stokBox = document.getElementById('dashStokList');
-      stokBox.innerHTML = '';
-      const maxStok = Math.max(...state.barang.map(b => b.stokKg), 1000);
-
-      state.barang.forEach(b => {
-        totalStokKg += b.stokKg;
-        const isLow = b.stokKg < b.minKg;
-        if (isLow) stokLow.push(`${b.nama} tinggal ${(b.stokKg / 1000).toFixed(1).replace('.', ',')} ton`);
-        const pct = Math.min(100, Math.round((b.stokKg / maxStok) * 100));
-        stokBox.innerHTML += `
-          <div>
-            <div class="flex justify-between mb-1">
-              <span class="font-medium">${esc(b.nama)}</span>
-              <span class="font-bold ${isLow ? 'text-amber-600' : ''}">${(b.stokKg / 1000).toFixed(1).replace('.', ',')} ton</span>
-            </div>
-            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-              <div class="h-full rounded-full ${isLow ? 'bg-amber-500' : 'bar-stok'}" style="width:${pct}%"></div>
-            </div>
-          </div>`;
-      });
-
-      document.getElementById('kpiStokTotal').textContent = `${(totalStokKg / 1000).toFixed(1).replace('.', ',')} ton`;
-      document.getElementById('kpiJenisStok').textContent = `${state.barang.length} jenis barang`;
-
-      const alertEl = document.getElementById('dashAlertStok');
-      if (stokLow.length > 0) {
-        alertEl.classList.remove('hidden');
-        document.getElementById('dashAlertStokText').textContent = `Stok ${stokLow.join(', ')}, di bawah batas minimum`;
-      } else {
-        alertEl.classList.add('hidden');
-      }
-
-      const chartBox = document.getElementById('chart7Hari');
-      const labelBox = document.getElementById('chart7HariLabels');
-      chartBox.innerHTML = '';
-      labelBox.innerHTML = '';
-      const days = [];
-      for (let i = 6; i >= 0; i--) {
-        const d = new Date();
-        d.setDate(d.getDate() - i);
-        const iso = d.toISOString().slice(0, 10);
-        let bVal = 0, jVal = 0;
-        state.transaksi.filter(t => t.tanggal === iso).forEach(t => {
-          if (t.mode === 'BELI') bVal += t.totalBayar; else jVal += t.totalBayar;
-        });
-        days.push({ label: d.toLocaleDateString('id-ID', { weekday: 'short' }), beli: bVal, jual: jVal });
-      }
-      const maxVal = Math.max(...days.flatMap(d => [d.beli, d.jual]), 1000000);
-      days.forEach(d => {
-        const hB = Math.max(6, Math.round((d.beli / maxVal) * 140));
-        const hJ = Math.max(6, Math.round((d.jual / maxVal) * 140));
-        chartBox.innerHTML += `
-          <div class="flex-1 flex items-end justify-center gap-1">
-            <div title="Beli: ${rp(d.beli)}" class="w-3 sm:w-4 bg-rose-400 rounded-t" style="height:${hB}px"></div>
-            <div title="Jual: ${rp(d.jual)}" class="w-3 sm:w-4 bg-emerald-600 rounded-t" style="height:${hJ}px"></div>
-          </div>`;
-        labelBox.innerHTML += `<div class="flex-1 text-center">${d.label}</div>`;
-      });
-    }
-
-    function setTrxView(v) {
-      ['form', 'riwayat', 'kaslain'].forEach(k => {
-        document.getElementById('trxView' + k.charAt(0).toUpperCase() + k.slice(1)).classList.toggle('hidden', k !== v);
-        const btn = document.getElementById('tabTrx' + k.charAt(0).toUpperCase() + k.slice(1));
-        btn.className = k === v ? 'px-3.5 py-1.5 rounded-lg bg-slate-800 text-white' : 'px-3.5 py-1.5 rounded-lg text-slate-600';
-      });
-    }
-
-    function resetFormTransaksi() {
-      editingTrxId = null;
-      document.getElementById('formTrxTitle').textContent = 'Transaksi baru';
-      document.getElementById('notaNomor').textContent = `TRX-${todayStr.slice(5).replace('-', '')}-${String(state.notaSeq).padStart(3, '0')}`;
-      document.getElementById('trxCustomerInput').value = '';
-      document.getElementById('trxPlat').value = '';
-      document.getElementById('trxCustSaldo').textContent = 'Rp 0';
-      document.getElementById('trxFotoPreview').classList.add('hidden');
-      formFoto = '';
-      formRows = [{ barangId: state.barang[0].id, bruto: 0, tara: 0, pot: 0, harga: 0 }];
-      setModeTransaksi('BELI');
-      setMetodeBayar('Tunai');
-    }
-
-    function setModeTransaksi(mode) {
-      formMode = mode;
-      document.getElementById('btnModeBeli').className = mode === 'BELI' ? 'px-5 py-1.5 rounded-
