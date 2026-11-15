@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portal Terpadu SPD — Payroll, Kas &amp; Tonase</title>
+  <title>spd. Payroll &amp; Kas Tonase — PT. Sarana Putra Daerah</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -77,7 +77,7 @@
   <!-- ==================== SCREEN 1: LOGIN TERPADU ==================== -->
   <section id="login-screen" class="min-h-screen w-full flex items-center justify-center p-4 sm:p-8">
     <div class="w-full max-w-4xl rounded-2xl overflow-hidden border border-slate-300 shadow-xl grid grid-cols-1 md:grid-cols-2 bg-white">
-      <div class="bg-sidebar text-white p-8 sm:p-10 flex flex-col justify-between min-h-[300px] md:min-h-[440px]">
+      <div class="bg-sidebar text-white p-8 sm:p-10 flex flex-col justify-between min-h-[300px] md:min-h-[450px]">
         <div>
           <div class="inline-flex items-center px-4 py-2 rounded-xl bg-white/15 border border-white/25">
             <span class="text-2xl font-black tracking-tight text-white">spd</span><span class="text-2xl font-black text-[#B8AB3A]">.</span>
@@ -85,7 +85,7 @@
         </div>
         <div class="my-auto py-8">
           <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">PT. Sarana Putra Daerah</h1>
-          <p class="text-sm text-white/80 mt-2">Portal Terpadu Payroll, Kas &amp; Tonase (SPS)</p>
+          <p class="text-sm text-white/80 mt-2">Portal payroll mingguan, rekap kas &amp; tonase</p>
         </div>
         <div class="flex items-center gap-2 text-xs font-semibold text-emerald-200">
           <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -94,7 +94,7 @@
       </div>
 
       <div class="p-8 sm:p-10 flex flex-col justify-center bg-white">
-        <div class="mb-6">
+        <div class="mb-5">
           <h2 class="text-2xl font-bold">Masuk</h2>
           <p class="text-xs text-slate-500 mt-1">Masukkan Username (atau Email) &amp; Password/PIN dari tab Akun Google Sheet.</p>
         </div>
@@ -102,7 +102,7 @@
         <form onsubmit="handleLoginSubmit(event)" class="space-y-4">
           <div>
             <label class="block text-xs font-semibold text-slate-600 mb-1.5">Username / Email</label>
-            <input type="text" id="login-email" required placeholder="Contoh: superadmin / hrd_payroll" class="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400" />
+            <input type="text" id="login-email" required placeholder="Contoh: superadmin / ilham2026" class="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400" />
           </div>
           <div>
             <label class="block text-xs font-semibold text-slate-600 mb-1.5">Password / PIN</label>
@@ -112,8 +112,16 @@
             </div>
           </div>
           <div class="flex justify-between items-center text-xs">
-            <button type="button" onclick="alert('Silakan cek Username dan PASSWORD_PIN pada tab Akun di Google Sheet SPS Anda.')" class="text-blue-700 hover:underline">Lupa kata sandi?</button>
+            <button type="button" onclick="toggleLoginUrlBox()" class="text-blue-700 hover:underline font-medium">Atur URL Apps Script SPS</button>
             <span class="text-[11px] text-slate-400 font-mono" id="login-clock"></span>
+          </div>
+          <div id="login-url-box" class="hidden p-2.5 bg-slate-50 border border-slate-200 rounded-lg space-y-2 text-xs">
+            <label class="block text-[11px] font-semibold text-slate-600">URL Web App Google Apps Script (/exec):</label>
+            <input type="text" id="login-sps-url" class="w-full px-2.5 py-1.5 border rounded text-[11px] font-mono bg-white" />
+            <div class="flex justify-end gap-2">
+              <button type="button" onclick="resetSpsUrl()" class="text-[11px] text-slate-500 underline">Default</button>
+              <button type="button" onclick="saveSpsUrl()" class="px-3 py-1 bg-slate-800 text-white rounded text-[11px] font-bold">Simpan URL</button>
+            </div>
           </div>
           <button type="submit" id="btn-login-submit" class="w-full py-2.5 rounded-lg btn-main font-bold text-sm transition shadow-sm">Masuk</button>
         </form>
@@ -128,7 +136,7 @@
     <aside class="hidden md:flex md:w-64 bg-sidebar text-white flex-col justify-between shrink-0 min-h-screen sticky top-0">
       <div class="overflow-y-auto">
         <div class="px-5 py-4 border-b border-white/10">
-          <div class="font-bold text-lg tracking-tight">spd<span class="text-[#B8AB3A]">.</span> Portal</div>
+          <div class="font-bold text-lg tracking-tight">spd<span class="text-[#B8AB3A]">.</span> Payroll</div>
           <div class="text-xs text-white/75 mt-0.5 flex items-center justify-between">
             <span id="sidebar-user-name">User</span>
             <span class="text-[10px] bg-white/15 px-2 py-0.5 rounded" id="sidebar-user-role">Role</span>
@@ -138,8 +146,9 @@
       </div>
       <div class="p-4 border-t border-white/10 text-xs space-y-2">
         <div class="flex items-center justify-between">
-          <span id="spsSyncText" class="flex items-center gap-1.5 text-emerald-200 font-medium">
-            <span id="spsSyncDot" class="w-2 h-2 rounded-full bg-emerald-400"></span> SPS LIVE
+          <span class="flex items-center gap-1.5 text-emerald-200 font-medium">
+            <span id="spsSyncDot" class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span id="spsSyncLabel">SPS LIVE</span>
           </span>
           <button onclick="fetchFromGoogleSPS(true)" class="px-2 py-1 rounded bg-white/15 hover:bg-white/25 text-[11px]">Sync</button>
         </div>
@@ -153,18 +162,16 @@
     <!-- MOBILE TOPBAR -->
     <header class="md:hidden bg-sidebar text-white px-4 py-3 flex justify-between items-center sticky top-0 z-30 shadow">
       <div>
-        <div class="font-bold text-base">spd. Portal Terpadu</div>
+        <div class="font-bold text-base">spd. Payroll &amp; Kas</div>
         <div class="text-[11px] text-emerald-200" id="mobileUserInfo">SPS Tersinkron</div>
       </div>
-      <div class="flex items-center gap-2">
-        <button onclick="toggleMobileMenu()" class="text-xs bg-white/15 px-3 py-1.5 rounded-lg font-semibold">Menu</button>
-      </div>
+      <button onclick="toggleMobileMenu()" class="text-xs bg-white/15 px-3 py-1.5 rounded-lg font-semibold">Menu</button>
     </header>
 
     <!-- MOBILE MENU DRAWER -->
     <div id="mobileDrawer" class="hidden fixed inset-0 bg-black/40 z-50 md:hidden" onclick="toggleMobileMenu()">
       <div class="bg-sidebar text-white w-64 h-full p-4 space-y-1 overflow-y-auto text-xs" onclick="event.stopPropagation()">
-        <div class="font-bold text-base pb-2 border-b border-white/15 mb-2">Navigasi Portal</div>
+        <div class="font-bold text-base pb-2 border-b border-white/15 mb-2">Menu Portal</div>
         <div id="mobileNavList" class="space-y-1"></div>
         <div class="pt-3 mt-3 border-t border-white/15">
           <button onclick="logoutPortal()" class="w-full py-2 rounded-lg bg-rose-600/80 text-white font-bold">Keluar</button>
@@ -175,12 +182,13 @@
     <!-- KONTEN UTAMA -->
     <main class="flex-1 p-4 md:p-6 pb-20 md:pb-8 max-w-7xl w-full mx-auto space-y-5">
 
-      <!-- ==================== A. PAYROLL: RINGKASAN ==================== -->
-      <section id="page-p-ringkasan" class="space-y-5">
+      <!-- ==================== MAIN MENU PAYROLL (TIDAK DIUBAH) ==================== -->
+      <!-- 1. RINGKASAN -->
+      <section id="menu-ringkasan" class="space-y-5">
         <div class="flex flex-wrap justify-between items-center gap-3">
           <div>
-            <h1 class="text-xl font-bold">Ringkasan finansial gaji</h1>
-            <p class="text-xs text-slate-500">3 Divisi (Karyawan limbah, Supir B3, Supir SPD) &bull; Terhubung Google SPS</p>
+            <h1 class="text-xl font-bold">Ringkasan finansial</h1>
+            <p class="text-xs text-slate-500">PT. Sarana Putra Daerah &bull; 3 Divisi (Karyawan limbah, Supir B3, Supir SPD) &amp; Google SPS</p>
           </div>
           <div class="flex flex-wrap items-center gap-2 text-xs">
             <select id="kpi-filter-periode" onchange="syncPeriodeFilter(this.value)" class="bg-white border border-slate-300 rounded-lg px-3 py-2 font-medium"><option value="ALL">Semua periode</option></select>
@@ -191,44 +199,25 @@
               <option value="Supir SPD">Supir SPD</option>
             </select>
             <button onclick="fetchFromGoogleSPS(true)" class="bg-white border border-slate-300 hover:bg-slate-50 px-3 py-2 rounded-lg font-semibold text-blue-700">Sync SPS</button>
-            <button onclick="switchPage('p-input')" class="btn-main px-4 py-2 rounded-lg font-bold shadow-sm">+ Input Gaji</button>
+            <button onclick="switchMenu('menu-input')" class="btn-main px-4 py-2 rounded-lg font-bold shadow-sm">+ Input gaji</button>
           </div>
         </div>
 
         <div id="draft-alert-banner" class="bg-amber-100 border border-amber-300 text-amber-900 px-4 py-2.5 rounded-xl text-xs font-medium flex justify-between items-center gap-2">
           <span id="draft-alert-text">Memuat status slip gaji dari Google SPS...</span>
-          <button onclick="switchPage('p-slip')" class="font-bold underline shrink-0">Cek Slip</button>
+          <button onclick="switchMenu('menu-slip')" class="font-bold underline shrink-0">Cek Slip</button>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200/80">
-            <div class="text-xs font-medium text-slate-500">Total Gaji Bersih</div>
-            <div id="kpi-total-thp" class="text-xl font-bold text-emerald-700 mt-1">Rp 0</div>
-            <div class="text-xs text-slate-500 mt-1">Akumulasi THP diterima</div>
-          </div>
-          <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200/80">
-            <div class="text-xs font-medium text-slate-500">Total Lembur (Hari/Jam/Inap)</div>
-            <div id="kpi-total-lembur-rp" class="text-xl font-bold mt-1">Rp 0</div>
-            <div class="text-xs text-slate-500 mt-1">Gabungan semua satuan lembur</div>
-          </div>
-          <div class="bg-blue-50 p-4 rounded-xl shadow-sm border border-blue-200">
-            <div class="text-xs font-medium text-blue-800">Karyawan terproses</div>
-            <div id="kpi-karyawan-count" class="text-xl font-bold text-blue-900 mt-1">0 orang</div>
-            <div id="kpi-status-ratio" class="text-xs text-blue-700 mt-1">0 draft, 0 disetujui</div>
-          </div>
-          <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200/80">
-            <div class="text-xs font-medium text-slate-500">Total potongan</div>
-            <div id="kpi-total-potongan" class="text-xl font-bold text-rose-700 mt-1">Rp 0</div>
-            <button onclick="switchPage('p-karyawan')" class="text-xs text-blue-700 hover:underline mt-1">Lihat Kasbon &amp; BPJS</button>
-          </div>
+          <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200/80"><div class="text-xs font-medium text-slate-500">Total Gaji Bersih</div><div id="kpi-total-thp" class="text-xl font-bold text-emerald-700 mt-1">Rp 0</div><div class="text-xs text-slate-500 mt-1">Akumulasi THP diterima</div></div>
+          <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200/80"><div class="text-xs font-medium text-slate-500">Total Lembur (Hari/Jam/Inap)</div><div id="kpi-total-lembur-rp" class="text-xl font-bold mt-1">Rp 0</div><div class="text-xs text-slate-500 mt-1">Gabungan semua satuan lembur</div></div>
+          <div class="bg-blue-50 p-4 rounded-xl shadow-sm border border-blue-200"><div class="text-xs font-medium text-blue-800">Karyawan</div><div id="kpi-karyawan-count" class="text-xl font-bold text-blue-900 mt-1">0 orang</div><div id="kpi-status-ratio" class="text-xs text-blue-700 mt-1">0 draft, 0 disetujui</div></div>
+          <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200/80"><div class="text-xs font-medium text-slate-500">Total potongan</div><div id="kpi-total-potongan" class="text-xl font-bold text-rose-700 mt-1">Rp 0</div><button onclick="switchMenu('menu-karyawan')" class="text-xs text-blue-700 hover:underline mt-1">Lihat Kasbon &amp; BPJS</button></div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
           <div class="lg:col-span-3 bg-white p-5 rounded-xl shadow-sm border border-slate-200/80 flex flex-col justify-between">
-            <div class="flex justify-between items-center mb-4">
-              <h2 class="text-sm font-bold">Gaji bersih per divisi (juta)</h2>
-              <span class="text-xs text-slate-400">Data aktual SPS</span>
-            </div>
+            <div class="flex justify-between items-center mb-4"><h2 class="text-sm font-bold">Gaji bersih per divisi (juta)</h2><span class="text-xs text-slate-400">Data aktual SPS</span></div>
             <div id="division-chart-container" class="h-40 flex items-end justify-around gap-3 pt-4 border-b border-slate-200"></div>
             <div id="division-chart-labels" class="flex justify-around gap-3 pt-2 text-[11px] text-slate-500"></div>
           </div>
@@ -245,21 +234,16 @@
 
         <div class="bg-white rounded-xl shadow-sm border border-slate-200/80 overflow-x-auto">
           <table class="w-full text-left text-xs">
-            <thead class="bg-slate-50 border-b text-slate-500">
-              <tr><th class="py-3 px-4">Nama</th><th class="py-3 px-4">Divisi</th><th class="py-3 px-4">Periode</th><th class="py-3 px-4 text-right">Gaji Bersih</th><th class="py-3 px-4 text-right">Status</th></tr>
-            </thead>
+            <thead class="bg-slate-50 border-b text-slate-500"><tr><th class="py-3 px-4">Nama</th><th class="py-3 px-4">Divisi</th><th class="py-3 px-4">Periode</th><th class="py-3 px-4 text-right">Gaji Bersih</th><th class="py-3 px-4 text-right">Status</th></tr></thead>
             <tbody id="ringkasan-recent-body" class="divide-y"></tbody>
           </table>
         </div>
       </section>
 
-      <!-- ==================== B. PAYROLL: INPUT GAJI MINGGUAN ==================== -->
-      <section id="page-p-input" class="hidden space-y-5">
+      <!-- 2. INPUT GAJI -->
+      <section id="menu-input" class="hidden space-y-5">
         <div class="flex flex-wrap justify-between items-center gap-3">
-          <div>
-            <h1 class="text-xl font-bold">Input gaji mingguan</h1>
-            <p class="text-xs text-slate-500">Pilih divisi di bawah untuk menyesuaikan komponen gaji &amp; breakdown lembur otomatis.</p>
-          </div>
+          <div><h1 class="text-xl font-bold">Input gaji mingguan</h1><p class="text-xs text-slate-500">Pilih divisi di bawah untuk menyesuaikan komponen gaji &amp; breakdown lembur otomatis.</p></div>
           <div class="flex flex-wrap items-center gap-2">
             <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white border border-slate-300 text-xs">
               <input type="text" id="input-periode-tanggal" value="31 Okt - 06 Nov 2026" oninput="updateLiveSlipPreview()" class="bg-transparent font-semibold w-36 outline-none" />
@@ -283,28 +267,12 @@
                 <option value="">-- Pilih Karyawan Terdaftar (Auto-Fill) atau Isi Manual --</option>
               </select>
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div>
-                  <label class="block text-[11px] font-semibold text-slate-500 mb-1">Nama Karyawan</label>
-                  <input type="text" list="employee-suggestions" id="input-nama" oninput="updateLiveSlipPreview()" placeholder="Siti..." required class="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 font-semibold" />
-                  <datalist id="employee-suggestions"></datalist>
-                </div>
-                <div>
-                  <label class="block text-[11px] font-semibold text-slate-500 mb-1">No / NIK</label>
-                  <input type="text" id="input-nik" oninput="updateLiveSlipPreview()" placeholder="003" required class="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 uppercase font-mono font-bold" />
-                </div>
-                <div>
-                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">Divisi (Otomatis Ubah Form)</label>
-                  <select id="input-divisi" onchange="onDivisiChange(this.value)" required class="w-full text-xs px-3 py-2 rounded-lg border border-slate-400 bg-slate-50 font-bold">
-                    <option value="Karyawan limbah">Karyawan limbah</option>
-                    <option value="Supir B3">Supir B3</option>
-                    <option value="Supir SPD">Supir SPD</option>
-                  </select>
-                  <input type="hidden" id="input-skema" value="Karyawan limbah" />
-                </div>
+                <div><label class="block text-[11px] font-semibold text-slate-500 mb-1">Nama Karyawan</label><input type="text" list="employee-suggestions" id="input-nama" oninput="updateLiveSlipPreview()" placeholder="Siti..." required class="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 font-semibold" /><datalist id="employee-suggestions"></datalist></div>
+                <div><label class="block text-[11px] font-semibold text-slate-500 mb-1">No / NIK</label><input type="text" id="input-nik" oninput="updateLiveSlipPreview()" placeholder="003" required class="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 uppercase font-mono font-bold" /></div>
+                <div><label class="block text-[11px] font-semibold text-slate-600 mb-1">Divisi (Otomatis Ubah Form)</label><select id="input-divisi" onchange="onDivisiChange(this.value)" required class="w-full text-xs px-3 py-2 rounded-lg border border-slate-400 bg-slate-50 font-bold"><option value="Karyawan limbah">Karyawan limbah</option><option value="Supir B3">Supir B3</option><option value="Supir SPD">Supir SPD</option></select><input type="hidden" id="input-skema" value="Karyawan limbah" /></div>
               </div>
             </div>
 
-            <!-- Gaji Pokok -->
             <div class="space-y-2.5">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <span class="text-xs font-bold" id="pokok-section-title">Gaji pokok (Harian)</span>
@@ -326,7 +294,6 @@
               </div>
             </div>
 
-            <!-- Breakdown Lembur -->
             <div class="space-y-3">
               <div class="flex justify-between items-center">
                 <div><div class="text-xs font-bold">Lembur (Klik untuk breakdown satuan)</div><div class="text-[10px] text-slate-500">Pilih satu atau lebih: Hari, Jam, atau Inap (Menginap).</div></div>
@@ -364,7 +331,6 @@
               </div>
             </div>
 
-            <!-- Potongan -->
             <div class="space-y-3">
               <div class="text-xs font-bold">Potongan</div>
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -380,20 +346,14 @@
 
             <div class="flex flex-wrap justify-between items-center gap-3 pt-2 border-t">
               <label class="text-xs text-slate-600 flex items-center gap-2">Status:
-                <select id="input-status" onchange="updateLiveSlipPreview()" class="border border-slate-300 rounded-lg px-2.5 py-1.5 font-bold bg-white">
-                  <option value="Draft">Draft</option><option value="Approved">Approved</option><option value="Paid">Paid</option>
-                </select>
+                <select id="input-status" onchange="updateLiveSlipPreview()" class="border border-slate-300 rounded-lg px-2.5 py-1.5 font-bold bg-white"><option value="Draft">Draft</option><option value="Approved">Approved</option><option value="Paid">Paid</option></select>
               </label>
               <button type="button" onclick="resetPayrollForm(true)" class="px-4 py-1.5 text-xs font-semibold border border-slate-300 rounded-lg hover:bg-slate-50">Reset</button>
             </div>
           </div>
 
-          <!-- Ringkasan Kanan -->
           <div class="bg-white border border-slate-200/80 rounded-xl p-5 shadow-sm space-y-4 sticky top-6">
-            <div class="flex justify-between items-center border-b pb-3">
-              <span class="text-sm font-bold">Ringkasan</span>
-              <span id="live-preview-status-badge" class="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold">Draft</span>
-            </div>
+            <div class="flex justify-between items-center border-b pb-3"><span class="text-sm font-bold">Ringkasan</span><span id="live-preview-status-badge" class="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold">Draft</span></div>
             <div class="space-y-2 text-xs">
               <div class="flex justify-between"><span class="text-slate-500" id="live-label-gapok">Gaji pokok</span><span class="font-mono font-semibold" id="live-slip-gapok">0</span></div>
               <div id="ringkasan-lembur-hari-row" class="hidden flex justify-between"><span class="text-slate-500">Lembur Harian</span><span class="font-mono text-emerald-700 font-semibold" id="live-slip-lembur-hari">0</span></div>
@@ -402,10 +362,7 @@
               <div class="flex justify-between border-t pt-2 font-bold"><span>Gaji kotor</span><span class="font-mono" id="live-slip-kotor">0</span></div>
               <div class="flex justify-between"><span class="text-slate-500">Potongan</span><span class="font-mono text-rose-700 font-semibold" id="live-slip-potongan">-0</span></div>
             </div>
-            <div class="border-t pt-3">
-              <div class="text-xs text-slate-500">Gaji bersih</div>
-              <div class="text-2xl font-bold mt-1" id="live-slip-thp">Rp 0</div>
-            </div>
+            <div class="border-t pt-3"><div class="text-xs text-slate-500">Gaji bersih</div><div class="text-2xl font-bold mt-1" id="live-slip-thp">Rp 0</div></div>
             <div class="space-y-2 pt-1">
               <button type="submit" id="btn-submit-payroll" class="w-full btn-main py-2.5 rounded-lg font-bold text-xs shadow-sm">Simpan</button>
               <button type="button" id="btn-submit-next" onclick="saveAndNextEmployee()" class="w-full py-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-300 font-semibold text-xs">Simpan dan karyawan berikutnya</button>
@@ -414,14 +371,11 @@
         </form>
       </section>
 
-      <!-- ==================== C. PAYROLL: KARYAWAN ==================== -->
-      <section id="page-p-karyawan" class="hidden space-y-5">
+      <!-- 3. KARYAWAN -->
+      <section id="menu-karyawan" class="hidden space-y-5">
         <div class="flex flex-wrap justify-between items-center gap-3">
-          <div><h1 class="text-xl font-bold">Data Karyawan &amp; Rekap Mingguan SPS</h1><p class="text-xs text-slate-500">Monitoring 3 divisi, hari kerja/trip, lembur, kasbon, BPJS, dan gaji bersih</p></div>
-          <div class="flex gap-2">
-            <button onclick="switchPage('p-input')" class="btn-main px-4 py-2 rounded-lg text-xs font-bold">+ Input Gaji</button>
-            <button onclick="exportToExcelMultiSheet()" class="bg-emerald-700 text-white px-4 py-2 rounded-lg text-xs font-bold">Export Excel</button>
-          </div>
+          <div><h1 class="text-xl font-bold">Karyawan</h1><p class="text-xs text-slate-500">Monitoring 3 divisi, hari kerja/trip, lembur, kasbon, BPJS, dan gaji bersih</p></div>
+          <div class="flex gap-2"><button onclick="switchMenu('menu-input')" class="btn-main px-4 py-2 rounded-lg text-xs font-bold">+ Input gaji</button><button onclick="exportToExcelMultiSheet()" class="bg-emerald-700 text-white px-4 py-2 rounded-lg text-xs font-bold">Export Excel</button></div>
         </div>
         <div class="bg-white p-4 rounded-xl border border-slate-200/80 grid grid-cols-1 sm:grid-cols-5 gap-3 text-xs">
           <input type="text" id="karyawan-search-mirror" oninput="syncSearchFilter(this.value)" placeholder="Cari Nama / NIK..." class="border rounded-lg px-3 py-2" />
@@ -431,23 +385,15 @@
           <select id="karyawan-status-mirror" onchange="syncStatusFilter(this.value)" class="border rounded-lg px-3 py-2"><option value="ALL">Semua Status</option><option value="Draft">Draft</option><option value="Approved">Approved</option><option value="Paid">Paid</option></select>
         </div>
         <div class="bg-white rounded-xl shadow-sm border border-slate-200/80 overflow-x-auto">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-slate-50 border-b text-slate-500">
-              <tr><th class="py-3 px-4">Karyawan &amp; Divisi</th><th class="py-3 px-3 text-center">HR / Trip</th><th class="py-3 px-3 text-right">Gaji Pokok</th><th class="py-3 px-3 text-right">Lembur</th><th class="py-3 px-3 text-right">Potongan</th><th class="py-3 px-3 text-right">Gaji Bersih</th><th class="py-3 px-3 text-center">Status</th><th class="py-3 px-4 text-center">Aksi</th></tr>
-            </thead>
-            <tbody id="payroll-body" class="divide-y"></tbody>
-          </table>
+          <table class="w-full text-left text-xs"><thead class="bg-slate-50 border-b text-slate-500"><tr><th class="py-3 px-4">Karyawan &amp; Divisi</th><th class="py-3 px-3 text-center">HR / Trip</th><th class="py-3 px-3 text-right">Gaji Pokok</th><th class="py-3 px-3 text-right">Lembur</th><th class="py-3 px-3 text-right">Potongan</th><th class="py-3 px-3 text-right">Gaji Bersih</th><th class="py-3 px-3 text-center">Status</th><th class="py-3 px-4 text-center">Aksi</th></tr></thead><tbody id="payroll-body" class="divide-y"></tbody></table>
         </div>
       </section>
 
-      <!-- ==================== D. PAYROLL: SLIP GAJI ==================== -->
-      <section id="page-p-slip" class="hidden space-y-5">
+      <!-- 4. SLIP GAJI -->
+      <section id="menu-slip" class="hidden space-y-5">
         <div class="flex flex-wrap justify-between items-center gap-3">
           <div><h1 class="text-xl font-bold">Slip gaji</h1><p class="text-xs text-slate-500">Menampilkan <b id="filtered-count">0</b> data siap cetak (Format 110×220mm &amp; 4 Slip per A4)</p></div>
-          <div class="flex gap-2">
-            <button onclick="exportToExcelMultiSheet()" class="bg-emerald-700 text-white px-3.5 py-2 rounded-lg text-xs font-bold">Excel</button>
-            <button onclick="printBatchA4FourPerSheet()" class="btn-main px-4 py-2 rounded-lg text-xs font-bold">Cetak semua (4 Slip per A4)</button>
-          </div>
+          <div class="flex gap-2"><button onclick="exportToExcelMultiSheet()" class="bg-emerald-700 text-white px-3.5 py-2 rounded-lg text-xs font-bold">Excel</button><button onclick="printBatchA4FourPerSheet()" class="btn-main px-4 py-2 rounded-lg text-xs font-bold">Cetak semua (4 Slip per A4)</button></div>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-5 gap-3 text-xs">
           <input type="text" id="filter-search" oninput="syncSearchFilter(this.value)" placeholder="Cari nama atau NIK..." class="bg-white border border-slate-300 rounded-lg px-3 py-2" />
@@ -457,12 +403,7 @@
           <select id="filter-status" onchange="syncStatusFilter(this.value)" class="bg-white border border-slate-300 rounded-lg px-3 py-2"><option value="ALL">Semua Status</option><option value="Draft">Draft</option><option value="Approved">Approved</option><option value="Paid">Paid</option></select>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
-          <div class="lg:col-span-7 bg-white rounded-xl shadow-sm border border-slate-200/80 overflow-x-auto">
-            <table class="w-full text-left text-xs">
-              <thead class="bg-slate-50 border-b text-slate-500"><tr><th class="py-3 px-4">Nama</th><th class="py-3 px-4 text-right">Gaji Bersih</th><th class="py-3 px-4 text-center">Status</th><th class="py-3 px-4 text-right">Aksi</th></tr></thead>
-              <tbody id="slip-split-list" class="divide-y"></tbody>
-            </table>
-          </div>
+          <div class="lg:col-span-7 bg-white rounded-xl shadow-sm border border-slate-200/80 overflow-x-auto"><table class="w-full text-left text-xs"><thead class="bg-slate-50 border-b text-slate-500"><tr><th class="py-3 px-4">Nama</th><th class="py-3 px-4 text-right">Gaji Bersih</th><th class="py-3 px-4 text-center">Status</th><th class="py-3 px-4 text-right">Aksi</th></tr></thead><tbody id="slip-split-list" class="divide-y"></tbody></table></div>
           <div class="lg:col-span-5 bg-white rounded-xl shadow-sm border border-slate-200/80 p-5 space-y-4 sticky top-6">
             <div class="flex justify-between items-center border-b pb-3"><span class="text-sm font-bold">spd. Slip gaji</span><span class="text-xs text-slate-500 font-mono" id="split-slip-periode">-</span></div>
             <div><div class="text-sm font-bold" id="split-slip-nama-divisi">Pilih karyawan di kiri</div><div class="text-xs text-slate-500 font-mono" id="split-slip-nik-sps">-</div></div>
@@ -473,39 +414,26 @@
               <div class="flex justify-between"><span class="text-slate-500">Potongan</span><span class="font-mono text-rose-700 font-semibold" id="split-slip-potongan">-0</span></div>
             </div>
             <div class="border-t pt-3 flex justify-between items-center"><span class="font-bold">Gaji Bersih</span><span class="text-lg font-bold font-mono" id="split-slip-thp">Rp 0</span></div>
-            <div class="grid grid-cols-2 gap-2">
-              <button onclick="downloadSelectedSlipPDF()" class="py-2 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-300 text-xs font-bold">PDF</button>
-              <button onclick="openSelectedSlipModal()" class="py-2 rounded-lg btn-main text-xs font-bold">Preview / Cetak</button>
-            </div>
+            <div class="grid grid-cols-2 gap-2"><button onclick="downloadSelectedSlipPDF()" class="py-2 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-300 text-xs font-bold">PDF</button><button onclick="openSelectedSlipModal()" class="py-2 rounded-lg btn-main text-xs font-bold">Preview / Cetak</button></div>
           </div>
         </div>
       </section>
 
-      <!-- ==================== E. PAYROLL: LAPORAN ==================== -->
-      <section id="page-p-laporan" class="hidden space-y-5">
+      <!-- 5. LAPORAN -->
+      <section id="menu-laporan" class="hidden space-y-5">
         <div class="flex flex-wrap justify-between items-center gap-3">
           <div><h1 class="text-xl font-bold">Laporan Penggajian</h1><p class="text-xs text-slate-500">Rekapitulasi per divisi serta ekspor Excel 3 Divisi</p></div>
-          <div class="flex gap-2">
-            <button onclick="exportToExcelMultiSheet()" class="bg-emerald-700 text-white px-4 py-2 rounded-lg text-xs font-bold">Export Excel (3 Divisi)</button>
-            <button onclick="printBatchA4FourPerSheet()" class="btn-main px-4 py-2 rounded-lg text-xs font-bold">Cetak Batch 4 Slip/A4</button>
-          </div>
+          <div class="flex gap-2"><button onclick="exportToExcelMultiSheet()" class="bg-emerald-700 text-white px-4 py-2 rounded-lg text-xs font-bold">Export Excel (3 Divisi)</button><button onclick="printBatchA4FourPerSheet()" class="btn-main px-4 py-2 rounded-lg text-xs font-bold">Cetak Batch 4 Slip/A4</button></div>
         </div>
-        <div class="bg-white rounded-xl shadow-sm border border-slate-200/80 overflow-x-auto">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-slate-50 border-b text-slate-500"><tr><th class="py-3 px-4">Divisi</th><th class="py-3 px-4 text-center">Karyawan</th><th class="py-3 px-4 text-right">Gaji Pokok</th><th class="py-3 px-4 text-right">Lembur</th><th class="py-3 px-4 text-right">Potongan</th><th class="py-3 px-4 text-right">Gaji Bersih</th></tr></thead>
-            <tbody id="laporan-divisi-body" class="divide-y"></tbody>
-          </table>
-        </div>
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200/80 overflow-x-auto"><table class="w-full text-left text-xs"><thead class="bg-slate-50 border-b text-slate-500"><tr><th class="py-3 px-4">Divisi</th><th class="py-3 px-4 text-center">Karyawan</th><th class="py-3 px-4 text-right">Gaji Pokok</th><th class="py-3 px-4 text-right">Lembur</th><th class="py-3 px-4 text-right">Potongan</th><th class="py-3 px-4 text-right">Gaji Bersih</th></tr></thead><tbody id="laporan-divisi-body" class="divide-y"></tbody></table></div>
       </section>
 
-      <!-- ==================== F. KAS & TONASE: DASHBOARD ==================== -->
-      <section id="page-kt-dashboard" class="hidden space-y-5">
+      <!-- ==================== MAIN MENU BARU: KAS & TONASE ==================== -->
+      <!-- 6. DASHBOARD KAS & TONASE -->
+      <section id="kt-dashboard" class="hidden space-y-5">
         <div class="flex flex-wrap justify-between items-center gap-3">
           <div><h1 class="text-xl font-bold">Dashboard Kas &amp; Tonase</h1><p class="text-xs text-slate-500">Ringkasan arus kas, margin laba kotor, dan tonase gudang</p></div>
-          <div class="flex items-center gap-2">
-            <select id="dashPeriode" onchange="renderKtDashboard()" class="bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-medium"><option value="month">Bulan ini</option><option value="today">Hari ini</option><option value="week">7 hari terakhir</option><option value="all">Semua waktu</option></select>
-            <button onclick="bukaTransaksiBaru()" class="btn-main px-4 py-2 rounded-lg text-xs font-bold shadow-sm">+ Transaksi</button>
-          </div>
+          <div class="flex items-center gap-2"><select id="dashPeriode" onchange="renderKtDashboard()" class="bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-medium"><option value="month">Bulan ini</option><option value="today">Hari ini</option><option value="week">7 hari terakhir</option><option value="all">Semua waktu</option></select><button onclick="bukaTransaksiBaru()" class="btn-main px-4 py-2 rounded-lg text-xs font-bold shadow-sm">+ Transaksi</button></div>
         </div>
         <div id="dashAlertStok" class="hidden bg-amber-100 border border-amber-300 text-amber-900 px-4 py-2.5 rounded-xl text-xs font-medium"><span id="dashAlertStokText"></span></div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -515,20 +443,13 @@
           <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200/70"><div class="text-xs font-medium text-slate-500">Stok gudang</div><div id="ktKpiStokTotal" class="text-xl font-bold mt-1">0 ton</div><div id="ktKpiJenisStok" class="text-xs text-slate-500 mt-1">0 jenis barang</div></div>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
-          <div class="lg:col-span-3 bg-white p-5 rounded-xl shadow-sm border border-slate-200/70">
-            <div class="flex justify-between items-center mb-4"><h2 class="text-sm font-bold">Beli dan jual 7 hari terakhir</h2><div class="flex gap-3 text-xs"><span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-rose-500 inline-block"></span> Beli</span><span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-600 inline-block"></span> Jual</span></div></div>
-            <div id="chart7Hari" class="h-44 flex items-end justify-between gap-2 pt-4 border-b border-slate-200"></div>
-            <div id="chart7HariLabels" class="flex justify-between text-[11px] text-slate-500 pt-2"></div>
-          </div>
-          <div class="lg:col-span-2 bg-white p-5 rounded-xl shadow-sm border border-slate-200/70">
-            <div class="flex justify-between items-center mb-4"><h2 class="text-sm font-bold">Stok per barang</h2><button onclick="switchPage('kt-stok')" class="text-xs text-blue-700 hover:underline">Lihat semua</button></div>
-            <div id="dashStokList" class="space-y-3.5 text-xs"></div>
-          </div>
+          <div class="lg:col-span-3 bg-white p-5 rounded-xl shadow-sm border border-slate-200/70"><div class="flex justify-between items-center mb-4"><h2 class="text-sm font-bold">Beli dan jual 7 hari terakhir</h2><div class="flex gap-3 text-xs"><span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-rose-500 inline-block"></span> Beli</span><span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-600 inline-block"></span> Jual</span></div></div><div id="chart7Hari" class="h-44 flex items-end justify-between gap-2 pt-4 border-b border-slate-200"></div><div id="chart7HariLabels" class="flex justify-between text-[11px] text-slate-500 pt-2"></div></div>
+          <div class="lg:col-span-2 bg-white p-5 rounded-xl shadow-sm border border-slate-200/70"><div class="flex justify-between items-center mb-4"><h2 class="text-sm font-bold">Stok per barang</h2><button onclick="switchMenu('kt-stok')" class="text-xs text-blue-700 hover:underline">Lihat semua</button></div><div id="dashStokList" class="space-y-3.5 text-xs"></div></div>
         </div>
       </section>
 
-      <!-- ==================== G. KAS & TONASE: TRANSAKSI ==================== -->
-      <section id="page-kt-transaksi" class="hidden space-y-5">
+      <!-- 7. TRANSAKSI TIMBANG -->
+      <section id="kt-transaksi" class="hidden space-y-5">
         <div class="flex bg-white p-1 rounded-xl border border-slate-200 text-xs font-semibold w-fit">
           <button onclick="setTrxView('form')" id="tabTrxForm" class="px-3.5 py-1.5 rounded-lg bg-slate-800 text-white">Transaksi baru</button>
           <button onclick="setTrxView('riwayat')" id="tabTrxRiwayat" class="px-3.5 py-1.5 rounded-lg text-slate-600">Riwayat nota</button>
@@ -537,90 +458,47 @@
         <div id="trxViewForm" class="space-y-4">
           <div class="flex flex-wrap justify-between items-center gap-3">
             <div><h1 class="text-xl font-bold" id="formTrxTitle">Transaksi baru</h1><p class="text-xs text-slate-500">Nota <span id="notaNomor" class="font-semibold text-slate-700"></span></p></div>
-            <div class="inline-flex bg-white p-1 rounded-xl border border-slate-300 shadow-sm">
-              <button type="button" onclick="setModeTransaksi('BELI')" id="btnModeBeli" class="px-5 py-1.5 rounded-lg text-xs font-bold btn-main">Beli</button>
-              <button type="button" onclick="setModeTransaksi('JUAL')" id="btnModeJual" class="px-5 py-1.5 rounded-lg text-xs font-bold text-slate-600">Jual</button>
-            </div>
+            <div class="inline-flex bg-white p-1 rounded-xl border border-slate-300 shadow-sm"><button type="button" onclick="setModeTransaksi('BELI')" id="btnModeBeli" class="px-5 py-1.5 rounded-lg text-xs font-bold btn-main">Beli</button><button type="button" onclick="setModeTransaksi('JUAL')" id="btnModeJual" class="px-5 py-1.5 rounded-lg text-xs font-bold text-slate-600">Jual</button></div>
           </div>
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
             <div class="lg:col-span-2 space-y-4">
               <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200/80 grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
-                <div class="sm:col-span-2">
-                  <label class="block text-[11px] font-semibold text-slate-500 mb-1">Customer / Buyer</label>
-                  <div class="flex gap-2">
-                    <input list="customerDatalist" id="trxCustomerInput" oninput="onCustomerSelect()" placeholder="Ketik atau pilih customer..." class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs" />
-                    <datalist id="customerDatalist"></datalist>
-                    <input type="text" id="trxPlat" placeholder="No. Polisi" class="w-28 border border-slate-300 rounded-lg px-2.5 py-2 text-xs" />
-                  </div>
-                </div>
+                <div class="sm:col-span-2"><label class="block text-[11px] font-semibold text-slate-500 mb-1">Customer / Buyer</label><div class="flex gap-2"><input list="customerDatalist" id="trxCustomerInput" oninput="onCustomerSelect()" placeholder="Ketik atau pilih customer..." class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs" /><datalist id="customerDatalist"></datalist><input type="text" id="trxPlat" placeholder="No. Polisi" class="w-28 border border-slate-300 rounded-lg px-2.5 py-2 text-xs" /></div></div>
                 <div class="bg-slate-50 px-3 py-2 rounded-lg border text-right"><div class="text-[11px] text-slate-500" id="lblSaldoCust">Saldo Hutang</div><div id="trxCustSaldo" class="text-sm font-bold text-amber-700">Rp 0</div></div>
               </div>
               <div class="bg-white rounded-xl shadow-sm border border-slate-200/80 overflow-x-auto">
-                <table class="w-full text-left text-xs">
-                  <thead class="bg-slate-50 border-b text-slate-500"><tr><th class="py-2.5 px-3">Barang &amp; Harga/kg</th><th class="py-2.5 px-2 w-20">Bruto</th><th class="py-2.5 px-2 w-16">Tara</th><th class="py-2.5 px-2 w-16">Pot.%</th><th class="py-2.5 px-2 text-right">Netto</th><th class="py-2.5 px-3 text-right">Subtotal</th><th class="py-2.5 px-2 w-8"></th></tr></thead>
-                  <tbody id="trxRowsBody" class="divide-y divide-slate-100"></tbody>
-                </table>
-                <div class="p-3 bg-slate-50 border-t flex justify-between items-center">
-                  <button type="button" onclick="tambahBarisBarang()" class="text-xs font-semibold text-blue-700">+ Tambah barang</button>
-                  <div id="stokWarningBox" class="hidden text-xs font-semibold text-rose-600"><span id="stokWarningMsg"></span></div>
-                </div>
+                <table class="w-full text-left text-xs"><thead class="bg-slate-50 border-b text-slate-500"><tr><th class="py-2.5 px-3">Barang &amp; Harga/kg</th><th class="py-2.5 px-2 w-20">Bruto</th><th class="py-2.5 px-2 w-16">Tara</th><th class="py-2.5 px-2 w-16">Pot.%</th><th class="py-2.5 px-2 text-right">Netto</th><th class="py-2.5 px-3 text-right">Subtotal</th><th class="py-2.5 px-2 w-8"></th></tr></thead><tbody id="trxRowsBody" class="divide-y divide-slate-100"></tbody></table>
+                <div class="p-3 bg-slate-50 border-t flex justify-between items-center"><button type="button" onclick="tambahBarisBarang()" class="text-xs font-semibold text-blue-700">+ Tambah barang</button><div id="stokWarningBox" class="hidden text-xs font-semibold text-rose-600"><span id="stokWarningMsg"></span></div></div>
               </div>
-              <div class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200/80 flex items-center justify-between gap-3 text-xs">
-                <label class="flex items-center gap-2 font-medium text-slate-600">Foto nota / kendaraan: <input type="file" id="trxFotoInput" accept="image/*" onchange="previewFoto(event)" class="text-xs" /></label>
-                <img id="trxFotoPreview" class="hidden h-10 w-14 object-cover rounded border" />
-              </div>
+              <div class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200/80 flex items-center justify-between gap-3 text-xs"><label class="flex items-center gap-2 font-medium text-slate-600">Foto nota / kendaraan: <input type="file" id="trxFotoInput" accept="image/*" onchange="previewFoto(event)" class="text-xs" /></label><img id="trxFotoPreview" class="hidden h-10 w-14 object-cover rounded border" /></div>
             </div>
             <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200/80 space-y-4 h-fit">
               <div class="flex justify-between text-xs text-slate-500"><span>Total netto</span><span id="trxTotalNetto" class="text-sm font-bold text-slate-800">0 kg</span></div>
               <div><div class="text-xs text-slate-500">Total bayar</div><div id="trxTotalBayar" class="text-2xl font-bold mt-0.5">Rp 0</div></div>
-              <div>
-                <div class="text-[11px] font-semibold text-slate-500 mb-1.5">Metode pembayaran</div>
-                <div class="grid grid-cols-3 gap-1.5 text-xs font-semibold">
-                  <button type="button" onclick="setMetodeBayar('Tunai')" id="payTunai" class="py-2 rounded-lg border border-blue-600 bg-blue-50 text-blue-800">Tunai</button>
-                  <button type="button" onclick="setMetodeBayar('Transfer')" id="payTransfer" class="py-2 rounded-lg border border-slate-200 text-slate-600">Transfer</button>
-                  <button type="button" onclick="setMetodeBayar('Hutang')" id="payHutang" class="py-2 rounded-lg border border-slate-200 text-slate-600">Hutang</button>
-                </div>
-              </div>
-              <div class="space-y-2 text-xs">
-                <div class="flex justify-between items-center"><span class="text-slate-600">Dibayar (Rp)</span><input type="number" id="trxDibayar" oninput="hitungSisaHutang()" class="w-36 text-right font-bold border border-slate-300 rounded-lg px-2.5 py-1.5" /></div>
-                <div class="flex justify-between"><span class="text-slate-600" id="lblSisaHutang">Sisa hutang</span><span id="trxSisaHutang" class="font-bold text-amber-700">Rp 0</span></div>
-              </div>
+              <div><div class="text-[11px] font-semibold text-slate-500 mb-1.5">Metode pembayaran</div><div class="grid grid-cols-3 gap-1.5 text-xs font-semibold"><button type="button" onclick="setMetodeBayar('Tunai')" id="payTunai" class="py-2 rounded-lg border border-blue-600 bg-blue-50 text-blue-800">Tunai</button><button type="button" onclick="setMetodeBayar('Transfer')" id="payTransfer" class="py-2 rounded-lg border border-slate-200 text-slate-600">Transfer</button><button type="button" onclick="setMetodeBayar('Hutang')" id="payHutang" class="py-2 rounded-lg border border-slate-200 text-slate-600">Hutang</button></div></div>
+              <div class="space-y-2 text-xs"><div class="flex justify-between items-center"><span class="text-slate-600">Dibayar (Rp)</span><input type="number" id="trxDibayar" oninput="hitungSisaHutang()" class="w-36 text-right font-bold border border-slate-300 rounded-lg px-2.5 py-1.5" /></div><div class="flex justify-between"><span class="text-slate-600" id="lblSisaHutang">Sisa hutang</span><span id="trxSisaHutang" class="font-bold text-amber-700">Rp 0</span></div></div>
               <button type="button" onclick="simpanTransaksi()" class="w-full btn-main py-2.5 rounded-xl text-sm font-bold shadow-sm">Simpan dan cetak nota</button>
             </div>
           </div>
         </div>
         <div id="trxViewRiwayat" class="hidden bg-white p-5 rounded-xl shadow-sm border border-slate-200/80 space-y-4">
-          <div class="flex flex-wrap justify-between items-center gap-3">
-            <h2 class="text-base font-bold">Riwayat transaksi</h2>
-            <div class="flex flex-wrap gap-2 text-xs">
-              <input type="date" id="fltTglMulai" onchange="renderRiwayat()" class="border rounded-lg px-2.5 py-1.5" />
-              <input type="date" id="fltTglAkhir" onchange="renderRiwayat()" class="border rounded-lg px-2.5 py-1.5" />
-              <select id="fltMode" onchange="renderRiwayat()" class="border rounded-lg px-2.5 py-1.5"><option value="ALL">Semua</option><option value="BELI">Beli</option><option value="JUAL">Jual</option></select>
-              <input type="text" id="fltCari" onkeyup="renderRiwayat()" placeholder="Cari nota / customer..." class="border rounded-lg px-2.5 py-1.5" />
-            </div>
-          </div>
+          <div class="flex flex-wrap justify-between items-center gap-3"><h2 class="text-base font-bold">Riwayat transaksi</h2><div class="flex flex-wrap gap-2 text-xs"><input type="date" id="fltTglMulai" onchange="renderRiwayat()" class="border rounded-lg px-2.5 py-1.5" /><input type="date" id="fltTglAkhir" onchange="renderRiwayat()" class="border rounded-lg px-2.5 py-1.5" /><select id="fltMode" onchange="renderRiwayat()" class="border rounded-lg px-2.5 py-1.5"><option value="ALL">Semua</option><option value="BELI">Beli</option><option value="JUAL">Jual</option></select><input type="text" id="fltCari" onkeyup="renderRiwayat()" placeholder="Cari nota / customer..." class="border rounded-lg px-2.5 py-1.5" /></div></div>
           <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="bg-slate-50 border-b text-slate-500"><tr><th class="py-2.5 px-3">Nota &amp; Tgl</th><th class="py-2.5 px-3">Tipe &amp; Customer</th><th class="py-2.5 px-3">Barang</th><th class="py-2.5 px-3 text-right">Netto</th><th class="py-2.5 px-3 text-right">Total &amp; Bayar</th><th class="py-2.5 px-3 text-center">SPS</th><th class="py-2.5 px-3 text-center">Aksi</th></tr></thead><tbody id="riwayatBody" class="divide-y"></tbody></table></div>
         </div>
         <div id="trxViewKasLain" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-5">
-          <div class="bg-white p-5 rounded-xl shadow-sm border space-y-3 h-fit">
-            <h2 class="text-sm font-bold">Catat kas lain (Operasional)</h2>
-            <select id="opsTipe" class="w-full border rounded-lg px-3 py-2 text-xs"><option value="KELUAR">Kas Keluar (Operasional)</option><option value="MASUK">Kas Masuk Lainnya</option></select>
-            <input type="text" id="opsKet" placeholder="Keterangan" class="w-full border rounded-lg px-3 py-2 text-xs" />
-            <input type="number" id="opsNominal" placeholder="Nominal (Rp)" class="w-full border rounded-lg px-3 py-2 text-xs" />
-            <button onclick="simpanKasLain()" class="w-full btn-main py-2 rounded-lg text-xs font-bold">Simpan kas</button>
-          </div>
+          <div class="bg-white p-5 rounded-xl shadow-sm border space-y-3 h-fit"><h2 class="text-sm font-bold">Catat kas lain (Operasional)</h2><select id="opsTipe" class="w-full border rounded-lg px-3 py-2 text-xs"><option value="KELUAR">Kas Keluar (Operasional)</option><option value="MASUK">Kas Masuk Lainnya</option></select><input type="text" id="opsKet" placeholder="Keterangan" class="w-full border rounded-lg px-3 py-2 text-xs" /><input type="number" id="opsNominal" placeholder="Nominal (Rp)" class="w-full border rounded-lg px-3 py-2 text-xs" /><button onclick="simpanKasLain()" class="w-full btn-main py-2 rounded-lg text-xs font-bold">Simpan kas</button></div>
           <div class="lg:col-span-2 bg-white p-5 rounded-xl shadow-sm border"><h2 class="text-sm font-bold mb-3">Riwayat kas operasional</h2><table class="w-full text-left text-xs"><thead class="bg-slate-50 border-b text-slate-500"><tr><th class="py-2 px-3">Tanggal</th><th class="py-2 px-3">Keterangan</th><th class="py-2 px-3">Tipe</th><th class="py-2 px-3 text-right">Nominal</th><th></th></tr></thead><tbody id="kasLainBody" class="divide-y"></tbody></table></div>
         </div>
       </section>
 
-      <!-- ==================== H. KAS & TONASE: STOK ==================== -->
-      <section id="page-kt-stok" class="hidden space-y-5">
+      <!-- 8. STOK -->
+      <section id="kt-stok" class="hidden space-y-5">
         <div><h1 class="text-xl font-bold">Stok barang</h1><p class="text-xs text-slate-500">Pantau tonase, batas minimum, HPP rata-rata, dan stok opname</p></div>
         <div class="bg-white rounded-xl shadow-sm border overflow-x-auto"><table class="w-full text-left text-xs"><thead class="bg-slate-50 border-b text-slate-500"><tr><th class="py-3 px-4">Barang</th><th class="py-3 px-4 text-right">Stok fisik</th><th class="py-3 px-4 text-right">Min. stok</th><th class="py-3 px-4 text-right role-owner-only">HPP/kg</th><th class="py-3 px-4 text-center">Status</th><th class="py-3 px-4 text-center">Opname</th></tr></thead><tbody id="stokBody" class="divide-y"></tbody></table></div>
       </section>
 
-      <!-- ==================== I. KAS & TONASE: HARGA ==================== -->
-      <section id="page-kt-harga" class="hidden space-y-5">
+      <!-- 9. HARGA BARANG -->
+      <section id="kt-harga" class="hidden space-y-5">
         <div class="flex justify-between items-center"><div><h1 class="text-xl font-bold">Harga barang</h1><p class="text-xs text-slate-500">Master harga beli &amp; jual per 1 kg</p></div><button onclick="tambahJenisBarangModal()" class="btn-main px-4 py-2 rounded-lg text-xs font-bold">+ Tambah barang</button></div>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
           <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border overflow-x-auto"><table class="w-full text-left text-xs"><thead class="bg-slate-50 border-b text-slate-500"><tr><th class="py-3 px-4">Barang</th><th class="py-3 px-4 text-right role-owner-only">Harga beli/kg</th><th class="py-3 px-4 text-right">Harga jual/kg</th><th class="py-3 px-4 text-right">Min. stok</th><th class="py-3 px-4 text-center">Aksi</th></tr></thead><tbody id="hargaBody" class="divide-y"></tbody></table></div>
@@ -628,14 +506,14 @@
         </div>
       </section>
 
-      <!-- ==================== J. KAS & TONASE: CUSTOMER ==================== -->
-      <section id="page-kt-customer" class="hidden space-y-5">
+      <!-- 10. CUSTOMER -->
+      <section id="kt-customer" class="hidden space-y-5">
         <div class="flex justify-between items-center"><div><h1 class="text-xl font-bold">Customer &amp; buyer</h1><p class="text-xs text-slate-500">Data customer, WhatsApp, kendaraan, dan harga khusus</p></div><button onclick="bukaModalCustomer()" class="btn-main px-4 py-2 rounded-lg text-xs font-bold">+ Tambah customer</button></div>
         <div class="bg-white rounded-xl shadow-sm border overflow-x-auto"><table class="w-full text-left text-xs"><thead class="bg-slate-50 border-b text-slate-500"><tr><th class="py-3 px-4">Nama &amp; Tipe</th><th class="py-3 px-4">WhatsApp</th><th class="py-3 px-4">Kendaraan</th><th class="py-3 px-4">Harga Khusus</th><th class="py-3 px-4 text-right">Hutang/Piutang</th><th class="py-3 px-4 text-center">Aksi</th></tr></thead><tbody id="customerBody" class="divide-y"></tbody></table></div>
       </section>
 
-      <!-- ==================== K. KAS & TONASE: HUTANG ==================== -->
-      <section id="page-kt-hutang" class="hidden space-y-5">
+      <!-- 11. HUTANG PIUTANG -->
+      <section id="kt-hutang" class="hidden space-y-5">
         <div><h1 class="text-xl font-bold">Hutang &amp; piutang</h1><p class="text-xs text-slate-500">Pelunasan bertahap hutang pembelian dan piutang penjualan</p></div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div class="bg-amber-100 border border-amber-300 p-4 rounded-xl"><div class="text-xs text-amber-900 font-medium">Total hutang kita</div><div id="totalHutangKita" class="text-xl font-bold text-amber-900 mt-1">Rp 0</div></div>
@@ -644,8 +522,8 @@
         <div class="bg-white rounded-xl shadow-sm border overflow-x-auto"><table class="w-full text-left text-xs"><thead class="bg-slate-50 border-b text-slate-500"><tr><th class="py-3 px-4">Nota</th><th class="py-3 px-4">Customer</th><th class="py-3 px-4">Jenis</th><th class="py-3 px-4 text-right">Total</th><th class="py-3 px-4 text-right">Sisa</th><th class="py-3 px-4 text-center">Pelunasan</th></tr></thead><tbody id="hutangBody" class="divide-y"></tbody></table></div>
       </section>
 
-      <!-- ==================== L. KAS & TONASE: LAPORAN ==================== -->
-      <section id="page-kt-laporan" class="hidden space-y-5">
+      <!-- 12. LAPORAN KAS -->
+      <section id="kt-laporan" class="hidden space-y-5">
         <div class="flex justify-between items-center"><div><h1 class="text-xl font-bold">Laporan Kas &amp; Tutup Kas</h1><p class="text-xs text-slate-500">Margin per barang, tutup kas harian, dan ekspor CSV</p></div><button onclick="exportExcelCSV()" class="bg-emerald-700 text-white px-4 py-2 rounded-lg text-xs font-bold">Ekspor Excel (.csv)</button></div>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <div class="bg-white p-5 rounded-xl shadow-sm border"><h2 class="text-sm font-bold mb-3">Margin kotor per barang</h2><table class="w-full text-left text-xs"><thead class="bg-slate-50 border-b text-slate-500"><tr><th class="py-2 px-2">Barang</th><th class="py-2 px-2 text-right">Terjual</th><th class="py-2 px-2 text-right">Omzet</th><th class="py-2 px-2 text-right">Laba Kotor</th></tr></thead><tbody id="laporanMarginBody" class="divide-y"></tbody></table></div>
@@ -662,8 +540,8 @@
         </div>
       </section>
 
-      <!-- ==================== M. SISTEM: KELOLA AKUN ==================== -->
-      <section id="page-p-akun" class="hidden space-y-5">
+      <!-- 13. KELOLA AKUN -->
+      <section id="menu-akun" class="hidden space-y-5">
         <div class="flex justify-between items-center"><div><h1 class="text-xl font-bold">Kelola Akun Pengguna</h1><p class="text-xs text-slate-500">Terhubung langsung dengan tab Akun Google Sheet</p></div><button onclick="fetchUsersFromSPS()" class="bg-white border border-slate-300 px-3.5 py-2 rounded-lg text-xs font-semibold text-blue-700">Refresh Akun</button></div>
         <form onsubmit="handleSaveAccount(event)" class="bg-white rounded-xl shadow-sm border p-5 space-y-4">
           <div class="flex justify-between items-center"><h2 class="text-sm font-bold" id="akun-form-title">Buat Akun Baru</h2><button type="button" onclick="resetAccountForm()" class="text-xs text-slate-500 hover:underline">Reset</button></div>
@@ -681,8 +559,8 @@
         <div class="bg-white rounded-xl shadow-sm border overflow-x-auto"><table class="w-full text-left text-xs"><thead class="bg-slate-50 border-b text-slate-500"><tr><th class="py-3 px-4">ID</th><th class="py-3 px-4">Nama</th><th class="py-3 px-4">Username</th><th class="py-3 px-4 text-center">Role</th><th class="py-3 px-4 text-center">Status</th><th class="py-3 px-4 text-right">Aksi</th></tr></thead><tbody id="akun-table-body" class="divide-y"></tbody></table></div>
       </section>
 
-      <!-- ==================== N. SISTEM: PENGATURAN ==================== -->
-      <section id="page-kt-pengaturan" class="hidden space-y-5">
+      <!-- 14. PENGATURAN -->
+      <section id="kt-pengaturan" class="hidden space-y-5">
         <div><h1 class="text-xl font-bold">Pengaturan Portal</h1><p class="text-xs text-slate-500">Tema warna seluruh aplikasi, hak akses, koneksi SPS, dan audit trail</p></div>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <div class="bg-white p-5 rounded-xl shadow-sm border space-y-4">
@@ -753,42 +631,37 @@
   <div id="print-portal-mount" class="hidden"></div>
 
   <script>
-    const GOOGLE_SPS_URL = "https://script.google.com/macros/s/AKfycbw0XfcfCiJk4ip3VWAEsOiO8BFt2ywWvQ5MZd3i8_QhchRCl-Eyrjtu_P6wULwTRsbS/exec";
+    const DEFAULT_SPS_URL = "https://script.google.com/macros/s/AKfycbw0XfcfCiJk4ip3VWAEsOiO8BFt2ywWvQ5MZd3i8_QhchRCl-Eyrjtu_P6wULwTRsbS/exec";
+    let GOOGLE_SPS_URL = localStorage.getItem('spd_custom_sps_url') || DEFAULT_SPS_URL;
     const todayStr = new Date().toISOString().slice(0, 10);
 
-    // ==================== MENU SIDEBAR TUNGGAL ====================
+    // ==================== MAIN MENU PAYROLL (UTUH) + MAIN MENU BARU KAS & TONASE ====================
     const MENUS = [
       { section: 'PAYROLL & GAJI' },
-      { id: 'p-ringkasan', label: 'Ringkasan Gaji', ownerOnly: false },
-      { id: 'p-input', label: 'Input Gaji', ownerOnly: false },
-      { id: 'p-karyawan', label: 'Data Karyawan', ownerOnly: false },
-      { id: 'p-slip', label: 'Slip Gaji', ownerOnly: false },
-      { id: 'p-laporan', label: 'Laporan Gaji', ownerOnly: true },
-      { section: 'REKAP KAS & TONASE' },
+      { id: 'menu-ringkasan', label: 'Ringkasan', ownerOnly: false },
+      { id: 'menu-input', label: 'Input gaji', ownerOnly: false },
+      { id: 'menu-karyawan', label: 'Karyawan', ownerOnly: false },
+      { id: 'menu-slip', label: 'Slip gaji', ownerOnly: false },
+      { id: 'menu-laporan', label: 'Laporan', ownerOnly: true },
+      { section: 'KAS & TONASE' },
       { id: 'kt-dashboard', label: 'Dashboard Kas', ownerOnly: false },
-      { id: 'kt-transaksi', label: 'Transaksi Timbang', ownerOnly: false },
-      { id: 'kt-stok', label: 'Stok Gudang', ownerOnly: false },
-      { id: 'kt-harga', label: 'Harga Barang', ownerOnly: false },
-      { id: 'kt-customer', label: 'Customer & Buyer', ownerOnly: false },
-      { id: 'kt-hutang', label: 'Hutang & Piutang', ownerOnly: false },
-      { id: 'kt-laporan', label: 'Laporan & Tutup Kas', ownerOnly: true },
+      { id: 'kt-transaksi', label: 'Transaksi', ownerOnly: false },
+      { id: 'kt-stok', label: 'Stok', ownerOnly: false },
+      { id: 'kt-harga', label: 'Harga barang', ownerOnly: false },
+      { id: 'kt-customer', label: 'Customer', ownerOnly: false },
+      { id: 'kt-hutang', label: 'Hutang piutang', ownerOnly: false },
+      { id: 'kt-laporan', label: 'Laporan Kas', ownerOnly: true },
       { section: 'SISTEM' },
-      { id: 'p-akun', label: 'Kelola Akun', adminOnly: true },
+      { id: 'menu-akun', label: 'Kelola Akun', adminOnly: true },
       { id: 'kt-pengaturan', label: 'Pengaturan', ownerOnly: true }
     ];
 
-    let currentUser = null;
-    let payrollData = [];
-    let currentFilteredData = [];
-    let masterEmployees = [];
-    let accountsList = [];
-    let currentSlipItem = null;
-    let selectedSplitIndex = 0;
-    let activeLembur = { hari: false, jam: true, inap: false };
-    let supirSpdUnit = 'trip';
+    let currentUser = null, payrollData = [], currentFilteredData = [], masterEmployees = [], accountsList = [];
+    let currentSlipItem = null, selectedSplitIndex = 0, activeLembur = { hari: false, jam: true, inap: false }, supirSpdUnit = 'trip';
+    let currentActiveMenu = 'menu-ringkasan';
 
     let ktState = JSON.parse(localStorage.getItem('spdTonaseState')) || {
-      theme: 'a', role: 'OWNER', currentPage: 'p-ringkasan', notaSeq: 5, gsheetUrl: '',
+      theme: 'a', role: 'OWNER', notaSeq: 5, gsheetUrl: '',
       barang: [
         { id: 1, nama: 'Kardus OCC', hargaBeli: 2200, hargaJual: 2900, stokKg: 6100, minKg: 1000, avgBeli: 2150 },
         { id: 2, nama: 'Duplex', hargaBeli: 1500, hargaJual: 2100, stokKg: 3200, minKg: 800, avgBeli: 1480 },
@@ -809,7 +682,6 @@
       tutupKas: [],
       auditLog: [{ waktu: todayStr + ' 08:00', user: 'Pemilik', aksi: 'Inisialisasi Portal Terpadu SPD' }]
     };
-
     let formRows = [], formMode = 'BELI', formMetode = 'Tunai', formFoto = '', editingTrxId = null, socket = null;
 
     const esc = (s) => String(s ?? '').replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
@@ -831,10 +703,27 @@
       const raw = input.value.replace(/\D/g, '');
       input.value = raw ? new Intl.NumberFormat('id-ID').format(raw) : '';
     }
-
     function isAdminRole(role) { const r = (role || '').toLowerCase(); return r.includes('admin') || r.includes('hr'); }
 
-    // ==================== JSONP HELPER ====================
+    // ==================== URL SPS SETTINGS & JSONP ====================
+    function toggleLoginUrlBox() {
+      const b = document.getElementById('login-url-box');
+      b.classList.toggle('hidden');
+      document.getElementById('login-sps-url').value = GOOGLE_SPS_URL;
+    }
+    function saveSpsUrl() {
+      const u = document.getElementById('login-sps-url').value.trim();
+      if (!u.startsWith('http')) return alert('URL harus diawali https://');
+      GOOGLE_SPS_URL = u; localStorage.setItem('spd_custom_sps_url', u);
+      document.getElementById('login-url-box').classList.add('hidden');
+      alert('URL Apps Script disimpan!');
+    }
+    function resetSpsUrl() {
+      localStorage.removeItem('spd_custom_sps_url');
+      GOOGLE_SPS_URL = DEFAULT_SPS_URL;
+      document.getElementById('login-sps-url').value = GOOGLE_SPS_URL;
+    }
+
     function jsonpRequest(params = {}, timeoutMs = 15000) {
       return new Promise((resolve, reject) => {
         const cbName = 'spd_cb_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
@@ -845,8 +734,8 @@
         const q = new URLSearchParams(); q.set('callback', cbName);
         Object.entries(params).forEach(([k, v]) => { if (v !== undefined && v !== null) q.set(k, String(v)); });
         script.src = `${GOOGLE_SPS_URL}?${q.toString()}`;
-        script.onerror = () => { cleanup(); reject(new Error('Gagal JSONP')); };
-        timer = setTimeout(() => { cleanup(); reject(new Error('Timeout SPS')); }, timeoutMs);
+        script.onerror = () => { cleanup(); reject(new Error('Gagal terhubung ke Apps Script')); };
+        timer = setTimeout(() => { cleanup(); reject(new Error('Timeout koneksi SPS')); }, timeoutMs);
         document.body.appendChild(script);
       });
     }
@@ -860,10 +749,18 @@
       const btn = document.getElementById('btn-login-submit'); btn.disabled = true; btn.innerText = 'Memeriksa akun...';
       try {
         const json = await jsonpRequest({ action: 'login', email, password });
-        if (json && json.status === 'ok' && json.user) applyLoggedInSession(json.user);
-        else { errBox.innerText = (json && json.message) || 'Username/Email atau Password salah.'; errBox.classList.remove('hidden'); }
+        if (json && json.status === 'ok' && json.user) {
+          applyLoggedInSession(json.user);
+        } else if (json && json.status === 'success' && Array.isArray(json.data)) {
+          errBox.innerText = 'Apps Script Anda masih menjalankan Code.gs versi lama (belum ada fitur login). Silakan tempel Code.gs terbaru lalu klik Deploy -> Manage deployments -> Edit -> New version!';
+          errBox.classList.remove('hidden');
+        } else {
+          errBox.innerText = (json && json.message) || 'Username/Email atau Password salah.';
+          errBox.classList.remove('hidden');
+        }
       } catch (err) {
-        errBox.innerText = 'Gagal terhubung ke Google SPS.'; errBox.classList.remove('hidden');
+        errBox.innerText = 'Gagal terhubung ke Google SPS. Pastikan Code.gs sudah di-deploy dengan akses "Anyone" dan URL Apps Script benar.';
+        errBox.classList.remove('hidden');
       } finally { btn.disabled = false; btn.innerText = 'Masuk'; }
     }
 
@@ -881,7 +778,7 @@
       document.getElementById('login-screen').classList.add('hidden');
       document.getElementById('app-shell').classList.remove('hidden');
       renderSidebar();
-      switchPage(ktState.currentPage && document.getElementById('page-' + ktState.currentPage) ? ktState.currentPage : 'p-ringkasan');
+      switchMenu('menu-ringkasan');
       fetchFromGoogleSPS(false);
       if (isAdminRole(user.role)) fetchUsersFromSPS();
     }
@@ -895,45 +792,42 @@
 
     // ==================== NAVIGASI SIDEBAR ====================
     function renderSidebar() {
-      const desktop = document.getElementById('desktopNav');
-      const mobile = document.getElementById('mobileNavList');
+      const desktop = document.getElementById('desktopNav'), mobile = document.getElementById('mobileNavList');
       desktop.innerHTML = ''; mobile.innerHTML = '';
       const isAdm = currentUser && isAdminRole(currentUser.role);
-
       MENUS.forEach(m => {
         if (m.section) {
           const hdr = `<div class="pt-3 pb-1 px-3 text-[10px] font-bold tracking-wider text-white/50 uppercase">${m.section}</div>`;
-          desktop.innerHTML += hdr; mobile.innerHTML += hdr;
-          return;
+          desktop.innerHTML += hdr; mobile.innerHTML += hdr; return;
         }
         if (m.ownerOnly && ktState.role !== 'OWNER') return;
         if (m.adminOnly && !isAdm) return;
-        const active = ktState.currentPage === m.id ? 'bg-sidebar-active font-bold text-white' : 'text-white/80 hover:bg-white/10';
-        desktop.innerHTML += `<button onclick="switchPage('${m.id}')" class="w-full text-left px-3.5 py-2 rounded-lg transition ${active}">${m.label}</button>`;
-        mobile.innerHTML += `<button onclick="switchPage('${m.id}');toggleMobileMenu()" class="w-full text-left px-3 py-2 rounded-lg transition ${active}">${m.label}</button>`;
+        const active = currentActiveMenu === m.id ? 'bg-sidebar-active font-bold text-white' : 'text-white/80 hover:bg-white/10';
+        desktop.innerHTML += `<button onclick="switchMenu('${m.id}')" class="w-full text-left px-3.5 py-2 rounded-lg transition ${active}">${m.label}</button>`;
+        mobile.innerHTML += `<button onclick="switchMenu('${m.id}');toggleMobileMenu()" class="w-full text-left px-3 py-2 rounded-lg transition ${active}">${m.label}</button>`;
       });
     }
 
-    function switchPage(pageId) {
-      if ((pageId === 'p-laporan' || pageId === 'kt-laporan' || pageId === 'kt-pengaturan') && ktState.role !== 'OWNER') pageId = 'p-ringkasan';
-      if (pageId === 'p-akun' && (!currentUser || !isAdminRole(currentUser.role))) pageId = 'p-ringkasan';
-      ktState.currentPage = pageId; saveKtState();
+    function switchMenu(menuId) {
+      if ((menuId === 'menu-laporan' || menuId === 'kt-laporan' || menuId === 'kt-pengaturan') && ktState.role !== 'OWNER') menuId = 'menu-ringkasan';
+      if (menuId === 'menu-akun' && (!currentUser || !isAdminRole(currentUser.role))) menuId = 'menu-ringkasan';
+      currentActiveMenu = menuId;
 
       MENUS.filter(m => m.id).forEach(m => {
-        const el = document.getElementById('page-' + m.id);
-        if (el) el.classList.toggle('hidden', m.id !== pageId);
+        const el = document.getElementById(m.id);
+        if (el) el.classList.toggle('hidden', m.id !== menuId);
       });
       renderSidebar();
 
-      if (pageId === 'kt-dashboard') renderKtDashboard();
-      if (pageId === 'kt-transaksi') { renderCustomerDatalist(); renderRiwayat(); renderKasLain(); }
-      if (pageId === 'kt-stok') renderStok();
-      if (pageId === 'kt-harga') renderHarga();
-      if (pageId === 'kt-customer') renderCustomer();
-      if (pageId === 'kt-hutang') renderHutang();
-      if (pageId === 'kt-laporan') renderKtLaporan();
-      if (pageId === 'kt-pengaturan') renderPengaturan();
-      if (pageId === 'p-akun') fetchUsersFromSPS();
+      if (menuId === 'kt-dashboard') renderKtDashboard();
+      if (menuId === 'kt-transaksi') { renderCustomerDatalist(); renderRiwayat(); renderKasLain(); }
+      if (menuId === 'kt-stok') renderStok();
+      if (menuId === 'kt-harga') renderHarga();
+      if (menuId === 'kt-customer') renderCustomer();
+      if (menuId === 'kt-hutang') renderHutang();
+      if (menuId === 'kt-laporan') renderKtLaporan();
+      if (menuId === 'kt-pengaturan') renderPengaturan();
+      if (menuId === 'menu-akun') fetchUsersFromSPS();
     }
 
     function toggleMobileMenu() { document.getElementById('mobileDrawer').classList.toggle('hidden'); }
@@ -944,7 +838,7 @@
     }
     setInterval(updateClock, 1000); updateClock();
 
-    // ==================== PAYROLL LOGIC ====================
+    // ==================== PAYROLL LOGIC (MENU ASLI TETAP UTUH) ====================
     function toggleDateRangePicker() { document.getElementById('date-range-popover').classList.toggle('hidden'); }
     function applyDateRangeText() {
       const s = document.getElementById('range-start-date').value, e = document.getElementById('range-end-date').value;
@@ -958,8 +852,7 @@
     function onDivisiChange(val) { setFormSkema(val, true); }
     function setFormSkema(skema, autoLembur = true) {
       const norm = (skema === 'Supir B3' || skema === 'Supir SPD') ? skema : 'Karyawan limbah';
-      document.getElementById('input-skema').value = norm;
-      document.getElementById('input-divisi').value = norm;
+      document.getElementById('input-skema').value = norm; document.getElementById('input-divisi').value = norm;
       const secH = document.getElementById('section-pokok-harian'), secT = document.getElementById('section-pokok-trip'), spdT = document.getElementById('supir-spd-unit-toggle');
       if (norm === 'Supir B3') {
         spdT.classList.add('hidden'); secH.classList.add('hidden'); secT.classList.remove('hidden');
@@ -986,15 +879,4 @@
         document.getElementById('pokok-section-title').innerText = 'Gaji pokok Supir SPD (Harian)';
       } else {
         secH.classList.add('hidden'); secT.classList.remove('hidden');
-        bT.className = "px-2.5 py-0.5 rounded bg-blue-100 text-blue-800 font-bold"; bH.className = "px-2.5 py-0.5 rounded bg-slate-100 text-slate-600";
-        document.getElementById('pokok-section-title').innerText = 'Gaji pokok Supir SPD (Trip)';
-      }
-      if (recalc) updateLiveSlipPreview();
-    }
-
-    function setLemburActiveState(s) { activeLembur = { ...activeLembur, ...s }; renderLemburToggleUI(); }
-    function toggleLemburType(type) {
-      activeLembur[type] = !activeLembur[type];
-      if (!activeLembur[type]) {
-        if (type === 'hari') document.getElementById('input-lembur-hari').value = '0';
-        if (type === 'jam') { document.getElementById('input-lembur-jam').value = '0'; document.getElementById('inpu
+        bT.className = "px-
