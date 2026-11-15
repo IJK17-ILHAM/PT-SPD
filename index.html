@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>spd. Payroll — PT. Sarana Putra Daerah</title>
+    <title>spd. Payroll &amp; Kas Tonase — PT. Sarana Putra Daerah</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -108,7 +108,7 @@
 
                 <div class="my-auto py-8">
                     <h1 class="text-2xl sm:text-3xl font-bold text-[#60a5fa] tracking-tight">PT. Sarana Putra Daerah</h1>
-                    <p class="text-sm text-[#93c5fd]/80 mt-2">Portal payroll mingguan dan monitoring SPS</p>
+                    <p class="text-sm text-[#93c5fd]/80 mt-2">Portal payroll mingguan, rekap kas &amp; tonase</p>
                 </div>
 
                 <div class="flex items-center gap-2 text-xs font-semibold">
@@ -179,6 +179,15 @@
                     <button onclick="switchMenu('menu-laporan')" id="btn-menu-laporan" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-[#1b2029] hover:text-white transition text-left">
                         <span>Laporan</span>
                     </button>
+
+                    <!-- MENU BARU: REKAP KAS (MEMUAT FILE TERPISAH tonase.html) -->
+                    <div class="pt-2 mt-2 border-t border-[#262c36]">
+                        <button onclick="switchMenu('menu-tonase')" id="btn-menu-tonase" class="w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg text-sm font-medium text-emerald-300 hover:bg-[#1b2029] hover:text-white transition text-left">
+                            <span>Rekap Kas</span>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800/60">Tonase</span>
+                        </button>
+                    </div>
+
                     <button onclick="switchMenu('menu-akun')" id="btn-menu-akun" class="hidden w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-[#f5a623] hover:bg-[#1b2029] transition text-left">
                         <span>Kelola Akun</span>
                     </button>
@@ -211,8 +220,8 @@
         </aside>
 
         <!-- MAIN WORKSPACE -->
-        <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
-            <div class="max-w-7xl mx-auto space-y-6">
+        <main id="main-workspace" class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+            <div id="main-container" class="max-w-7xl mx-auto space-y-6">
 
                 <!-- MENU 1: RINGKASAN -->
                 <section id="menu-ringkasan" class="space-y-5">
@@ -818,7 +827,12 @@
                     </div>
                 </section>
 
-                <!-- MENU 6: KELOLA AKUN (SESUAI KOLOM TAB AKUN ANDA) -->
+                <!-- MENU 6 (BARU): REKAP KAS & TONASE (MEMUAT tonase.html) -->
+                <section id="menu-tonase" class="hidden w-full h-full">
+                    <iframe id="tonaseFrame" src="about:blank" class="w-full h-[calc(100vh-56px)] lg:h-screen border-0 bg-[#E9EEF3]"></iframe>
+                </section>
+
+                <!-- MENU 7: KELOLA AKUN -->
                 <section id="menu-akun" class="hidden space-y-5">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div>
@@ -1067,6 +1081,7 @@
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('app-shell').classList.remove('hidden');
 
+            switchMenu('menu-ringkasan');
             fetchFromGoogleSPS(false);
             if (isAdminRole(user.role)) {
                 fetchUsersFromSPS();
@@ -1076,6 +1091,11 @@
         function closePortalDashboard() {
             currentUser = null;
             localStorage.removeItem('spd_logged_user');
+            const frame = document.getElementById('tonaseFrame');
+            if (frame) {
+                frame.src = 'about:blank';
+                delete frame.dataset.loaded;
+            }
             document.getElementById('login-password').value = '';
             document.getElementById('app-shell').classList.add('hidden');
             document.getElementById('login-screen').classList.remove('hidden');
@@ -1211,7 +1231,7 @@
         }
 
         // =========================================================================
-        // NAVIGASI & CLOCK
+        // NAVIGASI SIDEBAR (TERMASUK MENU REKAP KAS -> tonase.html)
         // =========================================================================
         function toggleMobileSidebar() {
             const nav = document.getElementById('sidebar-nav');
@@ -1220,8 +1240,8 @@
         }
 
         function switchMenu(menuId) {
-            const menus = ['menu-ringkasan', 'menu-input', 'menu-karyawan', 'menu-slip', 'menu-laporan', 'menu-akun'];
-            const btns = ['btn-menu-ringkasan', 'btn-menu-input', 'btn-menu-karyawan', 'btn-menu-slip', 'btn-menu-laporan', 'btn-menu-akun'];
+            const menus = ['menu-ringkasan', 'menu-input', 'menu-karyawan', 'menu-slip', 'menu-laporan', 'menu-tonase', 'menu-akun'];
+            const btns = ['btn-menu-ringkasan', 'btn-menu-input', 'btn-menu-karyawan', 'btn-menu-slip', 'btn-menu-laporan', 'btn-menu-tonase', 'btn-menu-akun'];
 
             menus.forEach(id => document.getElementById(id).classList.add('hidden'));
             document.getElementById(menuId).classList.remove('hidden');
@@ -1230,8 +1250,13 @@
                 const el = document.getElementById(btnId);
                 if (!el) return;
                 const isAkun = btnId === 'btn-menu-akun';
+                const isTonase = btnId === 'btn-menu-tonase';
                 const extraHidden = (isAkun && (!currentUser || !isAdminRole(currentUser.role))) ? 'hidden ' : '';
-                el.className = extraHidden + "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium " + (isAkun ? "text-[#f5a623]" : "text-slate-300") + " hover:bg-[#1b2029] hover:text-white transition text-left";
+                if (isTonase) {
+                    el.className = "w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg text-sm font-medium text-emerald-300 hover:bg-[#1b2029] hover:text-white transition text-left";
+                } else {
+                    el.className = extraHidden + "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium " + (isAkun ? "text-[#f5a623]" : "text-slate-300") + " hover:bg-[#1b2029] hover:text-white transition text-left";
+                }
             });
 
             const activeMap = {
@@ -1240,11 +1265,32 @@
                 'menu-karyawan': 'btn-menu-karyawan',
                 'menu-slip': 'btn-menu-slip',
                 'menu-laporan': 'btn-menu-laporan',
+                'menu-tonase': 'btn-menu-tonase',
                 'menu-akun': 'btn-menu-akun'
             };
             const activeBtn = document.getElementById(activeMap[menuId]);
             if (activeBtn) {
-                activeBtn.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold bg-[#0b2c59] text-[#60a5fa] transition text-left";
+                if (menuId === 'menu-tonase') {
+                    activeBtn.className = "w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg text-sm font-semibold bg-[#0b2c59] text-emerald-300 transition text-left";
+                } else {
+                    activeBtn.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold bg-[#0b2c59] text-[#60a5fa] transition text-left";
+                }
+            }
+
+            // Atur area kanan full-bleed saat membuka Rekap Kas (tonase.html)
+            const workspace = document.getElementById('main-workspace');
+            const container = document.getElementById('main-container');
+            if (menuId === 'menu-tonase') {
+                workspace.className = "flex-1 p-0 overflow-hidden";
+                container.className = "w-full h-full";
+                const frame = document.getElementById('tonaseFrame');
+                if (frame && !frame.dataset.loaded) {
+                    frame.src = 'tonase.html';
+                    frame.dataset.loaded = '1';
+                }
+            } else {
+                workspace.className = "flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto";
+                container.className = "max-w-7xl mx-auto space-y-6";
             }
 
             if (menuId === 'menu-akun') fetchUsersFromSPS();
