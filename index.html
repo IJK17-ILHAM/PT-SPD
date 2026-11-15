@@ -64,6 +64,24 @@
             color: #000000 !important;
         }
 
+        /* Print Report & Ticket Styles */
+        .print-report-sheet {
+            width: 100%;
+            background: #ffffff !important;
+            color: #000000 !important;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 10px;
+            padding: 8mm;
+            box-sizing: border-box;
+        }
+        .print-report-sheet table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+        .print-report-sheet th, .print-report-sheet td {
+            border: 1px solid #000000;
+            padding: 4px 6px;
+            color: #000000 !important;
+        }
+        .print-report-sheet th { background: #edf2f7 !important; font-weight: bold; }
+
         @media print {
             @page { size: A4 portrait; margin: 5mm 5mm; }
             body, html { background: #ffffff !important; color: #000000 !important; }
@@ -108,7 +126,7 @@
 
                 <div class="my-auto py-8">
                     <h1 class="text-2xl sm:text-3xl font-bold text-[#60a5fa] tracking-tight">PT. Sarana Putra Daerah</h1>
-                    <p class="text-sm text-[#93c5fd]/80 mt-2">Portal payroll mingguan dan monitoring SPS</p>
+                    <p class="text-sm text-[#93c5fd]/80 mt-2">Portal payroll mingguan, rekap kas, timbangan &amp; monitoring SPS</p>
                 </div>
 
                 <div class="flex items-center gap-2 text-xs font-semibold">
@@ -164,6 +182,7 @@
                 </div>
 
                 <nav id="sidebar-nav" class="hidden lg:flex flex-col p-3 space-y-1">
+                    <div class="pt-1 pb-1 px-3.5 text-[10px] font-bold uppercase tracking-wider text-slate-500">Penggajian</div>
                     <button onclick="switchMenu('menu-ringkasan')" id="btn-menu-ringkasan" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold bg-[#0b2c59] text-[#60a5fa] transition text-left">
                         <span>Ringkasan</span>
                     </button>
@@ -179,9 +198,20 @@
                     <button onclick="switchMenu('menu-laporan')" id="btn-menu-laporan" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-[#1b2029] hover:text-white transition text-left">
                         <span>Laporan</span>
                     </button>
-                    <button onclick="switchMenu('menu-akun')" id="btn-menu-akun" class="hidden w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-[#f5a623] hover:bg-[#1b2029] transition text-left">
-                        <span>Kelola Akun</span>
+
+                    <div class="pt-3 pb-1 px-3.5 text-[10px] font-bold uppercase tracking-wider text-slate-500 border-t border-[#222731] mt-2">Operasional &amp; Keuangan</div>
+                    <button onclick="switchMenu('menu-kas')" id="btn-menu-kas" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-[#1b2029] hover:text-white transition text-left">
+                        <span>Rekap Kas</span>
                     </button>
+                    <button onclick="switchMenu('menu-timbangan')" id="btn-menu-timbangan" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-[#1b2029] hover:text-white transition text-left">
+                        <span>Timbangan</span>
+                    </button>
+
+                    <div class="pt-2 border-t border-[#222731] mt-2">
+                        <button onclick="switchMenu('menu-akun')" id="btn-menu-akun" class="hidden w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-[#f5a623] hover:bg-[#1b2029] transition text-left">
+                            <span>Kelola Akun</span>
+                        </button>
+                    </div>
                 </nav>
             </div>
 
@@ -818,7 +848,332 @@
                     </div>
                 </section>
 
-                <!-- MENU 6: KELOLA AKUN (SESUAI KOLOM TAB AKUN ANDA) -->
+                <!-- MENU 6 (BARU): REKAP KAS -->
+                <section id="menu-kas" class="hidden space-y-5">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div>
+                            <h1 class="text-xl sm:text-2xl font-bold text-white">Rekap Kas Operasional</h1>
+                            <p class="text-xs text-slate-400 mt-0.5">Pencatatan kas masuk, kas keluar, uang jalan supir, operasional harian &amp; saldo berjalan.</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="fetchKasFromSPS(true)" class="px-3.5 py-2 rounded-lg bg-[#161920] border border-[#2b323d] hover:bg-[#1e232d] text-[#5ea0e8] text-xs font-semibold">Sync Kas SPS</button>
+                            <button onclick="exportKasToExcel()" class="px-3.5 py-2 rounded-lg bg-[#161920] border border-[#2b323d] hover:bg-[#1e232d] text-slate-200 text-xs font-semibold">Export Excel</button>
+                            <button onclick="printRekapKas()" class="px-4 py-2 rounded-lg bg-[#f5a623] hover:bg-[#ffb73a] text-[#111318] text-xs font-bold shadow">Cetak Rekap Kas</button>
+                        </div>
+                    </div>
+
+                    <!-- KPI Kas -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+                        <div class="bg-[#161920] border border-[#262c36] p-5 rounded-xl">
+                            <div class="text-xs text-slate-400 font-medium">Saldo Kas (Filter Aktif)</div>
+                            <div class="text-2xl font-bold text-white mt-2 font-mono" id="kas-kpi-saldo">Rp 0</div>
+                            <div class="text-[11px] text-[#5ea0e8] mt-1.5">Selisih Kas Masuk - Kas Keluar</div>
+                        </div>
+                        <div class="bg-[#161920] border border-[#262c36] p-5 rounded-xl">
+                            <div class="text-xs text-slate-400 font-medium">Total Kas Masuk</div>
+                            <div class="text-2xl font-bold text-emerald-400 mt-2 font-mono" id="kas-kpi-masuk">Rp 0</div>
+                            <div class="text-[11px] text-slate-400 mt-1.5" id="kas-kpi-masuk-count">0 transaksi masuk</div>
+                        </div>
+                        <div class="bg-[#161920] border border-[#262c36] p-5 rounded-xl">
+                            <div class="text-xs text-slate-400 font-medium">Total Kas Keluar</div>
+                            <div class="text-2xl font-bold text-rose-400 mt-2 font-mono" id="kas-kpi-keluar">Rp 0</div>
+                            <div class="text-[11px] text-slate-400 mt-1.5" id="kas-kpi-keluar-count">0 transaksi keluar</div>
+                        </div>
+                        <div class="bg-[#161920] border border-[#262c36] p-5 rounded-xl">
+                            <div class="text-xs text-slate-400 font-medium">Total Mutasi Kas</div>
+                            <div class="text-2xl font-bold text-white mt-2" id="kas-kpi-total-count">0 transaksi</div>
+                            <div class="text-[11px] text-[#f5a623] mt-1.5" id="kas-sync-note">Tersimpan lokal &amp; SPS</div>
+                        </div>
+                    </div>
+
+                    <!-- Form Input Kas -->
+                    <form id="kasForm" onsubmit="handleSaveKas(event)" class="bg-[#161920] border border-[#262c36] rounded-xl p-5 space-y-4">
+                        <div class="flex items-center justify-between border-b border-[#262c36] pb-3">
+                            <h2 class="text-sm font-bold text-white" id="kas-form-title">Catat Transaksi Kas Baru</h2>
+                            <button type="button" onclick="resetKasForm()" class="text-xs text-slate-400 hover:text-white">Reset Form</button>
+                        </div>
+                        <input type="hidden" id="kas-edit-id" value="">
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-semibold text-slate-400 mb-1">Tanggal</label>
+                                <input type="date" id="kas-tanggal" required class="w-full text-xs px-3 py-2.5 rounded-lg bg-[#12151b] border border-[#2b323d] text-white">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-slate-400 mb-1">No. Bukti</label>
+                                <input type="text" id="kas-no-bukti" placeholder="Otomatis KAS-..." class="w-full text-xs px-3 py-2.5 rounded-lg bg-[#12151b] border border-[#2b323d] text-white font-mono uppercase">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-[#f5a623] mb-1">Jenis Mutasi</label>
+                                <select id="kas-jenis" required class="w-full text-xs px-3 py-2.5 rounded-lg bg-[#12151b] border border-[#5ea0e8]/50 text-white font-bold">
+                                    <option value="Keluar">Kas Keluar (Kredit)</option>
+                                    <option value="Masuk">Kas Masuk (Debit)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-slate-400 mb-1">Kategori</label>
+                                <select id="kas-kategori" required class="w-full text-xs px-3 py-2.5 rounded-lg bg-[#12151b] border border-[#2b323d] text-white font-semibold">
+                                    <option value="Uang Jalan Supir">Uang Jalan Supir</option>
+                                    <option value="BBM & Tol">BBM &amp; Tol</option>
+                                    <option value="Operasional Kantor">Operasional Kantor</option>
+                                    <option value="Perawatan Armada">Perawatan Armada</option>
+                                    <option value="Kasbon Karyawan">Kasbon Karyawan</option>
+                                    <option value="Pembayaran Customer">Pembayaran Customer</option>
+                                    <option value="Drop Kas / Modal">Drop Kas / Modal</option>
+                                    <option value="Lain-lain">Lain-lain</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-slate-400 mb-1">Metode</label>
+                                <select id="kas-metode" class="w-full text-xs px-3 py-2.5 rounded-lg bg-[#12151b] border border-[#2b323d] text-white font-semibold">
+                                    <option value="Tunai">Tunai (Petty Cash)</option>
+                                    <option value="Transfer Bank">Transfer Bank</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-slate-400 mb-1">Nominal (Rp)</label>
+                                <input type="text" id="kas-nominal" required oninput="formatInputField(this)" placeholder="250.000" class="w-full text-xs px-3 py-2.5 rounded-lg bg-[#12151b] border border-[#2b323d] text-white font-mono font-bold">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-end">
+                            <div class="lg:col-span-9">
+                                <label class="block text-[10px] font-semibold text-slate-400 mb-1">Uraian / Keterangan Transaksi</label>
+                                <input type="text" id="kas-keterangan" required placeholder="Contoh: Uang jalan B 9123 SPD rute Karawang / Beli solar / Terima pelunasan..." class="w-full text-xs px-3 py-2.5 rounded-lg bg-[#12151b] border border-[#2b323d] text-white">
+                            </div>
+                            <div class="lg:col-span-3">
+                                <button type="submit" id="btn-save-kas" class="w-full py-2.5 rounded-lg bg-[#f5a623] hover:bg-[#ffb73a] text-[#111318] font-bold text-xs shadow-lg transition">
+                                    Simpan Transaksi Kas
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Filter Kas -->
+                    <div class="bg-[#161920] border border-[#262c36] p-4 rounded-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Cari Kas</label>
+                            <input type="text" id="kas-filter-search" oninput="renderKasModule()" placeholder="No. Bukti / Uraian..." class="w-full text-xs px-3 py-2 rounded-lg bg-[#12151b] text-white border border-[#2b323d]">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Jenis Mutasi</label>
+                            <select id="kas-filter-jenis" onchange="renderKasModule()" class="w-full text-xs px-3 py-2 rounded-lg bg-[#12151b] text-white border border-[#2b323d]">
+                                <option value="ALL">Semua Mutasi</option>
+                                <option value="Masuk">Kas Masuk</option>
+                                <option value="Keluar">Kas Keluar</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Kategori</label>
+                            <select id="kas-filter-kategori" onchange="renderKasModule()" class="w-full text-xs px-3 py-2 rounded-lg bg-[#12151b] text-white border border-[#2b323d]">
+                                <option value="ALL">Semua Kategori</option>
+                                <option value="Uang Jalan Supir">Uang Jalan Supir</option>
+                                <option value="BBM & Tol">BBM &amp; Tol</option>
+                                <option value="Operasional Kantor">Operasional Kantor</option>
+                                <option value="Perawatan Armada">Perawatan Armada</option>
+                                <option value="Kasbon Karyawan">Kasbon Karyawan</option>
+                                <option value="Pembayaran Customer">Pembayaran Customer</option>
+                                <option value="Drop Kas / Modal">Drop Kas / Modal</option>
+                                <option value="Lain-lain">Lain-lain</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Dari Tanggal</label>
+                            <input type="date" id="kas-filter-dari" onchange="renderKasModule()" class="w-full text-xs px-3 py-2 rounded-lg bg-[#12151b] text-white border border-[#2b323d]">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Sampai Tanggal</label>
+                            <input type="date" id="kas-filter-sampai" onchange="renderKasModule()" class="w-full text-xs px-3 py-2 rounded-lg bg-[#12151b] text-white border border-[#2b323d]">
+                        </div>
+                    </div>
+
+                    <!-- Tabel Kas -->
+                    <div class="bg-[#161920] border border-[#262c36] rounded-xl overflow-hidden shadow-xl">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-xs">
+                                <thead>
+                                    <tr class="bg-[#12151b] border-b border-[#262c36] text-slate-300 uppercase font-bold">
+                                        <th class="py-3.5 px-4">Tanggal &amp; Bukti</th>
+                                        <th class="py-3.5 px-3">Kategori &amp; Uraian</th>
+                                        <th class="py-3.5 px-3 text-center">Metode</th>
+                                        <th class="py-3.5 px-3 text-right text-emerald-400">Masuk (Rp)</th>
+                                        <th class="py-3.5 px-3 text-right text-rose-400">Keluar (Rp)</th>
+                                        <th class="py-3.5 px-3 text-right text-[#f5a623]">Saldo Berjalan</th>
+                                        <th class="py-3.5 px-4 text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="kas-table-body" class="divide-y divide-[#222731]"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- MENU 7 (BARU): TIMBANGAN -->
+                <section id="menu-timbangan" class="hidden space-y-5">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div>
+                            <h1 class="text-xl sm:text-2xl font-bold text-white">Data Timbangan &amp; Muatan</h1>
+                            <p class="text-xs text-slate-400 mt-0.5">Pencatatan tiket timbangan truk B3 / SPD, perhitungan otomatis Bruto - Tara = Netto, dan cetak tiket.</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="fetchTimbanganFromSPS(true)" class="px-3.5 py-2 rounded-lg bg-[#161920] border border-[#2b323d] hover:bg-[#1e232d] text-[#5ea0e8] text-xs font-semibold">Sync Timbangan SPS</button>
+                            <button onclick="exportTimbanganToExcel()" class="px-3.5 py-2 rounded-lg bg-[#161920] border border-[#2b323d] hover:bg-[#1e232d] text-slate-200 text-xs font-semibold">Export Excel</button>
+                            <button onclick="printRekapTimbangan()" class="px-4 py-2 rounded-lg bg-[#f5a623] hover:bg-[#ffb73a] text-[#111318] text-xs font-bold shadow">Cetak Rekap Timbangan</button>
+                        </div>
+                    </div>
+
+                    <!-- KPI Timbangan -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+                        <div class="bg-[#161920] border border-[#262c36] p-5 rounded-xl">
+                            <div class="text-xs text-slate-400 font-medium">Total Berat Netto</div>
+                            <div class="text-2xl font-bold text-white mt-2 font-mono" id="tmb-kpi-netto">0 Kg</div>
+                            <div class="text-[11px] text-emerald-400 mt-1.5" id="tmb-kpi-ton">Setara 0,00 Ton</div>
+                        </div>
+                        <div class="bg-[#161920] border border-[#262c36] p-5 rounded-xl">
+                            <div class="text-xs text-slate-400 font-medium">Total Ritase / Tiket</div>
+                            <div class="text-2xl font-bold text-white mt-2" id="tmb-kpi-rit">0 tiket</div>
+                            <div class="text-[11px] text-slate-400 mt-1.5" id="tmb-kpi-status-info">0 selesai, 0 pending</div>
+                        </div>
+                        <div class="bg-[#161920] border border-[#262c36] p-5 rounded-xl">
+                            <div class="text-xs text-slate-400 font-medium">Total Nilai Muatan / Jasa</div>
+                            <div class="text-2xl font-bold text-[#f5a623] mt-2 font-mono" id="tmb-kpi-nilai">Rp 0</div>
+                            <div class="text-[11px] text-slate-400 mt-1.5">Akumulasi Netto &times; Tarif/Kg</div>
+                        </div>
+                        <div class="bg-[#161920] border border-[#262c36] p-5 rounded-xl">
+                            <div class="text-xs text-slate-400 font-medium">Rata-rata Netto / Rit</div>
+                            <div class="text-2xl font-bold text-[#5ea0e8] mt-2 font-mono" id="tmb-kpi-avg">0 Kg</div>
+                            <div class="text-[11px] text-slate-400 mt-1.5">Beban rata-rata armada</div>
+                        </div>
+                    </div>
+
+                    <!-- Form Input Timbangan -->
+                    <form id="timbanganForm" onsubmit="handleSaveTimbangan(event)" class="bg-[#161920] border border-[#262c36] rounded-xl p-5 space-y-4">
+                        <div class="flex items-center justify-between border-b border-[#262c36] pb-3">
+                            <h2 class="text-sm font-bold text-white" id="tmb-form-title">Input Tiket Timbangan Baru</h2>
+                            <button type="button" onclick="resetTimbanganForm()" class="text-xs text-slate-400 hover:text-white">Reset Form</button>
+                        </div>
+                        <input type="hidden" id="tmb-edit-id" value="">
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-semibold text-slate-400 mb-1">Tanggal Timbang</label>
+                                <input type="date" id="tmb-tanggal" required class="w-full text-xs px-3 py-2.5 rounded-lg bg-[#12151b] border border-[#2b323d] text-white">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-slate-400 mb-1">No. Tiket / SJ</label>
+                                <input type="text" id="tmb-tiket" placeholder="Otomatis TMB-..." class="w-full text-xs px-3 py-2.5 rounded-lg bg-[#12151b] border border-[#2b323d] text-white font-mono uppercase">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-slate-400 mb-1">No. Polisi / Armada</label>
+                                <input type="text" id="tmb-plat" required placeholder="B 9123 SPD" class="w-full text-xs px-3 py-2.5 rounded-lg bg-[#12151b] border border-[#2b323d] text-white font-mono uppercase font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-slate-400 mb-1">Nama Supir</label>
+                                <input type="text" id="tmb-supir" list="employee-suggestions" required placeholder="Nama Supir..." class="w-full text-xs px-3 py-2.5 rounded-lg bg-[#12151b] border border-[#2b323d] text-white font-semibold">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-slate-400 mb-1">Customer / Sumber</label>
+                                <input type="text" id="tmb-customer" required placeholder="PT. Sumber Jaya..." class="w-full text-xs px-3 py-2.5 rounded-lg bg-[#12151b] border border-[#2b323d] text-white">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-slate-400 mb-1">Jenis Limbah / Muatan</label>
+                                <input type="text" id="tmb-jenis-limbah" required placeholder="Limbah B3 / Sludge / Scrap..." class="w-full text-xs px-3 py-2.5 rounded-lg bg-[#12151b] border border-[#2b323d] text-white">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 items-end">
+                            <div class="px-3 py-2 rounded-lg bg-[#12151b] border border-[#2b323d]">
+                                <label class="block text-[10px] text-slate-400 mb-1">Berat Bruto (Kg)</label>
+                                <input type="number" id="tmb-bruto" required min="0" step="1" value="0" oninput="updateTimbanganPreview()" class="w-full bg-transparent text-sm font-bold text-white font-mono focus:outline-none">
+                            </div>
+                            <div class="px-3 py-2 rounded-lg bg-[#12151b] border border-[#2b323d]">
+                                <label class="block text-[10px] text-slate-400 mb-1">Berat Tara (Kg)</label>
+                                <input type="number" id="tmb-tara" required min="0" step="1" value="0" oninput="updateTimbanganPreview()" class="w-full bg-transparent text-sm font-bold text-white font-mono focus:outline-none">
+                            </div>
+                            <div class="px-3 py-2 rounded-lg bg-[#0b2c59]/60 border border-[#1d4ed8]/50">
+                                <label class="block text-[10px] text-[#93c5fd] mb-1">Berat Netto (Otomatis)</label>
+                                <div id="tmb-netto-display" class="text-sm font-black text-white font-mono">0 Kg (0,00 Ton)</div>
+                            </div>
+                            <div class="px-3 py-2 rounded-lg bg-[#12151b] border border-[#2b323d]">
+                                <label class="block text-[10px] text-slate-400 mb-1">Tarif / Kg (Rp, Opsional)</label>
+                                <input type="text" id="tmb-harga-kg" value="0" oninput="formatInputField(this); updateTimbanganPreview();" class="w-full bg-transparent text-sm font-bold text-white font-mono focus:outline-none">
+                            </div>
+                            <div class="px-3 py-2 rounded-lg bg-[#111318] border border-[#222731]">
+                                <label class="block text-[10px] text-slate-400 mb-1">Total Nilai (Rp)</label>
+                                <div id="tmb-total-nilai-display" class="text-sm font-bold text-[#f5a623] font-mono">Rp 0</div>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-slate-400 mb-1">Status</label>
+                                <select id="tmb-status" class="w-full text-xs px-3 py-2.5 rounded-lg bg-[#12151b] border border-[#2b323d] text-white font-bold">
+                                    <option value="Selesai">Selesai</option>
+                                    <option value="Verifikasi">Verifikasi</option>
+                                    <option value="Pending">Pending</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-end">
+                            <div class="lg:col-span-9">
+                                <label class="block text-[10px] font-semibold text-slate-400 mb-1">Catatan Timbangan</label>
+                                <input type="text" id="tmb-catatan" placeholder="Catatan kondisi muatan / lokasi timbang / nomor manifest..." class="w-full text-xs px-3 py-2.5 rounded-lg bg-[#12151b] border border-[#2b323d] text-white">
+                            </div>
+                            <div class="lg:col-span-3">
+                                <button type="submit" id="btn-save-tmb" class="w-full py-2.5 rounded-lg bg-[#f5a623] hover:bg-[#ffb73a] text-[#111318] font-bold text-xs shadow-lg transition">
+                                    Simpan Data Timbangan
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Filter Timbangan -->
+                    <div class="bg-[#161920] border border-[#262c36] p-4 rounded-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Cari Tiket / Armada / Supir</label>
+                            <input type="text" id="tmb-filter-search" oninput="renderTimbanganModule()" placeholder="No. Tiket / Plat / Customer..." class="w-full text-xs px-3 py-2 rounded-lg bg-[#12151b] text-white border border-[#2b323d]">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Status</label>
+                            <select id="tmb-filter-status" onchange="renderTimbanganModule()" class="w-full text-xs px-3 py-2 rounded-lg bg-[#12151b] text-white border border-[#2b323d]">
+                                <option value="ALL">Semua Status</option>
+                                <option value="Selesai">Selesai</option>
+                                <option value="Verifikasi">Verifikasi</option>
+                                <option value="Pending">Pending</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Dari Tanggal</label>
+                            <input type="date" id="tmb-filter-dari" onchange="renderTimbanganModule()" class="w-full text-xs px-3 py-2 rounded-lg bg-[#12151b] text-white border border-[#2b323d]">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Sampai Tanggal</label>
+                            <input type="date" id="tmb-filter-sampai" onchange="renderTimbanganModule()" class="w-full text-xs px-3 py-2 rounded-lg bg-[#12151b] text-white border border-[#2b323d]">
+                        </div>
+                    </div>
+
+                    <!-- Tabel Timbangan -->
+                    <div class="bg-[#161920] border border-[#262c36] rounded-xl overflow-hidden shadow-xl">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-xs">
+                                <thead>
+                                    <tr class="bg-[#12151b] border-b border-[#262c36] text-slate-300 uppercase font-bold">
+                                        <th class="py-3.5 px-4">Tanggal &amp; Tiket</th>
+                                        <th class="py-3.5 px-3">Armada &amp; Supir</th>
+                                        <th class="py-3.5 px-3">Customer &amp; Muatan</th>
+                                        <th class="py-3.5 px-3 text-right">Bruto (Kg)</th>
+                                        <th class="py-3.5 px-3 text-right">Tara (Kg)</th>
+                                        <th class="py-3.5 px-3 text-right text-[#5ea0e8]">Netto (Kg)</th>
+                                        <th class="py-3.5 px-3 text-right text-[#f5a623]">Nilai (Rp)</th>
+                                        <th class="py-3.5 px-3 text-center">Status</th>
+                                        <th class="py-3.5 px-4 text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tmb-table-body" class="divide-y divide-[#222731]"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- MENU 8: KELOLA AKUN (SESUAI KOLOM TAB AKUN ANDA) -->
                 <section id="menu-akun" class="hidden space-y-5">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div>
@@ -932,12 +1287,29 @@
         let currentFilteredData = [];
         let masterEmployees = [];
         let accountsList = [];
+        let kasData = [];
+        let timbanganData = [];
         let currentUser = null;
         let currentSlipItem = null;
         let selectedSplitIndex = 0;
 
         let activeLembur = { hari: false, jam: true, inap: false };
         let supirSpdUnit = 'trip';
+
+        function escapeHTML(str) {
+            return String(str === null || str === undefined ? '' : str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function getTodayISO() {
+            const d = new Date();
+            const pad = (n) => String(n).padStart(2, '0');
+            return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+        }
 
         function jsonpRequest(params = {}, timeoutMs = 15000) {
             return new Promise((resolve, reject) => {
@@ -1068,6 +1440,8 @@
             document.getElementById('app-shell').classList.remove('hidden');
 
             fetchFromGoogleSPS(false);
+            fetchKasFromSPS(false);
+            fetchTimbanganFromSPS(false);
             if (isAdminRole(user.role)) {
                 fetchUsersFromSPS();
             }
@@ -1114,14 +1488,14 @@
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-[#1a1f28]";
                 tr.innerHTML = `
-                    <td class="py-3 px-4 font-mono text-slate-400">${acc.id || '-'}</td>
-                    <td class="py-3 px-4 font-bold text-white">${acc.nama}</td>
-                    <td class="py-3 px-4 font-mono text-slate-300">${uname}</td>
-                    <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded bg-[#0b2c59] text-[#60a5fa] font-bold text-[10px]">${acc.role}</span></td>
+                    <td class="py-3 px-4 font-mono text-slate-400">${escapeHTML(acc.id || '-')}</td>
+                    <td class="py-3 px-4 font-bold text-white">${escapeHTML(acc.nama)}</td>
+                    <td class="py-3 px-4 font-mono text-slate-300">${escapeHTML(uname)}</td>
+                    <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded bg-[#0b2c59] text-[#60a5fa] font-bold text-[10px]">${escapeHTML(acc.role)}</span></td>
                     <td class="py-3 px-4 text-center">${statusBadge}</td>
                     <td class="py-3 px-4 text-right space-x-2">
                         <button onclick="editAccount(${idx})" class="text-[#5ea0e8] hover:underline font-semibold">Edit</button>
-                        <button onclick="deleteAccount('${uname}')" class="text-rose-400 hover:underline font-semibold">Hapus</button>
+                        <button onclick="deleteAccount('${escapeHTML(uname)}')" class="text-rose-400 hover:underline font-semibold">Hapus</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -1220,8 +1594,8 @@
         }
 
         function switchMenu(menuId) {
-            const menus = ['menu-ringkasan', 'menu-input', 'menu-karyawan', 'menu-slip', 'menu-laporan', 'menu-akun'];
-            const btns = ['btn-menu-ringkasan', 'btn-menu-input', 'btn-menu-karyawan', 'btn-menu-slip', 'btn-menu-laporan', 'btn-menu-akun'];
+            const menus = ['menu-ringkasan', 'menu-input', 'menu-karyawan', 'menu-slip', 'menu-laporan', 'menu-kas', 'menu-timbangan', 'menu-akun'];
+            const btns = ['btn-menu-ringkasan', 'btn-menu-input', 'btn-menu-karyawan', 'btn-menu-slip', 'btn-menu-laporan', 'btn-menu-kas', 'btn-menu-timbangan', 'btn-menu-akun'];
 
             menus.forEach(id => document.getElementById(id).classList.add('hidden'));
             document.getElementById(menuId).classList.remove('hidden');
@@ -1240,6 +1614,8 @@
                 'menu-karyawan': 'btn-menu-karyawan',
                 'menu-slip': 'btn-menu-slip',
                 'menu-laporan': 'btn-menu-laporan',
+                'menu-kas': 'btn-menu-kas',
+                'menu-timbangan': 'btn-menu-timbangan',
                 'menu-akun': 'btn-menu-akun'
             };
             const activeBtn = document.getElementById(activeMap[menuId]);
@@ -1248,6 +1624,8 @@
             }
 
             if (menuId === 'menu-akun') fetchUsersFromSPS();
+            if (menuId === 'menu-kas') renderKasModule();
+            if (menuId === 'menu-timbangan') renderTimbanganModule();
 
             if (window.innerWidth < 1024) {
                 const nav = document.getElementById('sidebar-nav');
@@ -2465,9 +2843,710 @@
             submitPayrollData(true);
         }
 
+        // =========================================================================
+        // MODUL BARU 1: REKAP KAS OPERASIONAL
+        // =========================================================================
+        function loadKasCache() {
+            try {
+                const raw = localStorage.getItem('spd_kas_cache');
+                kasData = raw ? (JSON.parse(raw) || []) : [];
+            } catch (e) { kasData = []; }
+        }
+
+        function saveKasCache() {
+            localStorage.setItem('spd_kas_cache', JSON.stringify(kasData));
+        }
+
+        async function fetchKasFromSPS(showAlert = false) {
+            loadKasCache();
+            try {
+                const json = await jsonpRequest({ action: 'getKas', t: Date.now() });
+                const list = (json && json.status === 'ok' && Array.isArray(json.kas || json.data)) ? (json.kas || json.data) : null;
+                if (list && (json.module === 'kas' || list.every(r => r.jenisKas || r.noBukti))) {
+                    kasData = list;
+                    saveKasCache();
+                    document.getElementById('kas-sync-note').innerText = 'Tersinkronisasi dengan Google SPS';
+                    if (showAlert) alert(`Berhasil memuat ${kasData.length} transaksi kas dari Google SPS.`);
+                } else if (showAlert) {
+                    alert(`Menampilkan ${kasData.length} transaksi kas dari penyimpanan lokal (tab Kas SPS belum diaktifkan).`);
+                }
+            } catch (err) {
+                if (showAlert) alert(`Menggunakan data kas lokal (${kasData.length} transaksi).`);
+            }
+            renderKasModule();
+        }
+
+        function getFilteredKas() {
+            const search = (document.getElementById('kas-filter-search').value || '').toLowerCase();
+            const jenis = document.getElementById('kas-filter-jenis').value || 'ALL';
+            const kategori = document.getElementById('kas-filter-kategori').value || 'ALL';
+            const dari = document.getElementById('kas-filter-dari').value || '';
+            const sampai = document.getElementById('kas-filter-sampai').value || '';
+
+            // Urutkan kronologis naik untuk menghitung saldo berjalan secara akurat
+            const sortedAsc = [...kasData].sort((a, b) => {
+                const da = (a.tanggal || '').localeCompare(b.tanggal || '');
+                if (da !== 0) return da;
+                return String(a.id || '').localeCompare(String(b.id || ''));
+            });
+
+            let runningSaldo = 0;
+            const withBalance = sortedAsc.map(item => {
+                const nom = cleanRupiahToNumber(item.nominal);
+                const isMasuk = (item.jenisKas || '').toLowerCase() === 'masuk';
+                runningSaldo += isMasuk ? nom : -nom;
+                return { ...item, nominalNum: nom, isMasuk, saldoBerjalan: runningSaldo };
+            });
+
+            return withBalance.filter(item => {
+                const matchText = !search ||
+                    (item.noBukti || '').toLowerCase().includes(search) ||
+                    (item.keterangan || '').toLowerCase().includes(search) ||
+                    (item.kategori || '').toLowerCase().includes(search);
+                const matchJenis = jenis === 'ALL' || (item.jenisKas || '').toLowerCase() === jenis.toLowerCase();
+                const matchKat = kategori === 'ALL' || (item.kategori || '') === kategori;
+                const matchDari = !dari || (item.tanggal || '') >= dari;
+                const matchSampai = !sampai || (item.tanggal || '') <= sampai;
+                return matchText && matchJenis && matchKat && matchDari && matchSampai;
+            }).reverse(); // Tampilkan terbaru di atas
+        }
+
+        function renderKasModule() {
+            const items = getFilteredKas();
+            let totalMasuk = 0, totalKeluar = 0, masukCount = 0, keluarCount = 0;
+
+            items.forEach(item => {
+                if (item.isMasuk) { totalMasuk += item.nominalNum; masukCount++; }
+                else { totalKeluar += item.nominalNum; keluarCount++; }
+            });
+
+            const saldoNet = totalMasuk - totalKeluar;
+            document.getElementById('kas-kpi-saldo').innerText = formatRupiah(saldoNet);
+            document.getElementById('kas-kpi-masuk').innerText = formatRupiah(totalMasuk);
+            document.getElementById('kas-kpi-keluar').innerText = formatRupiah(totalKeluar);
+            document.getElementById('kas-kpi-masuk-count').innerText = `${masukCount} transaksi masuk`;
+            document.getElementById('kas-kpi-keluar-count').innerText = `${keluarCount} transaksi keluar`;
+            document.getElementById('kas-kpi-total-count').innerText = `${items.length} transaksi`;
+
+            const tbody = document.getElementById('kas-table-body');
+            tbody.innerHTML = '';
+            if (items.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-slate-500 italic">Belum ada transaksi kas pada filter ini. Silakan catat transaksi baru di formulir di atas.</td></tr>';
+                return;
+            }
+
+            items.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-[#1a1f28] transition";
+                tr.innerHTML = `
+                    <td class="py-3 px-4">
+                        <div class="font-bold text-white font-mono">${escapeHTML(item.tanggal)}</div>
+                        <div class="text-[10px] text-[#5ea0e8] font-mono">${escapeHTML(item.noBukti)}</div>
+                    </td>
+                    <td class="py-3 px-3">
+                        <div class="font-semibold text-white">${escapeHTML(item.kategori)}</div>
+                        <div class="text-[11px] text-slate-400">${escapeHTML(item.keterangan)}</div>
+                    </td>
+                    <td class="py-3 px-3 text-center">
+                        <span class="px-2 py-0.5 rounded bg-[#12151b] border border-[#2b323d] text-[10px] text-slate-300">${escapeHTML(item.metode || 'Tunai')}</span>
+                    </td>
+                    <td class="py-3 px-3 text-right font-mono font-bold text-emerald-400">${item.isMasuk ? formatRupiah(item.nominalNum) : '-'}</td>
+                    <td class="py-3 px-3 text-right font-mono font-bold text-rose-400">${!item.isMasuk ? formatRupiah(item.nominalNum) : '-'}</td>
+                    <td class="py-3 px-3 text-right font-mono font-black ${item.saldoBerjalan >= 0 ? 'text-[#f5a623]' : 'text-rose-400'}">${formatRupiah(item.saldoBerjalan)}</td>
+                    <td class="py-3 px-4 text-center space-x-2 whitespace-nowrap">
+                        <button onclick="editKasItem('${escapeHTML(item.id)}')" class="text-[#5ea0e8] hover:underline font-semibold">Edit</button>
+                        <button onclick="deleteKasItem('${escapeHTML(item.id)}')" class="text-rose-400 hover:underline font-semibold">Hapus</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function resetKasForm() {
+            document.getElementById('kasForm').reset();
+            document.getElementById('kas-edit-id').value = '';
+            document.getElementById('kas-tanggal').value = getTodayISO();
+            document.getElementById('kas-form-title').innerText = 'Catat Transaksi Kas Baru';
+            document.getElementById('btn-save-kas').innerText = 'Simpan Transaksi Kas';
+        }
+
+        function editKasItem(id) {
+            const item = kasData.find(k => String(k.id) === String(id));
+            if (!item) return;
+            document.getElementById('kas-edit-id').value = item.id;
+            document.getElementById('kas-tanggal').value = item.tanggal || getTodayISO();
+            document.getElementById('kas-no-bukti').value = item.noBukti || '';
+            document.getElementById('kas-jenis').value = item.jenisKas || 'Keluar';
+            document.getElementById('kas-kategori').value = item.kategori || 'Operasional Kantor';
+            document.getElementById('kas-metode').value = item.metode || 'Tunai';
+            document.getElementById('kas-nominal').value = formatNumberWithDots(item.nominal);
+            document.getElementById('kas-keterangan').value = item.keterangan || '';
+            document.getElementById('kas-form-title').innerText = `Edit Transaksi: ${item.noBukti}`;
+            document.getElementById('btn-save-kas').innerText = 'Update Transaksi Kas';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function deleteKasItem(id) {
+            const item = kasData.find(k => String(k.id) === String(id));
+            if (!item || !confirm(`Hapus transaksi kas ${item.noBukti || ''} (${formatRupiah(item.nominal)})?`)) return;
+            kasData = kasData.filter(k => String(k.id) !== String(id));
+            saveKasCache();
+            renderKasModule();
+            try { await jsonpRequest({ action: 'deleteKas', id }); } catch (e) {}
+        }
+
+        async function handleSaveKas(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-save-kas');
+            const origText = btn.innerText;
+            btn.disabled = true;
+            btn.innerText = 'Menyimpan...';
+
+            const editId = document.getElementById('kas-edit-id').value;
+            const tanggal = document.getElementById('kas-tanggal').value || getTodayISO();
+            let noBukti = document.getElementById('kas-no-bukti').value.trim().toUpperCase();
+            if (!noBukti) {
+                noBukti = 'KAS-' + tanggal.replace(/-/g, '').slice(2) + '-' + String(kasData.length + 1).padStart(3, '0');
+            }
+            const nominal = cleanRupiahToNumber(document.getElementById('kas-nominal').value);
+            if (nominal <= 0) {
+                alert('Nominal harus lebih dari 0.');
+                btn.disabled = false;
+                btn.innerText = origText;
+                return;
+            }
+
+            const record = {
+                id: editId || ('K' + Date.now()),
+                tanggal,
+                noBukti,
+                jenisKas: document.getElementById('kas-jenis').value,
+                kategori: document.getElementById('kas-kategori').value,
+                metode: document.getElementById('kas-metode').value,
+                nominal,
+                keterangan: document.getElementById('kas-keterangan').value.trim(),
+                diinputOleh: currentUser ? (currentUser.nama || currentUser.username) : 'Admin'
+            };
+
+            if (editId) {
+                const idx = kasData.findIndex(k => String(k.id) === String(editId));
+                if (idx >= 0) kasData[idx] = record;
+                else kasData.unshift(record);
+            } else {
+                kasData.unshift(record);
+            }
+            saveKasCache();
+            renderKasModule();
+            resetKasForm();
+
+            try {
+                const res = await jsonpRequest({ action: 'saveKas', ...record });
+                if (res && res.status === 'ok' && res.module === 'kas') {
+                    document.getElementById('kas-sync-note').innerText = 'Tersimpan di Google SPS & Lokal';
+                }
+            } catch (err) {}
+
+            btn.disabled = false;
+            btn.innerText = 'Simpan Transaksi Kas';
+        }
+
+        function exportKasToExcel() {
+            const items = getFilteredKas();
+            if (items.length === 0) { alert('Tidak ada data kas untuk diekspor.'); return; }
+            const rows = items.map((k, idx) => ({
+                'No': idx + 1,
+                'Tanggal': k.tanggal,
+                'No. Bukti': k.noBukti,
+                'Jenis': k.jenisKas,
+                'Kategori': k.kategori,
+                'Metode': k.metode,
+                'Uraian': k.keterangan,
+                'Kas Masuk (Rp)': k.isMasuk ? k.nominalNum : 0,
+                'Kas Keluar (Rp)': !k.isMasuk ? k.nominalNum : 0,
+                'Saldo Berjalan (Rp)': k.saldoBerjalan,
+                'Diinput Oleh': k.diinputOleh || '-'
+            }));
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rows), 'Rekap Kas');
+            XLSX.writeFile(wb, `Rekap_Kas_SPD_${getTodayISO()}.xlsx`);
+        }
+
+        function printRekapKas() {
+            const items = getFilteredKas();
+            if (items.length === 0) { alert('Tidak ada data kas untuk dicetak.'); return; }
+            let totMasuk = 0, totKeluar = 0;
+            const rowsHTML = items.map((k, idx) => {
+                if (k.isMasuk) totMasuk += k.nominalNum; else totKeluar += k.nominalNum;
+                return `
+                    <tr>
+                        <td style="text-align:center;">${idx + 1}</td>
+                        <td>${escapeHTML(k.tanggal)}</td>
+                        <td>${escapeHTML(k.noBukti)}</td>
+                        <td><b>${escapeHTML(k.kategori)}</b><br><span style="font-size:8.5px;">${escapeHTML(k.keterangan)}</span></td>
+                        <td style="text-align:center;">${escapeHTML(k.metode)}</td>
+                        <td style="text-align:right;">${k.isMasuk ? formatRupiah(k.nominalNum) : '-'}</td>
+                        <td style="text-align:right;">${!k.isMasuk ? formatRupiah(k.nominalNum) : '-'}</td>
+                        <td style="text-align:right; font-weight:bold;">${formatRupiah(k.saldoBerjalan)}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            const mount = document.getElementById('print-portal-mount');
+            mount.innerHTML = `
+                <div class="print-report-sheet">
+                    <div style="display:flex; justify-content:space-between; border-bottom:2px solid #000; padding-bottom:6px;">
+                        <div>
+                            <div style="font-size:15px; font-weight:900;">PT. SARANA PUTRA DAERAH</div>
+                            <div style="font-size:11px; font-weight:bold;">LAPORAN REKAPITULASI KAS OPERASIONAL</div>
+                        </div>
+                        <div style="text-align:right; font-size:9px;">
+                            <div>Dicetak: ${new Date().toLocaleDateString('id-ID')}</div>
+                            <div>Saldo Bersih: <b>${formatRupiah(totMasuk - totKeluar)}</b></div>
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:4%;">No</th>
+                                <th style="width:10%;">Tanggal</th>
+                                <th style="width:13%;">No. Bukti</th>
+                                <th style="width:29%;">Kategori &amp; Uraian</th>
+                                <th style="width:9%;">Metode</th>
+                                <th style="width:11%; text-align:right;">Masuk</th>
+                                <th style="width:11%; text-align:right;">Keluar</th>
+                                <th style="width:13%; text-align:right;">Saldo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rowsHTML}
+                            <tr style="background:#f7fafc; font-weight:bold;">
+                                <td colspan="5" style="text-align:right;">TOTAL MUTASI</td>
+                                <td style="text-align:right;">${formatRupiah(totMasuk)}</td>
+                                <td style="text-align:right;">${formatRupiah(totKeluar)}</td>
+                                <td style="text-align:right;">${formatRupiah(totMasuk - totKeluar)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            mount.classList.remove('hidden');
+            setTimeout(() => { window.print(); mount.classList.add('hidden'); }, 200);
+        }
+
+        // =========================================================================
+        // MODUL BARU 2: TIMBANGAN & MUATAN ARMADA
+        // =========================================================================
+        function loadTimbanganCache() {
+            try {
+                const raw = localStorage.getItem('spd_timbangan_cache');
+                timbanganData = raw ? (JSON.parse(raw) || []) : [];
+            } catch (e) { timbanganData = []; }
+        }
+
+        function saveTimbanganCache() {
+            localStorage.setItem('spd_timbangan_cache', JSON.stringify(timbanganData));
+        }
+
+        async function fetchTimbanganFromSPS(showAlert = false) {
+            loadTimbanganCache();
+            try {
+                const json = await jsonpRequest({ action: 'getTimbangan', t: Date.now() });
+                const list = (json && json.status === 'ok' && Array.isArray(json.timbangan || json.data)) ? (json.timbangan || json.data) : null;
+                if (list && (json.module === 'timbangan' || list.every(r => r.noTiket || r.bruto !== undefined))) {
+                    timbanganData = list;
+                    saveTimbanganCache();
+                    if (showAlert) alert(`Berhasil memuat ${timbanganData.length} data timbangan dari Google SPS.`);
+                } else if (showAlert) {
+                    alert(`Menampilkan ${timbanganData.length} data timbangan dari penyimpanan lokal.`);
+                }
+            } catch (err) {
+                if (showAlert) alert(`Menggunakan data timbangan lokal (${timbanganData.length} tiket).`);
+            }
+            renderTimbanganModule();
+        }
+
+        function updateTimbanganPreview() {
+            const bruto = parseFloat(document.getElementById('tmb-bruto').value) || 0;
+            const tara = parseFloat(document.getElementById('tmb-tara').value) || 0;
+            const netto = Math.max(0, bruto - tara);
+            const ton = (netto / 1000).toFixed(2).replace('.', ',');
+            const hargaKg = cleanRupiahToNumber(document.getElementById('tmb-harga-kg').value);
+            const totalNilai = netto * hargaKg;
+
+            document.getElementById('tmb-netto-display').innerText = `${formatNumberWithDots(netto)} Kg (${ton} Ton)`;
+            document.getElementById('tmb-total-nilai-display').innerText = formatRupiah(totalNilai);
+        }
+
+        function getFilteredTimbangan() {
+            const search = (document.getElementById('tmb-filter-search').value || '').toLowerCase();
+            const status = document.getElementById('tmb-filter-status').value || 'ALL';
+            const dari = document.getElementById('tmb-filter-dari').value || '';
+            const sampai = document.getElementById('tmb-filter-sampai').value || '';
+
+            return timbanganData.filter(item => {
+                const matchText = !search ||
+                    (item.noTiket || '').toLowerCase().includes(search) ||
+                    (item.platNomor || '').toLowerCase().includes(search) ||
+                    (item.supir || '').toLowerCase().includes(search) ||
+                    (item.customer || '').toLowerCase().includes(search) ||
+                    (item.jenisLimbah || '').toLowerCase().includes(search);
+                const matchStatus = status === 'ALL' || (item.status || 'Selesai').toLowerCase() === status.toLowerCase();
+                const matchDari = !dari || (item.tanggal || '') >= dari;
+                const matchSampai = !sampai || (item.tanggal || '') <= sampai;
+                return matchText && matchStatus && matchDari && matchSampai;
+            });
+        }
+
+        function renderTimbanganModule() {
+            const items = getFilteredTimbangan();
+            let totNetto = 0, totNilai = 0, selesaiCount = 0, pendingCount = 0;
+
+            items.forEach(item => {
+                const bruto = cleanRupiahToNumber(item.bruto);
+                const tara = cleanRupiahToNumber(item.tara);
+                const netto = cleanRupiahToNumber(item.netto) || Math.max(0, bruto - tara);
+                const hargaKg = cleanRupiahToNumber(item.hargaPerKg);
+                const nilai = cleanRupiahToNumber(item.totalNilai) || (netto * hargaKg);
+
+                totNetto += netto;
+                totNilai += nilai;
+                if ((item.status || 'Selesai').toLowerCase() === 'selesai') selesaiCount++;
+                else pendingCount++;
+            });
+
+            const avgNetto = items.length ? Math.round(totNetto / items.length) : 0;
+            document.getElementById('tmb-kpi-netto').innerText = `${formatNumberWithDots(totNetto)} Kg`;
+            document.getElementById('tmb-kpi-ton').innerText = `Setara ${(totNetto / 1000).toFixed(2).replace('.', ',')} Ton`;
+            document.getElementById('tmb-kpi-rit').innerText = `${items.length} tiket`;
+            document.getElementById('tmb-kpi-status-info').innerText = `${selesaiCount} selesai, ${pendingCount} pending/verifikasi`;
+            document.getElementById('tmb-kpi-nilai').innerText = formatRupiah(totNilai);
+            document.getElementById('tmb-kpi-avg').innerText = `${formatNumberWithDots(avgNetto)} Kg`;
+
+            const tbody = document.getElementById('tmb-table-body');
+            tbody.innerHTML = '';
+            if (items.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="9" class="p-6 text-center text-slate-500 italic">Belum ada data timbangan pada filter ini.</td></tr>';
+                return;
+            }
+
+            items.forEach(item => {
+                const bruto = cleanRupiahToNumber(item.bruto);
+                const tara = cleanRupiahToNumber(item.tara);
+                const netto = cleanRupiahToNumber(item.netto) || Math.max(0, bruto - tara);
+                const hargaKg = cleanRupiahToNumber(item.hargaPerKg);
+                const nilai = cleanRupiahToNumber(item.totalNilai) || (netto * hargaKg);
+                const st = (item.status || 'Selesai').toLowerCase();
+                const badge = st === 'selesai'
+                    ? '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#0d2e1c] text-[#34d399] border border-[#14532d]">Selesai</span>'
+                    : st === 'verifikasi'
+                    ? '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#0d2545] text-[#60a5fa] border border-[#1e3a8a]">Verifikasi</span>'
+                    : '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#2e1f08] text-[#fbbf24] border border-[#78350f]">Pending</span>';
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-[#1a1f28] transition";
+                tr.innerHTML = `
+                    <td class="py-3 px-4">
+                        <div class="font-bold text-white font-mono">${escapeHTML(item.tanggal)}</div>
+                        <div class="text-[10px] text-[#5ea0e8] font-mono">${escapeHTML(item.noTiket)}</div>
+                    </td>
+                    <td class="py-3 px-3">
+                        <div class="font-bold text-white font-mono">${escapeHTML(item.platNomor)}</div>
+                        <div class="text-[11px] text-slate-400">${escapeHTML(item.supir)}</div>
+                    </td>
+                    <td class="py-3 px-3">
+                        <div class="font-semibold text-white">${escapeHTML(item.customer)}</div>
+                        <div class="text-[11px] text-slate-400">${escapeHTML(item.jenisLimbah)}</div>
+                    </td>
+                    <td class="py-3 px-3 text-right font-mono text-slate-300">${formatNumberWithDots(bruto)}</td>
+                    <td class="py-3 px-3 text-right font-mono text-slate-400">${formatNumberWithDots(tara)}</td>
+                    <td class="py-3 px-3 text-right font-mono font-black text-[#5ea0e8]">${formatNumberWithDots(netto)}</td>
+                    <td class="py-3 px-3 text-right font-mono font-bold text-[#f5a623]">${nilai > 0 ? formatRupiah(nilai) : '-'}</td>
+                    <td class="py-3 px-3 text-center">${badge}</td>
+                    <td class="py-3 px-4 text-center space-x-2 whitespace-nowrap">
+                        <button onclick="printSingleTiketTimbangan('${escapeHTML(item.id)}')" class="text-emerald-400 hover:underline font-semibold">Tiket</button>
+                        <button onclick="editTimbanganItem('${escapeHTML(item.id)}')" class="text-[#5ea0e8] hover:underline font-semibold">Edit</button>
+                        <button onclick="deleteTimbanganItem('${escapeHTML(item.id)}')" class="text-rose-400 hover:underline font-semibold">Hapus</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function resetTimbanganForm() {
+            document.getElementById('timbanganForm').reset();
+            document.getElementById('tmb-edit-id').value = '';
+            document.getElementById('tmb-tanggal').value = getTodayISO();
+            document.getElementById('tmb-bruto').value = '0';
+            document.getElementById('tmb-tara').value = '0';
+            document.getElementById('tmb-harga-kg').value = '0';
+            document.getElementById('tmb-form-title').innerText = 'Input Tiket Timbangan Baru';
+            document.getElementById('btn-save-tmb').innerText = 'Simpan Data Timbangan';
+            updateTimbanganPreview();
+        }
+
+        function editTimbanganItem(id) {
+            const item = timbanganData.find(t => String(t.id) === String(id));
+            if (!item) return;
+            document.getElementById('tmb-edit-id').value = item.id;
+            document.getElementById('tmb-tanggal').value = item.tanggal || getTodayISO();
+            document.getElementById('tmb-tiket').value = item.noTiket || '';
+            document.getElementById('tmb-plat').value = item.platNomor || '';
+            document.getElementById('tmb-supir').value = item.supir || '';
+            document.getElementById('tmb-customer').value = item.customer || '';
+            document.getElementById('tmb-jenis-limbah').value = item.jenisLimbah || '';
+            document.getElementById('tmb-bruto').value = item.bruto || 0;
+            document.getElementById('tmb-tara').value = item.tara || 0;
+            document.getElementById('tmb-harga-kg').value = formatNumberWithDots(item.hargaPerKg || 0);
+            document.getElementById('tmb-status').value = item.status || 'Selesai';
+            document.getElementById('tmb-catatan').value = item.catatan || '';
+            document.getElementById('tmb-form-title').innerText = `Edit Tiket: ${item.noTiket}`;
+            document.getElementById('btn-save-tmb').innerText = 'Update Data Timbangan';
+            updateTimbanganPreview();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function deleteTimbanganItem(id) {
+            const item = timbanganData.find(t => String(t.id) === String(id));
+            if (!item || !confirm(`Hapus tiket timbangan ${item.noTiket || ''}?`)) return;
+            timbanganData = timbanganData.filter(t => String(t.id) !== String(id));
+            saveTimbanganCache();
+            renderTimbanganModule();
+            try { await jsonpRequest({ action: 'deleteTimbangan', id }); } catch (e) {}
+        }
+
+        async function handleSaveTimbangan(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-save-tmb');
+            const origText = btn.innerText;
+            btn.disabled = true;
+            btn.innerText = 'Menyimpan...';
+
+            const editId = document.getElementById('tmb-edit-id').value;
+            const tanggal = document.getElementById('tmb-tanggal').value || getTodayISO();
+            let noTiket = document.getElementById('tmb-tiket').value.trim().toUpperCase();
+            if (!noTiket) {
+                noTiket = 'TMB-' + tanggal.replace(/-/g, '').slice(2) + '-' + String(timbanganData.length + 1).padStart(3, '0');
+            }
+            const bruto = parseFloat(document.getElementById('tmb-bruto').value) || 0;
+            const tara = parseFloat(document.getElementById('tmb-tara').value) || 0;
+            if (bruto < tara) {
+                alert('Berat Bruto tidak boleh lebih kecil dari Berat Tara.');
+                btn.disabled = false;
+                btn.innerText = origText;
+                return;
+            }
+            const netto = Math.max(0, bruto - tara);
+            const hargaPerKg = cleanRupiahToNumber(document.getElementById('tmb-harga-kg').value);
+            const totalNilai = netto * hargaPerKg;
+
+            const record = {
+                id: editId || ('T' + Date.now()),
+                tanggal,
+                noTiket,
+                platNomor: document.getElementById('tmb-plat').value.trim().toUpperCase(),
+                supir: document.getElementById('tmb-supir').value.trim(),
+                customer: document.getElementById('tmb-customer').value.trim(),
+                jenisLimbah: document.getElementById('tmb-jenis-limbah').value.trim(),
+                bruto,
+                tara,
+                netto,
+                hargaPerKg,
+                totalNilai,
+                status: document.getElementById('tmb-status').value,
+                catatan: document.getElementById('tmb-catatan').value.trim(),
+                diinputOleh: currentUser ? (currentUser.nama || currentUser.username) : 'Admin'
+            };
+
+            if (editId) {
+                const idx = timbanganData.findIndex(t => String(t.id) === String(editId));
+                if (idx >= 0) timbanganData[idx] = record;
+                else timbanganData.unshift(record);
+            } else {
+                timbanganData.unshift(record);
+            }
+            saveTimbanganCache();
+            renderTimbanganModule();
+            resetTimbanganForm();
+
+            try { await jsonpRequest({ action: 'saveTimbangan', ...record }); } catch (err) {}
+
+            btn.disabled = false;
+            btn.innerText = 'Simpan Data Timbangan';
+        }
+
+        function exportTimbanganToExcel() {
+            const items = getFilteredTimbangan();
+            if (items.length === 0) { alert('Tidak ada data timbangan untuk diekspor.'); return; }
+            const rows = items.map((t, idx) => {
+                const bruto = cleanRupiahToNumber(t.bruto);
+                const tara = cleanRupiahToNumber(t.tara);
+                const netto = cleanRupiahToNumber(t.netto) || Math.max(0, bruto - tara);
+                const hargaKg = cleanRupiahToNumber(t.hargaPerKg);
+                const nilai = cleanRupiahToNumber(t.totalNilai) || (netto * hargaKg);
+                return {
+                    'No': idx + 1,
+                    'Tanggal': t.tanggal,
+                    'No. Tiket / SJ': t.noTiket,
+                    'No. Polisi / Armada': t.platNomor,
+                    'Supir': t.supir,
+                    'Customer / Sumber': t.customer,
+                    'Jenis Limbah / Muatan': t.jenisLimbah,
+                    'Bruto (Kg)': bruto,
+                    'Tara (Kg)': tara,
+                    'Netto (Kg)': netto,
+                    'Netto (Ton)': Number((netto / 1000).toFixed(3)),
+                    'Tarif / Kg (Rp)': hargaKg,
+                    'Total Nilai (Rp)': nilai,
+                    'Status': t.status || 'Selesai',
+                    'Catatan': t.catatan || '-'
+                };
+            });
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rows), 'Data Timbangan');
+            XLSX.writeFile(wb, `Rekap_Timbangan_SPD_${getTodayISO()}.xlsx`);
+        }
+
+        function printSingleTiketTimbangan(id) {
+            const item = timbanganData.find(t => String(t.id) === String(id));
+            if (!item) return;
+            const bruto = cleanRupiahToNumber(item.bruto);
+            const tara = cleanRupiahToNumber(item.tara);
+            const netto = cleanRupiahToNumber(item.netto) || Math.max(0, bruto - tara);
+            const hargaKg = cleanRupiahToNumber(item.hargaPerKg);
+            const nilai = cleanRupiahToNumber(item.totalNilai) || (netto * hargaKg);
+
+            const mount = document.getElementById('print-portal-mount');
+            mount.innerHTML = `
+                <div style="padding: 8mm; font-family: Arial, sans-serif; color:#000;">
+                    <div style="border: 2px solid #000; padding: 12px 16px; max-width: 180mm;">
+                        <div style="display:flex; justify-content:space-between; border-bottom:2px solid #000; padding-bottom:6px; margin-bottom:8px;">
+                            <div>
+                                <div style="font-size:14px; font-weight:900;">PT. SARANA PUTRA DAERAH</div>
+                                <div style="font-size:10px; font-weight:bold;">TIKET TIMBANGAN MUATAN / LIMBAH</div>
+                            </div>
+                            <div style="text-align:right; font-size:10px;">
+                                <div>No. Tiket: <b>${escapeHTML(item.noTiket)}</b></div>
+                                <div>Tanggal: <b>${escapeHTML(item.tanggal)}</b></div>
+                            </div>
+                        </div>
+                        <table style="width:100%; border-collapse:collapse; font-size:10.5px; margin-bottom:8px;">
+                            <tr><td style="border:1px solid #000; padding:4px 6px; width:25%; font-weight:bold;">No. Polisi</td><td style="border:1px solid #000; padding:4px 6px; width:25%;">${escapeHTML(item.platNomor)}</td><td style="border:1px solid #000; padding:4px 6px; width:25%; font-weight:bold;">Supir</td><td style="border:1px solid #000; padding:4px 6px; width:25%;">${escapeHTML(item.supir)}</td></tr>
+                            <tr><td style="border:1px solid #000; padding:4px 6px; font-weight:bold;">Customer / Sumber</td><td style="border:1px solid #000; padding:4px 6px;">${escapeHTML(item.customer)}</td><td style="border:1px solid #000; padding:4px 6px; font-weight:bold;">Jenis Muatan</td><td style="border:1px solid #000; padding:4px 6px;">${escapeHTML(item.jenisLimbah)}</td></tr>
+                        </table>
+                        <table style="width:100%; border-collapse:collapse; font-size:11px; margin-bottom:8px;">
+                            <tr style="background:#edf2f7; font-weight:bold; text-align:center;">
+                                <th style="border:1px solid #000; padding:4px;">BRUTO (Kg)</th>
+                                <th style="border:1px solid #000; padding:4px;">TARA (Kg)</th>
+                                <th style="border:1px solid #000; padding:4px;">NETTO (Kg)</th>
+                                <th style="border:1px solid #000; padding:4px;">TOTAL NILAI (Rp)</th>
+                            </tr>
+                            <tr style="text-align:center; font-weight:bold; font-size:12px;">
+                                <td style="border:1px solid #000; padding:6px;">${formatNumberWithDots(bruto)} Kg</td>
+                                <td style="border:1px solid #000; padding:6px;">${formatNumberWithDots(tara)} Kg</td>
+                                <td style="border:1px solid #000; padding:6px;">${formatNumberWithDots(netto)} Kg</td>
+                                <td style="border:1px solid #000; padding:6px;">${nilai > 0 ? formatRupiah(nilai) : '-'}</td>
+                            </tr>
+                        </table>
+                        <div style="font-size:9.5px; margin-bottom:10px;">Catatan: ${escapeHTML(item.catatan || '-')} &bull; Status: <b>${escapeHTML(item.status || 'Selesai')}</b></div>
+                        <table style="width:100%; border:none; font-size:10px; text-align:center;">
+                            <tr>
+                                <td style="width:33%;">Supir,<div style="height:28px;"></div><b>(${escapeHTML(item.supir)})</b></td>
+                                <td style="width:33%;">Petugas Timbang,<div style="height:28px;"></div><b>(....................)</b></td>
+                                <td style="width:33%;">Mengetahui,<div style="height:28px;"></div><b>(PT. SPD)</b></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            `;
+            mount.classList.remove('hidden');
+            setTimeout(() => { window.print(); mount.classList.add('hidden'); }, 200);
+        }
+
+        function printRekapTimbangan() {
+            const items = getFilteredTimbangan();
+            if (items.length === 0) { alert('Tidak ada data timbangan untuk dicetak.'); return; }
+            let totBruto = 0, totTara = 0, totNetto = 0, totNilai = 0;
+
+            const rowsHTML = items.map((t, idx) => {
+                const bruto = cleanRupiahToNumber(t.bruto);
+                const tara = cleanRupiahToNumber(t.tara);
+                const netto = cleanRupiahToNumber(t.netto) || Math.max(0, bruto - tara);
+                const hargaKg = cleanRupiahToNumber(t.hargaPerKg);
+                const nilai = cleanRupiahToNumber(t.totalNilai) || (netto * hargaKg);
+                totBruto += bruto; totTara += tara; totNetto += netto; totNilai += nilai;
+
+                return `
+                    <tr>
+                        <td style="text-align:center;">${idx + 1}</td>
+                        <td>${escapeHTML(t.tanggal)}<br><span style="font-size:8px;">${escapeHTML(t.noTiket)}</span></td>
+                        <td><b>${escapeHTML(t.platNomor)}</b><br><span style="font-size:8px;">${escapeHTML(t.supir)}</span></td>
+                        <td><b>${escapeHTML(t.customer)}</b><br><span style="font-size:8px;">${escapeHTML(t.jenisLimbah)}</span></td>
+                        <td style="text-align:right;">${formatNumberWithDots(bruto)}</td>
+                        <td style="text-align:right;">${formatNumberWithDots(tara)}</td>
+                        <td style="text-align:right; font-weight:bold;">${formatNumberWithDots(netto)}</td>
+                        <td style="text-align:right;">${nilai > 0 ? formatRupiah(nilai) : '-'}</td>
+                        <td style="text-align:center;">${escapeHTML(t.status || 'Selesai')}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            const mount = document.getElementById('print-portal-mount');
+            mount.innerHTML = `
+                <div class="print-report-sheet">
+                    <div style="display:flex; justify-content:space-between; border-bottom:2px solid #000; padding-bottom:6px;">
+                        <div>
+                            <div style="font-size:15px; font-weight:900;">PT. SARANA PUTRA DAERAH</div>
+                            <div style="font-size:11px; font-weight:bold;">LAPORAN REKAPITULASI TIMBANGAN ARMADA</div>
+                        </div>
+                        <div style="text-align:right; font-size:9px;">
+                            <div>Dicetak: ${new Date().toLocaleDateString('id-ID')}</div>
+                            <div>Total Netto: <b>${formatNumberWithDots(totNetto)} Kg (${(totNetto / 1000).toFixed(2)} Ton)</b></div>
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:4%;">No</th>
+                                <th style="width:12%;">Tgl / Tiket</th>
+                                <th style="width:14%;">Armada / Supir</th>
+                                <th style="width:22%;">Customer &amp; Muatan</th>
+                                <th style="width:9%; text-align:right;">Bruto</th>
+                                <th style="width:9%; text-align:right;">Tara</th>
+                                <th style="width:10%; text-align:right;">Netto (Kg)</th>
+                                <th style="width:12%; text-align:right;">Nilai (Rp)</th>
+                                <th style="width:8%; text-align:center;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rowsHTML}
+                            <tr style="background:#f7fafc; font-weight:bold;">
+                                <td colspan="4" style="text-align:right;">TOTAL (${items.length} RIT)</td>
+                                <td style="text-align:right;">${formatNumberWithDots(totBruto)}</td>
+                                <td style="text-align:right;">${formatNumberWithDots(totTara)}</td>
+                                <td style="text-align:right;">${formatNumberWithDots(totNetto)}</td>
+                                <td style="text-align:right;">${formatRupiah(totNilai)}</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            mount.classList.remove('hidden');
+            setTimeout(() => { window.print(); mount.classList.add('hidden'); }, 200);
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             setFormSkema('Karyawan limbah', true);
             updateLiveSlipPreview();
+
+            // Default tanggal hari ini untuk Kas & Timbangan
+            document.getElementById('kas-tanggal').value = getTodayISO();
+            document.getElementById('tmb-tanggal').value = getTodayISO();
+            loadKasCache();
+            loadTimbanganCache();
+            renderKasModule();
+            renderTimbanganModule();
+            updateTimbanganPreview();
 
             const savedUser = localStorage.getItem('spd_logged_user');
             if (savedUser) {
