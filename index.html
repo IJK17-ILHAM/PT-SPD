@@ -120,35 +120,31 @@
             <div class="p-8 sm:p-10 flex flex-col justify-center bg-[#14171d]">
                 <div class="mb-6">
                     <h2 class="text-2xl font-bold text-white">Masuk</h2>
-                    <p class="text-xs text-slate-400 mt-1">Masukkan email dan kata sandi akun Anda yang terdaftar di tab Akun Google Sheet.</p>
+                    <p class="text-xs text-slate-400 mt-1">Masukkan Username (atau Email) &amp; Password/PIN dari tab Akun Google Sheet.</p>
                 </div>
 
                 <div id="login-error-box" class="hidden mb-4 p-3 rounded-lg bg-rose-950/70 border border-rose-700/60 text-rose-300 text-xs font-semibold"></div>
 
                 <form onsubmit="handleLoginSubmit(event)" class="space-y-4">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Email</label>
-                        <input type="email" id="login-email" required placeholder="nama@email.com" class="w-full px-3.5 py-2.5 rounded-lg bg-[#191d25] border border-[#2b323d] text-sm text-white focus:outline-none focus:border-[#f5a623]">
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Username / Email</label>
+                        <input type="text" id="login-email" required placeholder="Contoh: superadmin / hrd_payroll" class="w-full px-3.5 py-2.5 rounded-lg bg-[#191d25] border border-[#2b323d] text-sm text-white focus:outline-none focus:border-[#f5a623]">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Kata sandi</label>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Password / PIN</label>
                         <div class="relative">
-                            <input type="password" id="login-password" required placeholder="Masukkan kata sandi" class="w-full px-3.5 py-2.5 rounded-lg bg-[#191d25] border border-[#2b323d] text-sm text-white focus:outline-none focus:border-[#f5a623]">
+                            <input type="password" id="login-password" required placeholder="Masukkan Password / PIN" class="w-full px-3.5 py-2.5 rounded-lg bg-[#191d25] border border-[#2b323d] text-sm text-white focus:outline-none focus:border-[#f5a623]">
                             <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 top-2.5 text-slate-400 hover:text-slate-200 text-xs">Lihat</button>
                         </div>
                     </div>
                     <div class="flex justify-between items-center text-xs">
-                        <button type="button" onclick="alert('Silakan hubungi Admin HR PT. Sarana Putra Daerah untuk membuat atau mereset kata sandi akun Anda.')" class="text-[#5ea0e8] hover:underline">Lupa kata sandi?</button>
+                        <button type="button" onclick="alert('Silakan cek Username dan PASSWORD_PIN pada tab Akun di Google Sheet SPS Anda.')" class="text-[#5ea0e8] hover:underline">Lupa kata sandi?</button>
                         <span class="text-[11px] text-slate-500 font-mono" id="login-clock"></span>
                     </div>
 
                     <button type="submit" id="btn-login-submit" class="w-full py-2.5 rounded-lg bg-[#f5a623] hover:bg-[#ffb73a] text-[#111318] font-bold text-sm transition shadow-lg">
                         Masuk
                     </button>
-
-                    <div class="text-[11px] text-slate-500 text-center pt-1">
-                        Admin bawaan pertama kali: <span class="font-mono text-slate-300">hr@spd.co.id</span> / <span class="font-mono text-slate-300">admin123</span>
-                    </div>
                 </form>
             </div>
         </div>
@@ -203,8 +199,8 @@
 
                 <div class="flex items-center justify-between pt-1">
                     <div>
-                        <div class="text-xs font-bold text-white" id="sidebar-user-name">HR Admin</div>
-                        <div class="text-[10px] text-[#5ea0e8] font-semibold" id="sidebar-user-role">Admin</div>
+                        <div class="text-xs font-bold text-white" id="sidebar-user-name">User</div>
+                        <div class="text-[10px] text-[#5ea0e8] font-semibold" id="sidebar-user-role">Role</div>
                         <button onclick="closePortalDashboard()" class="text-xs text-slate-400 hover:text-[#f5a623] mt-1 transition">Keluar</button>
                     </div>
                     <button onclick="fetchFromGoogleSPS(true)" class="px-2.5 py-1.5 rounded-lg bg-[#191d25] border border-[#2b323d] text-[11px] text-slate-300 hover:text-[#f5a623] transition">
@@ -822,12 +818,12 @@
                     </div>
                 </section>
 
-                <!-- MENU 6: KELOLA AKUN (KHUSUS ADMIN) -->
+                <!-- MENU 6: KELOLA AKUN (SESUAI KOLOM TAB AKUN ANDA) -->
                 <section id="menu-akun" class="hidden space-y-5">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div>
                             <h1 class="text-xl sm:text-2xl font-bold text-white">Kelola Akun Pengguna</h1>
-                            <p class="text-xs text-slate-400 mt-0.5">Buat akun untuk staf dengan email masing-masing dan atur password serta hak aksesnya (tersinkron ke tab Akun Google Sheet).</p>
+                            <p class="text-xs text-slate-400 mt-0.5">Terhubung langsung dengan tab Akun (ID_AKUN, NAMA_LENGKAP, USERNAME, PASSWORD_PIN, ROLE_AKSES, STATUS).</p>
                         </div>
                         <button onclick="fetchUsersFromSPS()" class="px-3.5 py-2 rounded-lg bg-[#161920] border border-[#2b323d] hover:bg-[#1e232d] text-[#5ea0e8] text-xs font-semibold">
                             Refresh Daftar Akun
@@ -841,24 +837,31 @@
                         </div>
                         <input type="hidden" id="akun-original-email" value="">
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
+                            <div>
+                                <label class="block text-[10px] text-slate-400 mb-1">ID Akun (Opsional)</label>
+                                <input type="text" id="akun-id" placeholder="Otomatis USR-xxx" class="w-full text-xs px-3 py-2 rounded-lg bg-[#12151b] border border-[#2b323d] text-white font-mono">
+                            </div>
                             <div>
                                 <label class="block text-[10px] text-slate-400 mb-1">Nama Lengkap</label>
-                                <input type="text" id="akun-nama" required placeholder="Siti Rahma" class="w-full text-xs px-3 py-2 rounded-lg bg-[#12151b] border border-[#2b323d] text-white font-semibold">
+                                <input type="text" id="akun-nama" required placeholder="Siti Rahmawati" class="w-full text-xs px-3 py-2 rounded-lg bg-[#12151b] border border-[#2b323d] text-white font-semibold">
                             </div>
                             <div>
-                                <label class="block text-[10px] text-slate-400 mb-1">Email (Gmail/Kantor)</label>
-                                <input type="email" id="akun-email" required placeholder="siti@gmail.com" class="w-full text-xs px-3 py-2 rounded-lg bg-[#12151b] border border-[#2b323d] text-white font-semibold">
+                                <label class="block text-[10px] text-slate-400 mb-1">Username / Email</label>
+                                <input type="text" id="akun-email" required placeholder="hrd_payroll / email" class="w-full text-xs px-3 py-2 rounded-lg bg-[#12151b] border border-[#2b323d] text-white font-semibold">
                             </div>
                             <div>
-                                <label class="block text-[10px] text-slate-400 mb-1" id="akun-pass-label">Kata Sandi</label>
-                                <input type="text" id="akun-password" placeholder="Buat password..." class="w-full text-xs px-3 py-2 rounded-lg bg-[#12151b] border border-[#2b323d] text-white font-mono">
+                                <label class="block text-[10px] text-slate-400 mb-1" id="akun-pass-label">Password / PIN</label>
+                                <input type="text" id="akun-password" placeholder="SPD#2026*..." class="w-full text-xs px-3 py-2 rounded-lg bg-[#12151b] border border-[#2b323d] text-white font-mono">
                             </div>
                             <div>
-                                <label class="block text-[10px] text-slate-400 mb-1">Hak Akses (Role)</label>
+                                <label class="block text-[10px] text-slate-400 mb-1">Role Akses</label>
                                 <select id="akun-role" class="w-full text-xs px-3 py-2 rounded-lg bg-[#12151b] border border-[#2b323d] text-white font-bold">
-                                    <option value="Staff">Staff (Input &amp; Slip Gaji)</option>
-                                    <option value="Admin">Admin (Semua Menu + Kelola Akun)</option>
+                                    <option value="Super Admin">Super Admin</option>
+                                    <option value="HR & Payroll">HR &amp; Payroll</option>
+                                    <option value="Manajer Operasional">Manajer Operasional</option>
+                                    <option value="Supervisor">Supervisor</option>
+                                    <option value="Staff">Staff</option>
                                 </select>
                             </div>
                             <div>
@@ -882,9 +885,10 @@
                             <table class="w-full text-left text-xs">
                                 <thead>
                                     <tr class="bg-[#12151b] border-b border-[#262c36] text-slate-300 font-bold">
-                                        <th class="py-3 px-4">Nama</th>
-                                        <th class="py-3 px-4">Email Login</th>
-                                        <th class="py-3 px-4 text-center">Role</th>
+                                        <th class="py-3 px-4">ID Akun</th>
+                                        <th class="py-3 px-4">Nama Lengkap</th>
+                                        <th class="py-3 px-4">Username / Email</th>
+                                        <th class="py-3 px-4 text-center">Role Akses</th>
                                         <th class="py-3 px-4 text-center">Status</th>
                                         <th class="py-3 px-4 text-right">Aksi</th>
                                     </tr>
@@ -935,9 +939,6 @@
         let activeLembur = { hari: false, jam: true, inap: false };
         let supirSpdUnit = 'trip';
 
-        // =========================================================================
-        // HELPER JSONP (SESUAI CODE.GS GITHUB PAGES ANDA - BEBAS CORS)
-        // =========================================================================
         function jsonpRequest(params = {}, timeoutMs = 15000) {
             return new Promise((resolve, reject) => {
                 const cbName = 'spd_cb_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
@@ -1001,8 +1002,13 @@
             input.value = raw ? new Intl.NumberFormat('id-ID').format(raw) : '';
         }
 
+        function isAdminRole(role) {
+            const r = (role || '').toString().toLowerCase();
+            return r.includes('admin') || r.includes('hr');
+        }
+
         // =========================================================================
-        // SISTEM LOGIN & MULTI-AKUN GOOGLE SHEET (JSONP)
+        // SISTEM LOGIN & MULTI-AKUN GOOGLE SHEET
         // =========================================================================
         function togglePasswordVisibility() {
             const pwd = document.getElementById('login-password');
@@ -1034,7 +1040,7 @@
                 if (json && json.status === 'ok' && json.user) {
                     applyLoggedInSession(json.user);
                 } else {
-                    showLoginError((json && json.message) || 'Email atau kata sandi salah.');
+                    showLoginError((json && json.message) || 'Username/Email atau Password salah.');
                 }
             } catch (err) {
                 showLoginError('Gagal terhubung ke Google SPS. Pastikan Code.gs terbaru sudah di-deploy dengan akses "Anyone".');
@@ -1048,11 +1054,11 @@
             currentUser = user;
             localStorage.setItem('spd_logged_user', JSON.stringify(user));
 
-            document.getElementById('sidebar-user-name').innerText = user.nama || user.email;
+            document.getElementById('sidebar-user-name').innerText = user.nama || user.username || user.email;
             document.getElementById('sidebar-user-role').innerText = user.role || 'Staff';
 
             const btnAkun = document.getElementById('btn-menu-akun');
-            if ((user.role || '').toLowerCase() === 'admin') {
+            if (isAdminRole(user.role)) {
                 btnAkun.classList.remove('hidden');
             } else {
                 btnAkun.classList.add('hidden');
@@ -1062,7 +1068,7 @@
             document.getElementById('app-shell').classList.remove('hidden');
 
             fetchFromGoogleSPS(false);
-            if ((user.role || '').toLowerCase() === 'admin') {
+            if (isAdminRole(user.role)) {
                 fetchUsersFromSPS();
             }
         }
@@ -1078,7 +1084,7 @@
 
         async function fetchUsersFromSPS() {
             const tbody = document.getElementById('akun-table-body');
-            if (tbody) tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-400">Memuat daftar akun dari Google Sheet...</td></tr>';
+            if (tbody) tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-400">Memuat daftar akun dari tab Akun...</td></tr>';
 
             try {
                 const json = await jsonpRequest({ action: 'getUsers', t: Date.now() });
@@ -1087,7 +1093,7 @@
                     renderAccountsTable();
                 }
             } catch (err) {
-                if (tbody) tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-rose-400">Gagal memuat daftar akun. Pastikan Code.gs terbaru sudah di-deploy.</td></tr>';
+                if (tbody) tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-rose-400">Gagal memuat daftar akun. Pastikan Code.gs terbaru sudah di-deploy.</td></tr>';
             }
         }
 
@@ -1095,7 +1101,7 @@
             const tbody = document.getElementById('akun-table-body');
             tbody.innerHTML = '';
             if (accountsList.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500 italic">Belum ada akun terdaftar.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-500 italic">Belum ada akun terdaftar.</td></tr>';
                 return;
             }
             accountsList.forEach((acc, idx) => {
@@ -1104,16 +1110,18 @@
                     ? '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#0d2e1c] text-[#34d399] border border-[#14532d]">Aktif</span>'
                     : '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-rose-950 text-rose-300 border border-rose-800">Nonaktif</span>';
 
+                const uname = acc.username || acc.email;
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-[#1a1f28]";
                 tr.innerHTML = `
+                    <td class="py-3 px-4 font-mono text-slate-400">${acc.id || '-'}</td>
                     <td class="py-3 px-4 font-bold text-white">${acc.nama}</td>
-                    <td class="py-3 px-4 font-mono text-slate-300">${acc.email}</td>
+                    <td class="py-3 px-4 font-mono text-slate-300">${uname}</td>
                     <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded bg-[#0b2c59] text-[#60a5fa] font-bold text-[10px]">${acc.role}</span></td>
                     <td class="py-3 px-4 text-center">${statusBadge}</td>
                     <td class="py-3 px-4 text-right space-x-2">
                         <button onclick="editAccount(${idx})" class="text-[#5ea0e8] hover:underline font-semibold">Edit</button>
-                        <button onclick="deleteAccount('${acc.email}')" class="text-rose-400 hover:underline font-semibold">Hapus</button>
+                        <button onclick="deleteAccount('${uname}')" class="text-rose-400 hover:underline font-semibold">Hapus</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -1123,12 +1131,14 @@
         function editAccount(idx) {
             const acc = accountsList[idx];
             if (!acc) return;
-            document.getElementById('akun-form-title').innerText = `Edit Akun: ${acc.email}`;
-            document.getElementById('akun-original-email').value = acc.email;
+            const uname = acc.username || acc.email;
+            document.getElementById('akun-form-title').innerText = `Edit Akun: ${uname}`;
+            document.getElementById('akun-original-email').value = uname;
+            document.getElementById('akun-id').value = acc.id || '';
             document.getElementById('akun-nama').value = acc.nama;
-            document.getElementById('akun-email').value = acc.email;
+            document.getElementById('akun-email').value = uname;
             document.getElementById('akun-password').value = '';
-            document.getElementById('akun-pass-label').innerText = 'Kata Sandi Baru (Kosongkan jika tidak diubah)';
+            document.getElementById('akun-pass-label').innerText = 'Password Baru (Kosongkan jika tetap)';
             document.getElementById('akun-role').value = acc.role || 'Staff';
             document.getElementById('akun-status').value = acc.status || 'Aktif';
         }
@@ -1136,10 +1146,11 @@
         function resetAccountForm() {
             document.getElementById('akun-form-title').innerText = 'Buat Akun Baru';
             document.getElementById('akun-original-email').value = '';
+            document.getElementById('akun-id').value = '';
             document.getElementById('akun-nama').value = '';
             document.getElementById('akun-email').value = '';
             document.getElementById('akun-password').value = '';
-            document.getElementById('akun-pass-label').innerText = 'Kata Sandi';
+            document.getElementById('akun-pass-label').innerText = 'Password / PIN';
             document.getElementById('akun-role').value = 'Staff';
             document.getElementById('akun-status').value = 'Aktif';
         }
@@ -1154,6 +1165,7 @@
             const params = {
                 action: 'saveUser',
                 originalEmail: document.getElementById('akun-original-email').value,
+                idAkun: document.getElementById('akun-id').value.trim(),
                 nama: document.getElementById('akun-nama').value.trim(),
                 email: document.getElementById('akun-email').value.trim(),
                 password: document.getElementById('akun-password').value,
@@ -1178,15 +1190,16 @@
             }
         }
 
-        async function deleteAccount(email) {
-            if (currentUser && currentUser.email.toLowerCase() === email.toLowerCase()) {
+        async function deleteAccount(username) {
+            const curUname = currentUser ? (currentUser.username || currentUser.email || '').toLowerCase() : '';
+            if (curUname === username.toLowerCase()) {
                 alert('Anda tidak bisa menghapus akun yang sedang Anda pakai login.');
                 return;
             }
-            if (!confirm(`Hapus akun ${email} dari Google Sheet?`)) return;
+            if (!confirm(`Hapus akun ${username} dari tab Akun?`)) return;
 
             try {
-                const json = await jsonpRequest({ action: 'deleteUser', email });
+                const json = await jsonpRequest({ action: 'deleteUser', email: username });
                 if (json && json.status === 'ok') {
                     fetchUsersFromSPS();
                 } else {
@@ -1217,7 +1230,7 @@
                 const el = document.getElementById(btnId);
                 if (!el) return;
                 const isAkun = btnId === 'btn-menu-akun';
-                const extraHidden = (isAkun && (!currentUser || (currentUser.role || '').toLowerCase() !== 'admin')) ? 'hidden ' : '';
+                const extraHidden = (isAkun && (!currentUser || !isAdminRole(currentUser.role))) ? 'hidden ' : '';
                 el.className = extraHidden + "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium " + (isAkun ? "text-[#f5a623]" : "text-slate-300") + " hover:bg-[#1b2029] hover:text-white transition text-left";
             });
 
@@ -1273,9 +1286,6 @@
             updateLiveSlipPreview();
         }
 
-        // =========================================================================
-        // PERUBAHAN OTOMATIS SAAT MEMILIH DIVISI
-        // =========================================================================
         function onDivisiChange(val) {
             setFormSkema(val, true);
         }
@@ -1980,7 +1990,6 @@
             });
         }
 
-        // TEMPLATE SLIP GAJI RESMI (110 x 220 mm)
         function generateSingleEnvelopeHTML(item) {
             const c = calculateTHP(item);
             const periodeDisplay = getPeriodeDisplay(item);
@@ -2292,9 +2301,6 @@
             }
         }
 
-        // =========================================================================
-        // TARIK & SIMPAN DATA PAYROLL VIA JSONP (100% KOMPATIBEL CODE.GS LAMA)
-        // =========================================================================
         async function fetchFromGoogleSPS(showAlert = false) {
             const btn = document.getElementById('btn-tarik-sps');
             if (btn) btn.disabled = true;
@@ -2307,7 +2313,7 @@
                 else if (json && Array.isArray(json.data)) rows = json.data;
                 else if (json && Array.isArray(json.records)) rows = json.records;
 
-                payrollData = rows.reverse(); // Terbaru di paling atas
+                payrollData = rows.reverse();
                 localStorage.setItem('spd_payroll_cache', JSON.stringify(payrollData));
                 setSyncBadge('ok', 'LIVE');
 
@@ -2410,7 +2416,7 @@
                 gapok, tunjangan: 0, potAbsen: 0, pph: 0,
                 gajiKotor, kasbon, bpjs, keterangan, totalPotongan, thp,
                 status, statusBayar: status,
-                diinputOleh: currentUser ? `${currentUser.nama} (${currentUser.email})` : 'Admin'
+                diinputOleh: currentUser ? `${currentUser.nama} (${currentUser.username || currentUser.email})` : 'Admin'
             };
 
             try {
@@ -2467,7 +2473,7 @@
             if (savedUser) {
                 try {
                     const parsed = JSON.parse(savedUser);
-                    if (parsed && parsed.email) {
+                    if (parsed && (parsed.username || parsed.email)) {
                         applyLoggedInSession(parsed);
                     }
                 } catch (e) {}
