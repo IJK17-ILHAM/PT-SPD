@@ -107,6 +107,207 @@
             .a4-page-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; grid-template-rows: repeat(2, 1fr) !important; gap: 5mm !important; width: 200mm !important; height: 285mm !important; max-height: 285mm !important; page-break-after: always !important; break-after: page !important; box-sizing: border-box !important; }
         }
     </style>
+<style id="spd-visual-refresh">
+/* SPD visual refresh. Screen only: application logic and print styles are unchanged. */
+@media screen {
+  :root, body[data-theme="spd"], body[data-theme="eco"] {
+    --bg-page:#f5f6f3; --bg-sidebar:#163e32;
+    --bg-sidebar-hover:rgba(215,235,222,.09); --bg-sidebar-active:rgba(191,220,199,.24);
+    --border-sidebar:rgba(222,238,226,.14); --text-sidebar:#fff; --text-sidebar-muted:#d8e6de;
+    --bg-card:#fff; --bg-subtle:#f0f4ef; --bg-input:#fbfcfa;
+    --border-color:#d8e0da; --border-subtle:#e8ede8;
+    --text-main:#202923; --text-muted:#66736a;
+    --btn-primary:#1b503d; --btn-primary-hover:#123c2d; --btn-primary-text:#fff;
+    --accent-brand:#24553f; --accent-link:#24553f; --accent-highlight:#b48a46;
+    --card-blue-bg:#e8f0e8; --card-blue-border:#ccdccf; --card-blue-text:#214d37;
+    --pill-info-bg:#e8f0e8; --pill-info-text:#24553f; --pill-info-border:#cedecf;
+    --pill-ok-bg:#edf6ee; --pill-ok-text:#286142; --pill-ok-border:#dcebdd;
+    --pill-warn-bg:#fff6e3; --pill-warn-text:#875e21; --pill-warn-border:#eedfbb;
+    --pill-bad-bg:#fff0ef; --pill-bad-text:#af4242; --pill-bad-border:#efd5d2;
+    --shadow-card:0 2px 5px rgba(22,45,30,.025),0 1px 2px rgba(22,45,30,.025);
+  }
+  body[data-theme="eco"] { --bg-sidebar:#204c3c; --btn-primary:#2b654b; --btn-primary-hover:#214d39; --bg-page:#f1f5ef; }
+  body[data-theme="dark"] {
+    --bg-page:#111a16; --bg-sidebar:#101f18; --bg-sidebar-hover:#20362a;
+    --bg-sidebar-active:#294734; --border-sidebar:#2c3d32;
+    --bg-card:#1a261f; --bg-subtle:#202e25; --bg-input:#17221b;
+    --border-color:#35453a; --border-subtle:#2b3930; --text-main:#edf3ec; --text-muted:#adbcaf;
+    --btn-primary:#9cc8a6; --btn-primary-hover:#b4d9bc; --btn-primary-text:#11271a;
+    --accent-brand:#a1c9aa; --accent-link:#acd3b5; --accent-highlight:#d5b675;
+    --card-blue-bg:#273d2c; --card-blue-border:#405b46; --card-blue-text:#c0deca;
+    --pill-info-bg:#273d2c; --pill-info-text:#bcd9c4; --pill-info-border:#405b46;
+    --shadow-card:0 2px 6px rgba(0,0,0,.12);
+  }
+  html { font-size:16px; scroll-behavior:smooth; }
+  body { font-family:Inter,"Segoe UI",Arial,sans-serif; line-height:1.5; letter-spacing:-.012em; }
+  button,input,select,textarea { font:inherit; }
+  button { transition:background-color .16s,border-color .16s,box-shadow .16s; cursor:pointer; }
+  button:disabled { cursor:wait; opacity:.65; }
+  button:focus-visible,a:focus-visible { outline:3px solid var(--accent-highlight); outline-offset:3px; }
+  input:focus,select:focus,textarea:focus { outline:none; border-color:var(--accent-brand); box-shadow:0 0 0 3px color-mix(in srgb,var(--accent-brand) 12%,transparent); }
+  input::placeholder { color:var(--text-muted); opacity:.8; font-weight:400; }
+  input,select { min-width:0; }
+  #app-shell { align-items:stretch; }
+  #app-shell > aside { background:var(--bg-sidebar); }
+  #app-shell > aside > div:first-child > div:first-child { padding:26px 24px 22px; border-bottom:none; }
+  #app-shell > aside > div:first-child > div:first-child .text-xl { font-size:30px; letter-spacing:-1.5px; }
+  #sidebar-suite-title { font-size:14px; letter-spacing:-.02em; }
+  #app-shell > aside > div:first-child > div:nth-child(2) { padding:0 18px 22px; border-bottom-color:var(--border-sidebar); }
+  #app-shell > aside > div:first-child > div:nth-child(2) > div { border:1px solid var(--border-sidebar); border-radius:11px; background:rgba(0,0,0,.08); gap:3px; }
+  #suite-btn-payroll,#suite-btn-kastonase { min-height:36px; font-size:12px; padding:8px 4px; border-radius:8px; }
+  #sidebar-nav { padding:22px 14px; }
+  #sidebar-nav button { min-height:44px; padding:11px 15px; border-radius:9px; font-size:14px; gap:12px; margin-bottom:5px; }
+  #sidebar-nav svg { width:18px; height:18px; stroke-width:1.7; }
+  #sidebar-nav .t-sidebar-btn-active { box-shadow:inset 3px 0 var(--accent-highlight); }
+  #sidebar-nav button:hover { background-color:var(--bg-sidebar-hover); }
+  #sidebar-nav button.t-sidebar-btn-active:hover { background-color:var(--bg-sidebar-active); }
+  #btn-menu-akun { margin-top:20px; border-top:1px solid var(--border-sidebar); }
+  #app-shell > aside > div:last-child { padding:18px; border-color:var(--border-sidebar); }
+  #app-shell > aside > div:last-child > div:first-child { padding:12px; border-radius:10px; background:rgba(0,0,0,.1); border-color:var(--border-sidebar); font-size:11px; }
+  #app-shell > aside > div:last-child > div:nth-child(2) button { min-height:28px; padding:4px 7px; border-radius:6px; font-size:10px; }
+  #sidebar-user-name { font-size:13px; }
+  #sidebar-user-role { font-size:11px; }
+  #sync-indicator { animation:none; }
+  #app-shell > main { min-width:0; width:100%; padding:32px; }
+  #app-shell > main > div { max-width:1440px; }
+  main section { position:relative; }
+  main section::before { display:block; font-size:12px; font-weight:600; letter-spacing:.015em; color:var(--text-muted); margin-bottom:20px; }
+  #menu-ringkasan::before { content:"Payroll / Ringkasan"; }
+  #menu-input::before { content:"Payroll / Input gaji"; }
+  #menu-karyawan::before { content:"Payroll / Karyawan"; }
+  #menu-slip::before { content:"Payroll / Slip gaji"; }
+  #menu-laporan::before { content:"Payroll / Laporan"; }
+  #menu-akun::before { content:"Payroll / Kelola akun"; }
+  #menu-kt-dashboard::before { content:"Kas & Tonase / Dashboard"; }
+  #menu-kt-transaksi::before { content:"Kas & Tonase / Transaksi"; }
+  #menu-kt-stok::before { content:"Kas & Tonase / Stok"; }
+  #menu-kt-harga::before { content:"Kas & Tonase / Harga barang"; }
+  #menu-kt-customer::before { content:"Kas & Tonase / Customer"; }
+  #menu-kt-hutang::before { content:"Kas & Tonase / Hutang piutang"; }
+  #menu-kt-laporan::before { content:"Kas & Tonase / Laporan"; }
+  #menu-kt-pengaturan::before { content:"Kas & Tonase / Pengaturan"; }
+  main section > :first-child { margin-top:0 !important; margin-bottom:26px; }
+  main h1 { font-size:28px !important; line-height:1.22 !important; font-weight:750 !important; letter-spacing:-.035em; }
+  main h1 + p { margin-top:9px !important; max-width:650px; line-height:1.6; }
+  main h2,main h3 { font-size:16px !important; letter-spacing:-.02em; }
+  main .text-xs { font-size:13px; line-height:1.55; }
+  main [class~="text-[10px]"],main [class~="text-[11px]"] { font-size:12px; line-height:1.5; }
+  main label { font-size:12px !important; font-weight:550; text-transform:none !important; margin-bottom:7px; }
+  main .font-mono { font-family:inherit; font-variant-numeric:tabular-nums; letter-spacing:-.015em; }
+  main .text-2xl { font-size:28px; letter-spacing:-.035em; font-variant-numeric:tabular-nums; line-height:1.25; }
+  main .t-card,main .t-card-blue { border-radius:13px; }
+  main .t-card.p-5,main .t-card.p-4 { padding:22px; }
+  main .t-input { border-radius:8px; }
+  main input.t-input,main select.t-input { min-height:42px; padding:9px 12px; font-size:13px; }
+  main div.t-input { padding:12px 14px; }
+  main div.t-input input { font-size:15px; min-height:24px; }
+  main .t-btn-primary,main .t-btn-secondary { min-height:40px; border-radius:8px; padding:10px 15px; font-size:12px; line-height:1.4; font-weight:650; box-shadow:none; }
+  main .t-btn-primary { border:1px solid transparent; }
+  main .t-btn-primary:hover { box-shadow:0 3px 8px rgba(22,62,50,.12); }
+  main .t-btn-secondary { background:var(--bg-card); }
+  main .t-btn-secondary:hover { background:var(--bg-subtle); filter:none; }
+  main .t-pill-ok,main .t-pill-warn,main .t-pill-bad,main .t-pill-info { font-size:11px; font-weight:600; }
+  main span[class*="t-pill-"] { display:inline-block; padding:4px 10px; border-radius:999px; white-space:nowrap; }
+  main button[class*="t-pill-"] { padding:8px 12px; min-height:36px; border-radius:8px; }
+  #draft-alert-banner,#kt-dash-stock-alert { padding:14px 18px; font-size:13px; border-radius:10px; }
+  #draft-alert-banner button,#kt-dash-stock-alert button { text-decoration:none; padding:4px 0 4px 12px; }
+  main .grid:has(> .t-card > #kpi-total-thp) > .t-card:first-child { background:var(--bg-sidebar); border-color:var(--bg-sidebar); }
+  main .t-card:has(> #kpi-total-thp) > * { color:#f4f8f3 !important; }
+  #menu-kt-dashboard .t-card-blue { background:var(--bg-sidebar); color:#f4f8f3; border-color:var(--bg-sidebar); }
+  main table { border-collapse:collapse; font-size:13px !important; width:100%; }
+  main table th { padding:15px 18px !important; font-size:11px; letter-spacing:.015em; text-transform:none; font-weight:650; line-height:1.45; white-space:nowrap; }
+  main table td { padding:17px 18px !important; font-size:13px; vertical-align:middle; line-height:1.5; font-variant-numeric:tabular-nums; }
+  main table tr { border-color:var(--border-subtle); }
+  main table tbody tr:hover { background:var(--bg-subtle); }
+  main table .text-right { white-space:nowrap; }
+  main table td[colspan] { padding:36px 22px !important; color:var(--text-muted); font-size:13px; }
+  main .overflow-x-auto { scrollbar-width:thin; }
+  main table input.t-input,main table select.t-input { min-height:36px; padding:7px 9px; font-size:12px; }
+  #menu-karyawan table,#menu-akun table { min-width:920px; }
+  #menu-kt-stok table,#menu-kt-harga table,#menu-kt-customer table,#menu-kt-laporan table,#menu-kt-hutang table { min-width:760px; }
+  #menu-kt-transaksi table { min-width:700px; }
+  #kt-trx-items-body td { padding:14px 8px !important; }
+  #kt-trx-items-body td:first-child { padding-left:14px !important; }
+  #kt-trx-items-body input { min-width:52px; }
+  #division-chart-container,#kt-7day-chart { height:210px; padding-top:24px; border-color:var(--border-subtle); }
+  #division-chart-container > div { border-radius:6px 6px 0 0; }
+  #kt-stock-bars .bg-blue-400 { background-color:#86aa8d; }
+  #kt-stock-bars [style*="background"] { border-radius:999px; }
+  #payrollForm > div:first-child { padding:24px; }
+  #payrollForm > div:first-child > div { padding-top:20px; border-top:1px solid var(--border-subtle); }
+  #payrollForm > div:first-child > div:first-child { padding-top:0; border-top:none; }
+  #payrollForm > div:first-child > div:nth-child(1)::before { content:"01  Data karyawan"; display:block; margin-bottom:14px; font-size:16px; font-weight:700; color:var(--accent-link); }
+  #pokok-section-title { font-size:16px; }
+  #payrollForm > div:last-child { padding:24px; }
+  #payrollForm > div:last-child .space-y-2 > div { padding-top:6px; padding-bottom:6px; }
+  #payrollForm > div:last-child > div:nth-last-child(2),main .t-card:has(> div > #kt-trx-total-bayar) > div:has(> #kt-trx-total-bayar) { padding:18px; background:var(--bg-sidebar); color:#fff; border:0; border-radius:10px; }
+  #payrollForm > div:last-child > div:nth-last-child(2) *,#kt-trx-total-bayar,main .t-card > div:has(> #kt-trx-total-bayar) .t-muted { color:#fff !important; }
+  #live-slip-thp,#kt-trx-total-bayar { font-size:32px; font-weight:750; }
+  #menu-kt-transaksi > .t-card:has(#kt-trx-customer-select)::before { content:"01  Mitra & kendaraan"; display:block; font-weight:700; font-size:15px; color:var(--accent-link); flex-basis:100%; }
+  #menu-kt-transaksi > .t-card:has(#kt-trx-customer-select) { flex-wrap:wrap; padding:20px; }
+  #menu-kt-transaksi .t-card:has(> .overflow-x-auto > table > #kt-trx-items-body)::before { content:"02  Barang & penimbangan"; display:block; padding:20px; font-weight:700; font-size:15px; }
+  #menu-kt-transaksi .t-card:has(#kt-trx-total-bayar)::before { content:"Ringkasan pembayaran"; display:block; font-weight:700; font-size:16px; padding-bottom:8px; }
+  #menu-kt-stok form::before { content:"Penyesuaian stok opname"; grid-column:1/-1; font-weight:700; font-size:16px; margin-bottom:8px; }
+  #menu-kt-harga form,#menu-kt-customer form { padding:24px; }
+  #menu-slip > .grid > .t-card:last-child { padding:24px; }
+  #menu-slip .t-card-blue { background:var(--bg-subtle); color:var(--text-main); }
+  #menu-slip .t-card:has(#slip-preview-content) { background:var(--bg-card); }
+  #theme-card-spd [class*="bg-[#46627F]"],aside button[onclick="applyTheme('spd')"] { background:#163e32; }
+  #theme-card-spd [class*="bg-[#B8AB3A]"] { background:#b48a46; }
+  #theme-card-spd [class*="bg-[#E9EEF3]"] { background:#f5f6f3; }
+  #theme-card-eco [class*="bg-[#1F5C4A]"] { background:#204c3c; }
+  #theme-card-eco [class*="bg-[#2E9E6B]"] { background:#2b654b; }
+  #login-screen { background:var(--bg-page); }
+  #login-screen > div { border-radius:20px; border-color:var(--border-subtle); box-shadow:0 18px 65px rgba(26,51,35,.08); }
+  #login-screen .t-sidebar { padding:40px; }
+  #login-screen label,#login-screen p,#login-screen .text-xs { font-size:13px; line-height:1.6; }
+  #login-screen .t-input { min-height:46px; border-radius:9px; }
+  #login-screen button[type="submit"] { min-height:46px; }
+  #slipModal > div { border-width:1px; border-color:var(--border-color); }
+  #slipModal .no-print button { min-height:40px; }
+  @media (min-width:1024px) {
+    #app-shell > aside { width:236px; position:sticky; top:0; height:100dvh; overflow-y:auto; }
+    #app-shell > main { padding:34px 30px 48px; }
+    #payrollForm > div:last-child,#menu-kt-transaksi .sticky { top:24px; }
+  }
+  @media (min-width:1024px) and (max-width:1279px) {
+    #payrollForm,#menu-kt-transaksi > .grid { grid-template-columns:1fr; }
+    #payrollForm > div,#menu-kt-transaksi > .grid > div { grid-column:1/-1; position:static; }
+    #menu-akun .lg\:grid-cols-6 { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    #menu-karyawan > .grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  }
+  @media (max-width:1023px) {
+    #app-shell > aside { position:relative; width:100%; }
+    #app-shell > aside > div:first-child > div:first-child { padding:18px 22px; }
+    #app-shell > aside > div:first-child > div:nth-child(2) { padding:0 20px 16px; max-width:380px; }
+    #sidebar-nav { padding:12px; }
+    #sidebar-nav > div:not(.hidden) { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px; }
+    #sidebar-nav button { margin:0; padding:10px; font-size:13px; }
+    #sidebar-nav .border-t { display:none; }
+    #btn-menu-akun { margin:0; border-top:none; }
+    #app-shell > main { padding:24px; }
+    main h1 { font-size:25px !important; }
+    main .sticky { position:static; }
+    main .t-card.p-5,main .t-card.p-4 { padding:18px; }
+  }
+  @media (max-width:639px) {
+    #app-shell > main { padding:20px 14px 32px; }
+    main section::before { margin-bottom:14px; font-size:11px; }
+    main section > :first-child { margin-bottom:20px; }
+    main h1 { font-size:24px !important; }
+    main .text-2xl { font-size:26px; }
+    #sidebar-nav > div:not(.hidden) { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    #payrollForm > div:first-child,#payrollForm > div:last-child { padding:18px; }
+    main table th,main table td { padding:13px 14px !important; }
+    #draft-alert-banner,#kt-dash-stock-alert { align-items:flex-start; padding:12px; font-size:12px; }
+    #menu-kt-transaksi .t-card:has(#kt-trx-customer-select) > .flex-1 { width:100%; flex-basis:100%; }
+    #login-screen .t-sidebar { padding:28px; min-height:240px; }
+    #login-screen h1 { font-size:25px; }
+  }
+  @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } *,*::before,*::after { transition:none !important; animation:none !important; } }
+}
+
+</style>
 </head>
 <body data-theme="spd" class="antialiased">
 
@@ -530,8 +731,8 @@
                     <div class="t-card rounded-xl p-5 space-y-4">
                         <div class="text-sm font-bold t-text">Pilih Palet Warna Portal (Berlaku untuk Semuanya)</div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <button type="button" onclick="applyTheme('spd')" id="theme-card-spd" class="text-left p-4 rounded-xl border-2 transition t-subtle"><div class="flex items-center justify-between mb-2"><span class="font-bold text-sm t-text">Pilihan A: Satu Keluarga SPD</span><span class="text-[10px] px-2 py-0.5 rounded-full t-pill-info font-bold">Default</span></div><div class="flex gap-1.5 mb-2"><span class="w-8 h-6 rounded bg-[#46627F]"></span><span class="w-8 h-6 rounded bg-[#B8AB3A]"></span><span class="w-8 h-6 rounded bg-[#E9EEF3] border"></span><span class="w-8 h-6 rounded bg-[#FFFFFF] border"></span><span class="w-8 h-6 rounded bg-[#1F2D3A]"></span></div><div class="text-[11px] t-muted">Biru keabuan (#46627F) &amp; Kuning zaitun (#B8AB3A).</div></button>
-                            <button type="button" onclick="applyTheme('eco')" id="theme-card-eco" class="text-left p-4 rounded-xl border-2 transition t-subtle"><div class="flex items-center justify-between mb-2"><span class="font-bold text-sm t-text">Pilihan B: Hijau Daur Ulang</span></div><div class="flex gap-1.5 mb-2"><span class="w-8 h-6 rounded bg-[#1F5C4A]"></span><span class="w-8 h-6 rounded bg-[#2E9E6B]"></span><span class="w-8 h-6 rounded bg-[#F1F5F2] border"></span><span class="w-8 h-6 rounded bg-[#D98E2B]"></span><span class="w-8 h-6 rounded bg-[#1E2A24]"></span></div><div class="text-[11px] t-muted">Hijau tua (#1F5C4A) &amp; Hijau segar (#2E9E6B).</div></button>
+                            <button type="button" onclick="applyTheme('spd')" id="theme-card-spd" class="text-left p-4 rounded-xl border-2 transition t-subtle"><div class="flex items-center justify-between mb-2"><span class="font-bold text-sm t-text">Pilihan A: Satu Keluarga SPD</span><span class="text-[10px] px-2 py-0.5 rounded-full t-pill-info font-bold">Default</span></div><div class="flex gap-1.5 mb-2"><span class="w-8 h-6 rounded bg-[#46627F]"></span><span class="w-8 h-6 rounded bg-[#B8AB3A]"></span><span class="w-8 h-6 rounded bg-[#E9EEF3] border"></span><span class="w-8 h-6 rounded bg-[#FFFFFF] border"></span><span class="w-8 h-6 rounded bg-[#1F2D3A]"></span></div><div class="text-[11px] t-muted">Hijau hutan (#163E32), putih hangat, dan aksen emas (#B48A46).</div></button>
+                            <button type="button" onclick="applyTheme('eco')" id="theme-card-eco" class="text-left p-4 rounded-xl border-2 transition t-subtle"><div class="flex items-center justify-between mb-2"><span class="font-bold text-sm t-text">Pilihan B: Hijau Daur Ulang</span></div><div class="flex gap-1.5 mb-2"><span class="w-8 h-6 rounded bg-[#1F5C4A]"></span><span class="w-8 h-6 rounded bg-[#2E9E6B]"></span><span class="w-8 h-6 rounded bg-[#F1F5F2] border"></span><span class="w-8 h-6 rounded bg-[#D98E2B]"></span><span class="w-8 h-6 rounded bg-[#1E2A24]"></span></div><div class="text-[11px] t-muted">Hijau alami (#204C3C) dengan aksen hijau lembut (#2B654B).</div></button>
                             <button type="button" onclick="applyTheme('dark')" id="theme-card-dark" class="text-left p-4 rounded-xl border-2 transition t-subtle"><div class="flex items-center justify-between mb-2"><span class="font-bold text-sm t-text">Pilihan C: Dark Mode</span></div><div class="flex gap-1.5 mb-2"><span class="w-8 h-6 rounded bg-[#14171d]"></span><span class="w-8 h-6 rounded bg-[#f5a623]"></span><span class="w-8 h-6 rounded bg-[#0f1115]"></span><span class="w-8 h-6 rounded bg-[#0b2c59]"></span></div><div class="text-[11px] t-muted">Tampilan gelap kontras tinggi.</div></button>
                         </div>
                     </div>
